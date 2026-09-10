@@ -137,4 +137,11 @@ uvicorn app.main:app --reload
 ## License
 
 MIT
-# FitTrak
+
+---
+
+## Development Notes
+
+- Use `docker compose logs -f api` to follow application logs
+- After model changes run: `alembic revision --autogenerate -m "description"`
+- Keep the domain layer free of framework dependencies
