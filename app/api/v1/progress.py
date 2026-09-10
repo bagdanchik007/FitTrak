@@ -7,3 +7,5 @@ router = APIRouter(prefix="/progress", tags=["Progress"])
 # GET /progress/summary
 # GET /progress/personal-records
 # GET /progress/volume-over-time
+
+# Future: volume tracking, PR detection, weekly summaries
