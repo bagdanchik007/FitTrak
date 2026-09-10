@@ -23,7 +23,7 @@ class AuthService:
         if existing:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="Email already registered",
+                detail="A user with this email already exists",
             )
 
         user = User(
