@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: fittrack
+          POSTGRES_PASSWORD: fittrack_secret
+          POSTGRES_DB: fittrack_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Install dependencies
+        run: |
+          source $HOME/.cargo/env || true
+          uv pip install --system -e ".[dev]"
+
+      - name: Ruff check
+        run: ruff check app tests
+
+      - name: Ruff format check
+        run: ruff format --check app tests
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql+asyncpg://fittrack:fittrack_secret@localhost:5432/fittrack_test
+          SECRET_KEY: test-secret-key-that-is-long-enough-1234567890
+          APP_ENV: test
+        run: pytest -v --cov=app --cov-report=term-missing
