@@ -55,3 +55,6 @@ Thumbs.db
 
 # Alembic
 # (keep migrations, ignore local versions if needed)
+
+# Local Alembic versions (if any)
+migrations/versions/*_local.py
