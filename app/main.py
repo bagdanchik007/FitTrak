@@ -27,7 +27,7 @@ app = FastAPI(
         "- JWT Authentication (Access + Refresh Tokens)\n"
         "- Exercises & Workouts with Sets\n"
         "- Soft deletes & proper domain modeling\n"
-        "- Async everything\n"
+        "- Fully asynchronous stack\n"
         "- Docker-ready\n"
     ),
     version="0.1.0",
