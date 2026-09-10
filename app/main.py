@@ -6,15 +6,16 @@ from fastapi.responses import JSONResponse
 
 from app.api.router import api_router
 from app.core.config import get_settings
+from app.core.logging import setup_logging
+from app.core.middleware import RequestLoggingMiddleware
 
 settings = get_settings()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup
+    setup_logging()
     yield
-    # Shutdown
 
 
 app = FastAPI(
@@ -26,6 +27,7 @@ app = FastAPI(
         "### Features\n"
         "- JWT Authentication (Access + Refresh Tokens)\n"
         "- Exercises & Workouts with Sets\n"
+        "- Progress tracking (PRs, volume, estimated 1RM)\n"
         "- Soft deletes & proper domain modeling\n"
         "- Fully asynchronous stack\n"
         "- Docker-ready\n"
@@ -44,7 +46,6 @@ app = FastAPI(
     },
 )
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
@@ -52,21 +53,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(RequestLoggingMiddleware)
 
-# Routes
 app.include_router(api_router, prefix=settings.api_v1_prefix)
-
-
-@app.get("/health", tags=["Health"])
-async def health_check() -> JSONResponse:
-    return JSONResponse(
-        content={
-            "status": "healthy",
-            "app": settings.app_name,
-            "version": "0.1.0",
-            "environment": settings.app_env,
-        }
-    )
 
 
 @app.get("/", include_in_schema=False)
@@ -74,5 +63,5 @@ async def root() -> dict[str, str]:
     return {
         "message": f"Welcome to {settings.app_name}",
         "docs": "/docs",
-        "health": "/health",
+        "health": "/api/v1/health",
     }
