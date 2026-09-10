@@ -50,5 +50,3 @@ class UUIDPrimaryKeyMixin:
         primary_key=True,
         default=uuid4,
     )
-
-# All models should inherit from Base + relevant mixins
