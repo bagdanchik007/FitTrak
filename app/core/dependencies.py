@@ -44,3 +44,5 @@ async def get_current_user_id(
 # Type aliases for cleaner dependency injection
 CurrentUserId = Annotated[UUID, Depends(get_current_user_id)]
 DbSession = Annotated[AsyncSession, Depends(get_db)]
+
+# Prefer using the type aliases CurrentUserId and DbSession in routers
