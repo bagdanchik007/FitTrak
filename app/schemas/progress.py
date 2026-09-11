@@ -28,3 +28,5 @@ class ProgressSummary(BaseModel):
     total_volume_kg: float
     personal_records: list[PersonalRecord] = []
     volume_last_30_days: list[VolumeEntry] = []
+
+# estimated_1rm uses a simplified Epley formula: weight * (1 + reps/30)
