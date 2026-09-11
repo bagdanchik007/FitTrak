@@ -43,3 +43,8 @@ Thin controllers that:
 - **UUID primary keys** – better for distributed systems
 - **JWT** – Access + Refresh tokens
 - **Dependency Injection** – FastAPI `Depends` + repository pattern
+
+
+## Testing Strategy
+- Unit tests for services with mocked repositories
+- Integration tests against real DB via pytest + httpx
