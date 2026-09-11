@@ -27,3 +27,5 @@ class Workout:
     updated_at: datetime | None = None
     deleted_at: datetime | None = None
     sets: list[WorkoutSet] = field(default_factory=list)
+
+# Domain entity – free of framework and persistence concerns
