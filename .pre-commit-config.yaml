@@ -12,3 +12,5 @@ repos:
       - id: mypy
         additional_dependencies: []
         args: [--ignore-missing-imports]
+
+# Install hooks with: pre-commit install
