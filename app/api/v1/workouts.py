@@ -111,3 +111,29 @@ async def get_workout(
     if not workout:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
     return WorkoutRead.model_validate(workout)
+
+# TODO: add DELETE /workouts/{id} using WorkoutService.delete
+
+@router.delete(
+    "/{workout_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Soft-delete a workout",
+)
+async def delete_workout(
+    workout_id: UUID,
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> None:
+    from datetime import datetime, timezone
+    stmt = select(WorkoutModel).where(
+        WorkoutModel.id == workout_id,
+        WorkoutModel.user_id == user_id,
+        WorkoutModel.deleted_at.is_(None),
+    )
+    result = await db.execute(stmt)
+    workout = result.scalar_one_or_none()
+    if not workout:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
+    workout.deleted_at = datetime.now(timezone.utc)
+    await db.flush()
+
