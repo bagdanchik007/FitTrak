@@ -71,3 +71,5 @@ class SQLAlchemyUserRepository(UserRepository):
         await self._session.flush()
         await self._session.refresh(model)
         return self._to_entity(model)
+
+# Email lookups are case-insensitive (stored lowercased)
