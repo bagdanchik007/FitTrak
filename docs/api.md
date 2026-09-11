@@ -45,3 +45,12 @@ Base URL: `/api/v1`
 | GET | `/health/ready` | Readiness (DB check) |
 
 Interactive docs: `/docs`
+
+
+## Authentication Header
+```
+Authorization: Bearer <access_token>
+```
+
+| DELETE | `/exercises/{id}` | Soft-delete exercise |
+| DELETE | `/workouts/{id}` | Soft-delete workout |
