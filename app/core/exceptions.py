@@ -49,3 +49,5 @@ def to_http_exception(exc: AppException) -> HTTPException:
     }
     status_code = mapping.get(type(exc), status.HTTP_400_BAD_REQUEST)
     return HTTPException(status_code=status_code, detail=exc.message)
+
+# Use to_http_exception() in exception handlers to map domain errors to HTTP
