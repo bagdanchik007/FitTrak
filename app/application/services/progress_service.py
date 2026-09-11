@@ -39,3 +39,5 @@ class ProgressService:
                 for v in summary.volume_last_30_days
             ],
         )
+
+# Maps domain ProgressSummary into API response schemas
