@@ -45,6 +45,7 @@ async def list_exercises(
     db: DbSession,
     skip: int = 0,
     limit: int = 50,
+    muscle_group: str | None = None,
 ) -> list[ExerciseRead]:
     stmt = (
         select(ExerciseModel)
@@ -76,3 +77,28 @@ async def get_exercise(
     if not exercise:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
     return ExerciseRead.model_validate(exercise)
+
+# TODO: add DELETE /exercises/{id} using ExerciseService.delete
+
+@router.delete(
+    "/{exercise_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Soft-delete an exercise",
+)
+async def delete_exercise(
+    exercise_id: UUID,
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> None:
+    from datetime import datetime, timezone
+    stmt = select(ExerciseModel).where(
+        ExerciseModel.id == exercise_id,
+        ExerciseModel.deleted_at.is_(None),
+    )
+    result = await db.execute(stmt)
+    exercise = result.scalar_one_or_none()
+    if not exercise:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+    exercise.deleted_at = datetime.now(timezone.utc)
+    await db.flush()
+
