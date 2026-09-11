@@ -62,3 +62,5 @@ class AuthService:
             access_token=create_access_token(subject=str(user.id)),
             refresh_token=create_refresh_token(subject=str(user.id)),
         )
+
+# Passwords are hashed with bcrypt via passlib before persistence
