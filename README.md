@@ -83,6 +83,9 @@ fittrack/
 | GET    | `/api/v1/exercises`           | List exercises               |
 | POST   | `/api/v1/workouts`            | Create workout + sets        |
 | GET    | `/api/v1/workouts`            | List my workouts             |
+| DELETE | `/api/v1/workouts/{id}`       | Soft-delete a workout        |
+| GET    | `/api/v1/progress/summary`    | Progress, PRs & volume       |
+| DELETE | `/api/v1/exercises/{id}`      | Soft-delete an exercise      |
 
 ---
 
@@ -145,3 +148,7 @@ MIT
 - Use `docker compose logs -f api` to follow application logs
 - After model changes run: `alembic revision --autogenerate -m "description"`
 - Keep the domain layer free of framework dependencies
+
+## Contributing
+
+This is a portfolio project. Feel free to fork and extend it.
