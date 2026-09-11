@@ -40,3 +40,5 @@ services:
 
 volumes:
   postgres_data:
+
+# Use 'docker compose up --build' on first run or after dependency changes
