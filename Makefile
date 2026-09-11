@@ -44,3 +44,6 @@ format:
 
 seed:
 	python -m scripts.seed
+
+shell:
+	docker compose exec api bash
