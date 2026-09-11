@@ -89,3 +89,5 @@ async def seed() -> None:
 
 if __name__ == "__main__":
     asyncio.run(seed())
+
+# Run with: python -m scripts.seed  (or make seed)
