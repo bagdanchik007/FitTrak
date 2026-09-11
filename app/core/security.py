@@ -41,3 +41,5 @@ def decode_token(token: str) -> dict[str, Any] | None:
         return payload
     except JWTError:
         return None
+
+# Tokens include a 'type' claim to distinguish access vs refresh
