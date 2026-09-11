@@ -32,3 +32,5 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         )
         response.headers["X-Request-ID"] = request_id
         return response
+
+# Attach X-Request-ID header for distributed tracing compatibility
