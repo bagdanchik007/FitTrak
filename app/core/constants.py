@@ -33,3 +33,6 @@ EQUIPMENT_TYPES = [
     "resistance_band",
     "other",
 ]
+
+# HTTP related
+API_VERSION = "v1"
