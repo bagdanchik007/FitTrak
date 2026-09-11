@@ -52,3 +52,5 @@ def get_settings() -> Settings:
     return Settings()
 
 # Cached settings instance for performance
+
+# Settings are cached; restart process after changing .env
