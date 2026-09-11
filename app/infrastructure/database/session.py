@@ -30,3 +30,5 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         except Exception:
             await session.rollback()
             raise
+
+# Sessions are request-scoped via FastAPI dependency injection
