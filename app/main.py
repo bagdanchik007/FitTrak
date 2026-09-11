@@ -65,3 +65,5 @@ async def root() -> dict[str, str]:
         "docs": "/docs",
         "health": "/api/v1/health",
     }
+
+# OpenAPI schema is available at /api/v1/openapi.json
