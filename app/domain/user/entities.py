@@ -15,3 +15,5 @@ class User:
     updated_at: datetime
     last_login_at: datetime | None = None
     deleted_at: datetime | None = None
+
+# Domain entity – free of framework and persistence concerns
