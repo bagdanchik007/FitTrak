@@ -78,6 +78,11 @@ fittrack/
 |--------|-------------------------------|------------------------------|
 | POST   | `/api/v1/auth/register`       | Register new user            |
 | POST   | `/api/v1/auth/login`          | Login (returns tokens)       |
+| POST   | `/api/v1/auth/refresh`        | Refresh access token         |
+| POST   | `/api/v1/auth/change-password`| Change password              |
+| PATCH  | `/api/v1/users/me`            | Update profile               |
+| PATCH  | `/api/v1/exercises/{id}`      | Update exercise              |
+| PATCH  | `/api/v1/workouts/{id}`       | Update workout               |
 | GET    | `/api/v1/users/me`            | Current user profile         |
 | POST   | `/api/v1/exercises`           | Create exercise              |
 | GET    | `/api/v1/exercises`           | List exercises               |
