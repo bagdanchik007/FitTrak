@@ -46,6 +46,7 @@ async def list_exercises(
     skip: int = 0,
     limit: int = 50,
     muscle_group: str | None = None,
+    search: str | None = None,
 ) -> list[ExerciseRead]:
     stmt = (
         select(ExerciseModel)
@@ -101,4 +102,36 @@ async def delete_exercise(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
     exercise.deleted_at = datetime.now(timezone.utc)
     await db.flush()
+
+
+@router.patch(
+    "/{exercise_id}",
+    response_model=ExerciseRead,
+    summary="Update an exercise",
+)
+async def update_exercise(
+    exercise_id: UUID,
+    data: ExerciseUpdate,
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> ExerciseRead:
+    stmt = select(ExerciseModel).where(
+        ExerciseModel.id == exercise_id,
+        ExerciseModel.deleted_at.is_(None),
+    )
+    result = await db.execute(stmt)
+    exercise = result.scalar_one_or_none()
+    if not exercise:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+    if data.name is not None:
+        exercise.name = data.name
+    if data.description is not None:
+        exercise.description = data.description
+    if data.muscle_group is not None:
+        exercise.muscle_group = data.muscle_group
+    if data.equipment is not None:
+        exercise.equipment = data.equipment
+    await db.flush()
+    await db.refresh(exercise)
+    return ExerciseRead.model_validate(exercise)
 
