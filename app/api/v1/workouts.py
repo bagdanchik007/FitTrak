@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
-from app.schemas.workout import WorkoutCreate, WorkoutRead
+from app.schemas.workout import WorkoutCreate, WorkoutRead, WorkoutUpdate
 
 router = APIRouter(prefix="/workouts", tags=["Workouts"])
 
@@ -136,4 +136,41 @@ async def delete_workout(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
     workout.deleted_at = datetime.now(timezone.utc)
     await db.flush()
+
+
+@router.patch(
+    "/{workout_id}",
+    response_model=WorkoutRead,
+    summary="Update workout metadata",
+)
+async def update_workout(
+    workout_id: UUID,
+    data: WorkoutUpdate,
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> WorkoutRead:
+    stmt = (
+        select(WorkoutModel)
+        .options(selectinload(WorkoutModel.sets))
+        .where(
+            WorkoutModel.id == workout_id,
+            WorkoutModel.user_id == user_id,
+            WorkoutModel.deleted_at.is_(None),
+        )
+    )
+    result = await db.execute(stmt)
+    workout = result.scalar_one_or_none()
+    if not workout:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
+    if data.title is not None:
+        workout.title = data.title
+    if data.notes is not None:
+        workout.notes = data.notes
+    if data.performed_at is not None:
+        workout.performed_at = data.performed_at
+    if data.duration_minutes is not None:
+        workout.duration_minutes = data.duration_minutes
+    await db.flush()
+    await db.refresh(workout)
+    return WorkoutRead.model_validate(workout)
 
