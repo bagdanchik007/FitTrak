@@ -5,7 +5,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.services.auth_service import AuthService
 from app.core.dependencies import DbSession
 from app.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
-from app.schemas.user import Token, UserCreate, UserRead
+from app.schemas.user import PasswordChange, RefreshTokenRequest, Token, UserCreate, UserRead
+from app.core.dependencies import CurrentUserId
+from app.core.rate_limit import rate_limit
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -35,5 +37,32 @@ async def register(
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     service: AuthService = Depends(get_auth_service),
+    _: None = Depends(rate_limit(max_requests=20, window_seconds=60)),
 ) -> Token:
     return await service.login(email=form_data.username, password=form_data.password)
+
+
+@router.post(
+    "/refresh",
+    response_model=Token,
+    summary="Refresh access token using refresh token",
+)
+async def refresh_token(
+    body: RefreshTokenRequest,
+    service: AuthService = Depends(get_auth_service),
+) -> Token:
+    return await service.refresh(body.refresh_token)
+
+
+@router.post(
+    "/change-password",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Change password for current user",
+)
+async def change_password(
+    body: PasswordChange,
+    user_id: CurrentUserId,
+    service: AuthService = Depends(get_auth_service),
+) -> None:
+    await service.change_password(user_id, body.current_password, body.new_password)
+
