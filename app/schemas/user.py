@@ -36,3 +36,12 @@ class Token(BaseModel):
 class TokenPayload(BaseModel):
     sub: str | None = None
     type: str | None = None
+
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+
+class PasswordChange(BaseModel):
+    current_password: str = Field(..., min_length=8)
+    new_password: str = Field(..., min_length=8, max_length=128)
