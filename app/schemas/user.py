@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 class UserBase(BaseModel):
     email: EmailStr
-    full_name: str | None = Field(None, max_length=150)
+    full_name: str | None = Field(default=None, max_length=150)
 
 
 class UserCreate(UserBase):
@@ -14,8 +14,12 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
-    full_name: str | None = Field(None, max_length=150)
-    password: str | None = Field(None, min_length=8, max_length=128)
+    full_name: str | None = Field(default=None, max_length=150)
+    password: str | None = Field(
+        default=None,
+        min_length=8,
+        max_length=128,
+    )
 
 
 class UserRead(UserBase):
