@@ -1,14 +1,26 @@
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
+from app.schemas.common import PaginatedResponse
 from app.schemas.workout import WorkoutCreate, WorkoutRead, WorkoutUpdate
 
 router = APIRouter(prefix="/workouts", tags=["Workouts"])
+
+def _with_volume(workout) -> WorkoutRead:
+    data = WorkoutRead.model_validate(workout)
+    total = 0.0
+    for s in data.sets:
+        if s.weight_kg is not None and s.reps is not None:
+            total += s.weight_kg * s.reps
+    data.total_volume_kg = round(total, 2)
+    return data
+
+
 
 
 @router.post(
@@ -57,7 +69,7 @@ async def create_workout(
     )
     result = await db.execute(stmt)
     workout = result.scalar_one()
-    return WorkoutRead.model_validate(workout)
+    return _with_volume(workout)
 
 
 @router.get(
@@ -70,6 +82,7 @@ async def list_workouts(
     db: DbSession,
     skip: int = 0,
     limit: int = 20,
+    search: str | None = None,
 ) -> list[WorkoutRead]:
     stmt = (
         select(WorkoutModel)
@@ -78,13 +91,13 @@ async def list_workouts(
             WorkoutModel.user_id == user_id,
             WorkoutModel.deleted_at.is_(None),
         )
-        .order_by(WorkoutModel.performed_at.desc())
-        .offset(skip)
-        .limit(min(limit, 50))
     )
+    if search:
+        stmt = stmt.where(WorkoutModel.title.ilike(f"%{search}%"))
+    stmt = stmt.order_by(WorkoutModel.performed_at.desc()).offset(skip).limit(min(limit, 50))
     result = await db.execute(stmt)
     workouts = result.scalars().all()
-    return [WorkoutRead.model_validate(w) for w in workouts]
+    return [_with_volume(w) for w in workouts]
 
 
 @router.get(
@@ -110,7 +123,7 @@ async def get_workout(
     workout = result.scalar_one_or_none()
     if not workout:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
-    return WorkoutRead.model_validate(workout)
+    return _with_volume(workout)
 
 # TODO: add DELETE /workouts/{id} using WorkoutService.delete
 
@@ -172,5 +185,7 @@ async def update_workout(
         workout.duration_minutes = data.duration_minutes
     await db.flush()
     await db.refresh(workout)
-    return WorkoutRead.model_validate(workout)
+    return _with_volume(workout)
 
+
+# Pagination uses skip/limit; total count can be added similarly to exercises
