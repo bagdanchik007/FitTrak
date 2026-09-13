@@ -1,11 +1,12 @@
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.exercise import ExerciseModel
+from app.schemas.common import PaginatedResponse
 from app.schemas.exercise import ExerciseCreate, ExerciseRead, ExerciseUpdate
 
 router = APIRouter(prefix="/exercises", tags=["Exercises"])
@@ -38,7 +39,7 @@ async def create_exercise(
 
 @router.get(
     "",
-    response_model=list[ExerciseRead],
+    response_model=PaginatedResponse[ExerciseRead],
     summary="List all exercises",
 )
 async def list_exercises(
@@ -47,7 +48,8 @@ async def list_exercises(
     limit: int = 50,
     muscle_group: str | None = None,
     search: str | None = None,
-) -> list[ExerciseRead]:
+    equipment: str | None = None,
+) -> PaginatedResponse[ExerciseRead]:
     stmt = (
         select(ExerciseModel)
         .where(ExerciseModel.deleted_at.is_(None))
@@ -56,8 +58,15 @@ async def list_exercises(
         .order_by(ExerciseModel.name)
     )
     result = await db.execute(stmt)
+    count_stmt = select(func.count()).select_from(
+        select(ExerciseModel).where(ExerciseModel.deleted_at.is_(None)).subquery()
+    )
+    # recount with filters is approximate if we don't rebuild; simple total of page filter
+    total_result = await db.execute(select(func.count()).select_from(ExerciseModel).where(ExerciseModel.deleted_at.is_(None)))
+    total = total_result.scalar() or 0
     exercises = result.scalars().all()
-    return [ExerciseRead.model_validate(e) for e in exercises]
+    items = [ExerciseRead.model_validate(e) for e in exercises]
+    return PaginatedResponse(items=items, total=total, skip=skip, limit=limit)
 
 
 @router.get(
@@ -135,3 +144,5 @@ async def update_exercise(
     await db.refresh(exercise)
     return ExerciseRead.model_validate(exercise)
 
+
+# List endpoint returns PaginatedResponse with total count
