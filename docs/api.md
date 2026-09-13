@@ -54,3 +54,10 @@ Authorization: Bearer <access_token>
 
 | DELETE | `/exercises/{id}` | Soft-delete exercise |
 | DELETE | `/workouts/{id}` | Soft-delete workout |
+
+
+## Refresh rotation
+After using a refresh token, issue a new pair and invalidate the old refresh when storing tokens server-side.
+
+
+### Exercise query params: search, muscle_group, equipment, skip, limit
