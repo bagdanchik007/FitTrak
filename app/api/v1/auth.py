@@ -63,6 +63,17 @@ async def change_password(
     body: PasswordChange,
     user_id: CurrentUserId,
     service: AuthService = Depends(get_auth_service),
+    _: None = Depends(rate_limit(max_requests=10, window_seconds=60)),
 ) -> None:
     await service.change_password(user_id, body.current_password, body.new_password)
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Logout (client should discard tokens)",
+)
+async def logout() -> None:
+    """Stateless JWT logout – client discards tokens. Server-side blacklist can be added later."""
+    return None
 
