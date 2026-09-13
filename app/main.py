@@ -33,7 +33,7 @@ app = FastAPI(
         "- Fully asynchronous stack\n"
         "- Docker-ready\n"
     ),
-    version="0.1.0",
+    version="0.2.0",
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
     docs_url="/docs",
     redoc_url="/redoc",
