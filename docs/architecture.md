@@ -48,3 +48,20 @@ Thin controllers that:
 ## Testing Strategy
 - Unit tests for services with mocked repositories
 - Integration tests against real DB via pytest + httpx
+
+
+## Exception handling flow
+
+1. Domain/Application raises `AppException` (e.g. NotFoundError)
+2. Global handler maps it via `to_http_exception`
+3. Client receives JSON `{"detail": "..."}` with proper status code
+
+## Login sequence (simplified)
+
+```
+Client -> POST /auth/login (email+password)
+API    -> AuthService verifies hash
+API    -> returns access_token + refresh_token
+Client -> Authorization: Bearer <access>
+API    -> dependencies.get_current_user_id decodes JWT
+```
