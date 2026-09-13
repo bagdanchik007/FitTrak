@@ -47,3 +47,9 @@ seed:
 
 shell:
 	docker compose exec api bash
+
+test-file:
+	pytest -v $(f)
+
+format-only:
+	ruff format app tests
