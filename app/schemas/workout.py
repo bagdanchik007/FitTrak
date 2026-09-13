@@ -27,7 +27,7 @@ class WorkoutBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=150)
     notes: str | None = None
     performed_at: date
-    duration_minutes: int | None = Field(None, ge=0)
+    duration_minutes: int | None = Field(None, ge=0, le=600)
 
 
 class WorkoutCreate(WorkoutBase):
@@ -38,7 +38,7 @@ class WorkoutUpdate(BaseModel):
     title: str | None = Field(None, min_length=1, max_length=150)
     notes: str | None = None
     performed_at: date | None = None
-    duration_minutes: int | None = Field(None, ge=0)
+    duration_minutes: int | None = Field(None, ge=0, le=600)
 
 
 class WorkoutRead(WorkoutBase):
@@ -48,3 +48,6 @@ class WorkoutRead(WorkoutBase):
     user_id: UUID
     created_at: datetime
     sets: list[WorkoutSetRead] = []
+    total_volume_kg: float | None = None
+
+# duration_minutes capped at 600 (10 hours)
