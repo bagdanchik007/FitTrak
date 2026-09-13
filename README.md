@@ -157,3 +157,31 @@ MIT
 ## Contributing
 
 This is a portfolio project. Feel free to fork and extend it.
+
+
+## Troubleshooting
+
+| Problem | Fix |
+|--------|-----|
+| DB connection refused | Wait for healthcheck: `docker compose ps` |
+| 401 on every request | Check SECRET_KEY is set and tokens not expired |
+| CORS errors from frontend | Add origin to `CORS_ORIGINS` in `.env` |
+| Migration errors | `docker compose exec api alembic upgrade head` |
+
+
+## Example requests
+
+```bash
+# Register
+curl -s -X POST http://localhost:8000/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"you@example.com","password":"SecurePass123!","full_name":"You"}'
+
+# Login
+curl -s -X POST http://localhost:8000/api/v1/auth/login \
+  -d "username=you@example.com&password=SecurePass123!"
+
+# Progress (replace TOKEN)
+curl -s http://localhost:8000/api/v1/progress/summary \
+  -H "Authorization: Bearer TOKEN"
+```
