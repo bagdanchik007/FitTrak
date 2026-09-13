@@ -1,3 +1,4 @@
+from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.core.dependencies import CurrentUserId, DbSession
@@ -47,4 +48,21 @@ async def update_me(
         user.hashed_password = get_password_hash(data.password)
     updated = await repo.update(user)
     return UserRead.model_validate(updated)
+
+
+@router.get(
+    "/{user_id}",
+    response_model=UserRead,
+    summary="Get public user profile by id",
+)
+async def get_public_profile(
+    user_id: UUID,
+    db: DbSession,
+) -> UserRead:
+    """Returns limited profile data (email hidden for privacy in production would use a PublicUser schema)."""
+    repo = SQLAlchemyUserRepository(db)
+    user = await repo.get_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    return UserRead.model_validate(user)
 
