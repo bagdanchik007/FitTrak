@@ -3,6 +3,7 @@ from uuid import uuid4
 
 from fastapi import HTTPException, status
 
+from app.core.config import get_settings
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -18,6 +19,17 @@ from app.schemas.user import Token, UserCreate, UserRead
 class AuthService:
     def __init__(self, user_repo: UserRepository) -> None:
         self._user_repo = user_repo
+
+
+    def _build_token_response(self, user_id: str, remember_me: bool = False) -> Token:
+        settings = get_settings()
+        refresh_days = 30 if remember_me else settings.refresh_token_expire_days
+        return Token(
+            access_token=create_access_token(subject=user_id),
+            refresh_token=create_refresh_token(subject=user_id),
+            access_expires_in=settings.access_token_expire_minutes * 60,
+            refresh_expires_in=refresh_days * 24 * 3600,
+        )
 
     async def register(self, data: UserCreate) -> UserRead:
         existing = await self._user_repo.get_by_email(data.email)
@@ -40,7 +52,7 @@ class AuthService:
         created = await self._user_repo.create(user)
         return UserRead.model_validate(created)
 
-    async def login(self, email: str, password: str) -> Token:
+    async def login(self, email: str, password: str, remember_me: bool = False) -> Token:
         user = await self._user_repo.get_by_email(email)
         if not user or not verify_password(password, user.hashed_password):
             raise HTTPException(
@@ -59,9 +71,12 @@ class AuthService:
         user.last_login_at = datetime.now(timezone.utc)
         await self._user_repo.update(user)
 
+        settings = get_settings()
         return Token(
             access_token=create_access_token(subject=str(user.id)),
             refresh_token=create_refresh_token(subject=str(user.id)),
+            access_expires_in=settings.access_token_expire_minutes * 60,
+            refresh_expires_in=(30 if remember_me else settings.refresh_token_expire_days) * 24 * 3600,
         )
 
 # Passwords are hashed with bcrypt via passlib before persistence
@@ -86,9 +101,12 @@ class AuthService:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="User not found or inactive",
             )
+        settings = get_settings()
         return Token(
             access_token=create_access_token(subject=str(user.id)),
             refresh_token=create_refresh_token(subject=str(user.id)),
+            access_expires_in=settings.access_token_expire_minutes * 60,
+            refresh_expires_in=settings.refresh_token_expire_days * 24 * 3600,
         )
 
     async def change_password(self, user_id, current_password: str, new_password: str) -> None:
@@ -103,3 +121,7 @@ class AuthService:
         user.hashed_password = get_password_hash(new_password)
         await self._user_repo.update(user)
 
+
+# remember_me extends refresh lifetime; consider refresh rotation in production
+
+# Prefer _build_token_response to avoid duplicating token construction
