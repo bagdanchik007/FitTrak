@@ -185,3 +185,10 @@ curl -s -X POST http://localhost:8000/api/v1/auth/login \
 curl -s http://localhost:8000/api/v1/progress/summary \
   -H "Authorization: Bearer TOKEN"
 ```
+
+
+### Layer responsibilities
+- **Domain**: entities & repository interfaces (no framework)
+- **Application**: use-case services
+- **Infrastructure**: SQLAlchemy models & repos
+- **API**: FastAPI routers only
