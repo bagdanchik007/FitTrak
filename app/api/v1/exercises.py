@@ -49,13 +49,19 @@ async def list_exercises(
     muscle_group: str | None = None,
     search: str | None = None,
     equipment: str | None = None,
+    sort_by: str = "name",
+    order: str = "asc",
 ) -> PaginatedResponse[ExerciseRead]:
     stmt = (
         select(ExerciseModel)
         .where(ExerciseModel.deleted_at.is_(None))
         .offset(skip)
         .limit(min(limit, 100))
-        .order_by(ExerciseModel.name)
+        .order_by(
+            (ExerciseModel.created_at.desc() if order == "desc" else ExerciseModel.created_at.asc())
+            if sort_by == "created_at"
+            else (ExerciseModel.name.desc() if order == "desc" else ExerciseModel.name.asc())
+        )
     )
     result = await db.execute(stmt)
     count_stmt = select(func.count()).select_from(
@@ -88,7 +94,6 @@ async def get_exercise(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
     return ExerciseRead.model_validate(exercise)
 
-# TODO: add DELETE /exercises/{id} using ExerciseService.delete
 
 @router.delete(
     "/{exercise_id}",
@@ -101,6 +106,7 @@ async def delete_exercise(
     db: DbSession,
 ) -> None:
     from datetime import datetime, timezone
+    from app.infrastructure.database.models.workout import WorkoutSetModel
     stmt = select(ExerciseModel).where(
         ExerciseModel.id == exercise_id,
         ExerciseModel.deleted_at.is_(None),
@@ -109,6 +115,16 @@ async def delete_exercise(
     exercise = result.scalar_one_or_none()
     if not exercise:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+    if exercise.created_by is not None and exercise.created_by != user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
+    used = await db.execute(
+        select(func.count()).select_from(WorkoutSetModel).where(WorkoutSetModel.exercise_id == exercise_id)
+    )
+    if (used.scalar() or 0) > 0:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Exercise is referenced in workout sets and cannot be deleted",
+        )
     exercise.deleted_at = datetime.now(timezone.utc)
     await db.flush()
 
@@ -146,3 +162,54 @@ async def update_exercise(
 
 
 # List endpoint returns PaginatedResponse with total count
+
+# Future: POST /exercises/seed-defaults for system exercise catalog
+
+
+DEFAULT_EXERCISES = [
+    ("Bench Press", "chest", "barbell"),
+    ("Squat", "legs", "barbell"),
+    ("Deadlift", "back", "barbell"),
+    ("Overhead Press", "shoulders", "barbell"),
+    ("Barbell Row", "back", "barbell"),
+    ("Pull-Up", "back", "bodyweight"),
+    ("Dumbbell Curl", "biceps", "dumbbell"),
+    ("Tricep Pushdown", "triceps", "cable"),
+]
+
+
+@router.post(
+    "/seed-defaults",
+    response_model=list[ExerciseRead],
+    status_code=status.HTTP_201_CREATED,
+    summary="Seed default system exercises for current user",
+)
+async def seed_defaults(
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> list[ExerciseRead]:
+    created = []
+    for name, muscle, equipment in DEFAULT_EXERCISES:
+        existing = await db.execute(
+            select(ExerciseModel).where(
+                ExerciseModel.name == name,
+                ExerciseModel.created_by == user_id,
+                ExerciseModel.deleted_at.is_(None),
+            )
+        )
+        if existing.scalar_one_or_none():
+            continue
+        ex = ExerciseModel(
+            id=uuid4(),
+            name=name,
+            muscle_group=muscle,
+            equipment=equipment,
+            created_by=user_id,
+        )
+        db.add(ex)
+        created.append(ex)
+    await db.flush()
+    for ex in created:
+        await db.refresh(ex)
+    return [ExerciseRead.model_validate(e) for e in created]
+
