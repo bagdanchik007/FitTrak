@@ -125,3 +125,5 @@ class AuthService:
 # remember_me extends refresh lifetime; consider refresh rotation in production
 
 # Prefer _build_token_response to avoid duplicating token construction
+
+# Production: store refresh jti in DB and rotate on each use
