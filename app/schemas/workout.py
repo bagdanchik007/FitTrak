@@ -31,7 +31,7 @@ class WorkoutBase(BaseModel):
 
 
 class WorkoutCreate(WorkoutBase):
-    sets: list[WorkoutSetCreate] = Field(default_factory=list)
+    sets: list[WorkoutSetCreate] = Field(default_factory=list, description="Optional; empty list allowed for planned workouts")
 
 
 class WorkoutUpdate(BaseModel):
