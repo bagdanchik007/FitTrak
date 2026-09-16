@@ -1,3 +1,4 @@
+from datetime import date
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
@@ -83,6 +84,8 @@ async def list_workouts(
     skip: int = 0,
     limit: int = 20,
     search: str | None = None,
+    from_date: date | None = None,
+    to_date: date | None = None,
 ) -> list[WorkoutRead]:
     stmt = (
         select(WorkoutModel)
@@ -94,6 +97,10 @@ async def list_workouts(
     )
     if search:
         stmt = stmt.where(WorkoutModel.title.ilike(f"%{search}%"))
+    if from_date:
+        stmt = stmt.where(WorkoutModel.performed_at >= from_date)
+    if to_date:
+        stmt = stmt.where(WorkoutModel.performed_at <= to_date)
     stmt = stmt.order_by(WorkoutModel.performed_at.desc()).offset(skip).limit(min(limit, 50))
     result = await db.execute(stmt)
     workouts = result.scalars().all()
@@ -125,7 +132,6 @@ async def get_workout(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
     return _with_volume(workout)
 
-# TODO: add DELETE /workouts/{id} using WorkoutService.delete
 
 @router.delete(
     "/{workout_id}",
