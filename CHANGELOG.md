@@ -19,3 +19,10 @@
 
 ### Changed
 - Auth responses include access_expires_in / refresh_expires_in
+
+
+## [0.2.1] - 2026-10-05
+### Added
+- Exercise sort/order, seed-defaults, date filters on workouts
+- Owner-only delete and reference checks for exercises
+- Additional integration and unit tests
