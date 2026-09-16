@@ -28,3 +28,5 @@ class ProgressSummary:
     total_volume_kg: float
     personal_records: list[PersonalRecord]
     volume_last_30_days: list[VolumeEntry]
+
+# Pure domain data – no ORM or HTTP types
