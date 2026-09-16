@@ -33,3 +33,5 @@ async def test_refresh_with_invalid_token(client: AsyncClient):
         json={"refresh_token": "not.a.valid.token"},
     )
     assert resp.status_code == 401
+
+# Access tokens must not be accepted by /auth/refresh
