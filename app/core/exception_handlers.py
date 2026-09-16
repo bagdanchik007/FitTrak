@@ -13,10 +13,11 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(AppException)
     async def app_exception_handler(request: Request, exc: AppException) -> JSONResponse:
         http_exc = to_http_exception(exc)
-        return JSONResponse(
-            status_code=http_exc.status_code,
-            content={"detail": http_exc.detail},
-        )
+        request_id = request.headers.get("X-Request-ID")
+        body = {"detail": http_exc.detail}
+        if request_id:
+            body["request_id"] = request_id
+        return JSONResponse(status_code=http_exc.status_code, content=body)
 
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
