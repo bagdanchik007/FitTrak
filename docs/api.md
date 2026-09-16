@@ -61,3 +61,9 @@ After using a refresh token, issue a new pair and invalidate the old refresh whe
 
 
 ### Exercise query params: search, muscle_group, equipment, skip, limit
+
+Exercise list supports: search, muscle_group, equipment, sort_by, order, skip, limit.
+
+
+## Auth flow
+1. POST /auth/register 2. POST /auth/login 3. Use Bearer access token 4. POST /auth/refresh when expired
