@@ -37,3 +37,5 @@ async def readiness(db: DbSession) -> JSONResponse:
             "database": db_status,
         },
     )
+
+# /health = liveness (process up); /health/ready = readiness (DB up)
