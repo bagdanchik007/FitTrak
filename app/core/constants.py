@@ -36,3 +36,5 @@ EQUIPMENT_TYPES = [
 
 # HTTP related
 API_VERSION = "v1"
+
+# API may accept free-text muscle_group; constants list is for UI suggestions
