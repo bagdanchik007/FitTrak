@@ -77,3 +77,7 @@ async def logout() -> None:
     """Stateless JWT logout – client discards tokens. Server-side blacklist can be added later."""
     return None
 
+
+# change-password is rate-limited to reduce brute-force risk
+
+# logout returns 204; tokens are client-discarded (stateless JWT)
