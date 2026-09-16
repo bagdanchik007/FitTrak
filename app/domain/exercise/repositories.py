@@ -29,3 +29,5 @@ class ExerciseRepository(ABC):
     @abstractmethod
     async def soft_delete(self, exercise_id: UUID) -> bool:
         ...
+
+# Interface only – concrete class lives in infrastructure
