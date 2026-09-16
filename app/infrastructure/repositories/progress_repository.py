@@ -124,3 +124,7 @@ class SQLAlchemyProgressRepository(ProgressRepository):
         )
 
 # Aggregation queries for PRs and daily volume run in a single session
+
+# Empty users return zeros and empty lists – no error
+
+# Epley approx: 1RM ≈ weight * (1 + reps/30)
