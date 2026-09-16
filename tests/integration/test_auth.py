@@ -34,3 +34,5 @@ async def test_register_and_login(client: AsyncClient):
     assert tokens["token_type"] == "bearer"
 
 # More auth edge cases (inactive user, wrong password) can be added here
+
+# Duplicate email must return 409 Conflict
