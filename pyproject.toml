@@ -1,6 +1,6 @@
 [project]
 name = "fittrack"
-version = "0.2.0"
+version = "0.3.0"
 description = "Modern fitness tracking API – FastAPI + Clean Architecture + PostgreSQL"
 readme = "README.md"
 requires-python = ">=3.12"
