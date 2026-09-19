@@ -12,7 +12,7 @@ settings = get_settings()
 async def version() -> dict[str, str]:
     return {
         "app": settings.app_name,
-        "version": "0.2.1",
+        "version": "0.3.0",
         "environment": settings.app_env,
     }
 
