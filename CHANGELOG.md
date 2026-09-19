@@ -26,3 +26,14 @@
 - Exercise sort/order, seed-defaults, date filters on workouts
 - Owner-only delete and reference checks for exercises
 - Additional integration and unit tests
+
+## [0.3.0] - 2026-10-10
+
+### Added
+- MIT LICENSE
+- Workout CSV export (`GET /workouts/export/csv`)
+- Stats dashboard & meta features endpoints
+- Domain services, security policies, metrics, cache
+- UserService wired in users router
+- `.dockerignore`, `py.typed`
+- Expanded unit/integration tests and docs
