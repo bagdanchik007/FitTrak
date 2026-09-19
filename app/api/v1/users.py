@@ -1,9 +1,11 @@
 from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from app.api.deps import get_user_service
+from app.application.services.user_service import UserService
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
-from app.core.security import get_password_hash
 from app.schemas.user import UserRead, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -16,16 +18,9 @@ router = APIRouter(prefix="/users", tags=["Users"])
 )
 async def get_me(
     user_id: CurrentUserId,
-    db: DbSession,
+    service: UserService = Depends(get_user_service),
 ) -> UserRead:
-    repo = SQLAlchemyUserRepository(db)
-    user = await repo.get_by_id(user_id)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found",
-        )
-    return UserRead.model_validate(user)
+    return await service.get_by_id(user_id)
 
 
 @router.patch(
@@ -36,18 +31,9 @@ async def get_me(
 async def update_me(
     data: UserUpdate,
     user_id: CurrentUserId,
-    db: DbSession,
+    service: UserService = Depends(get_user_service),
 ) -> UserRead:
-    repo = SQLAlchemyUserRepository(db)
-    user = await repo.get_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    if data.full_name is not None:
-        user.full_name = data.full_name
-    if data.password is not None:
-        user.hashed_password = get_password_hash(data.password)
-    updated = await repo.update(user)
-    return UserRead.model_validate(updated)
+    return await service.update_profile(user_id, data)
 
 
 @router.get(
@@ -57,12 +43,6 @@ async def update_me(
 )
 async def get_public_profile(
     user_id: UUID,
-    db: DbSession,
+    service: UserService = Depends(get_user_service),
 ) -> UserRead:
-    """Returns limited profile data (email hidden for privacy in production would use a PublicUser schema)."""
-    repo = SQLAlchemyUserRepository(db)
-    user = await repo.get_by_id(user_id)
-    if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return UserRead.model_validate(user)
-
+    return await service.get_by_id(user_id)
