@@ -2,6 +2,7 @@ from datetime import date
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
@@ -195,3 +196,37 @@ async def update_workout(
 
 
 # Pagination uses skip/limit; total count can be added similarly to exercises
+
+
+@router.get(
+    "/export/csv",
+    summary="Export my workouts as CSV",
+    response_class=PlainTextResponse,
+)
+async def export_workouts_csv(
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> PlainTextResponse:
+    stmt = (
+        select(WorkoutModel)
+        .options(selectinload(WorkoutModel.sets))
+        .where(
+            WorkoutModel.user_id == user_id,
+            WorkoutModel.deleted_at.is_(None),
+        )
+        .order_by(WorkoutModel.performed_at.desc())
+        .limit(500)
+    )
+    result = await db.execute(stmt)
+    workouts = result.scalars().all()
+    lines = ["date,title,duration_minutes,sets_count,total_volume_kg"]
+    for w in workouts:
+        vol = 0.0
+        for s in w.sets or []:
+            if s.weight_kg is not None and s.reps is not None:
+                vol += s.weight_kg * s.reps
+        lines.append(
+            f"{w.performed_at},{w.title.replace(',', ' ')},{w.duration_minutes or ''},{len(w.sets or [])},{round(vol, 2)}"
+        )
+    return PlainTextResponse("\n".join(lines), media_type="text/csv")
+
