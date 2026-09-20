@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.v1 import auth, exercises, health, meta, progress, stats, users, workouts
+from app.api.v1 import activity, auth, body_weights, exercises, goals, health, meta, preferences, progress, stats, templates, users, workouts
 
 api_router = APIRouter()
 
@@ -11,4 +11,9 @@ api_router.include_router(workouts.router)
 api_router.include_router(progress.router)
 api_router.include_router(stats.router)
 api_router.include_router(meta.router)
+api_router.include_router(goals.router)
+api_router.include_router(body_weights.router)
+api_router.include_router(templates.router)
+api_router.include_router(preferences.router)
+api_router.include_router(activity.router)
 api_router.include_router(health.router)
