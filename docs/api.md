@@ -67,3 +67,7 @@ Exercise list supports: search, muscle_group, equipment, sort_by, order, skip, l
 
 ## Auth flow
 1. POST /auth/register 2. POST /auth/login 3. Use Bearer access token 4. POST /auth/refresh when expired
+
+
+## Goals / Body weight / Templates / Preferences / Activity
+See Swagger at /docs for full request bodies.
