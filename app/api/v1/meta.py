@@ -25,4 +25,10 @@ async def features() -> dict[str, bool]:
         "stats_dashboard": True,
         "rate_limiting": True,
         "soft_deletes": True,
+        "goals": True,
+        "body_weight": True,
+        "templates": True,
+        "preferences": True,
+        "activity_feed": True,
+        "csv_export": True,
     }
