@@ -90,6 +90,11 @@ fittrack/
 | GET    | `/api/v1/workouts`            | List my workouts             |
 | DELETE | `/api/v1/workouts/{id}`       | Soft-delete a workout        |
 | GET    | `/api/v1/progress/summary`    | Progress, PRs & volume       |
+| CRUD   | `/api/v1/goals`               | Fitness goals                |
+| CRUD   | `/api/v1/body-weights`        | Body weight log              |
+| CRUD   | `/api/v1/templates`           | Workout templates            |
+| GET/PUT| `/api/v1/preferences/me`      | User preferences             |
+| GET    | `/api/v1/activity/feed`       | Activity feed                |
 | DELETE | `/api/v1/exercises/{id}`      | Soft-delete an exercise      |
 
 ---
