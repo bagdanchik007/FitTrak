@@ -21,3 +21,5 @@
 - Health / readiness
 - Meta version & feature flags
 - Docker, Alembic, CI, tests
+
+- Journal, favorites, streaks, weekly summary
