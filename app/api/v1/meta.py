@@ -31,4 +31,8 @@ async def features() -> dict[str, bool]:
         "preferences": True,
         "activity_feed": True,
         "csv_export": True,
+        "journal": True,
+        "favorites": True,
+        "streaks": True,
+        "weekly_summary": True,
     }
