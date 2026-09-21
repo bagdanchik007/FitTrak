@@ -1,3 +1,12 @@
+## [0.4.0] - 2026-10-12
+
+### Added
+- Journal entries API
+- Exercise favorites
+- Workout streaks
+- Weekly summary
+- Migration 003
+
 # Changelog
 
 ## [0.2.0] - 2026-09-23
