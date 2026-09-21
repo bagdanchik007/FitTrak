@@ -197,3 +197,10 @@ curl -s http://localhost:8000/api/v1/progress/summary \
 - **Application**: use-case services
 - **Infrastructure**: SQLAlchemy models & repos
 - **API**: FastAPI routers only
+
+
+### Journal & streaks
+- `/api/v1/journal` – training diary
+- `/api/v1/favorites` – favorite exercises
+- `/api/v1/streaks/me` – current streak
+- `/api/v1/summary/weekly` – 7-day summary
