@@ -5,6 +5,8 @@ from app.infrastructure.database.models.goal import GoalModel
 from app.infrastructure.database.models.body_weight import BodyWeightModel
 from app.infrastructure.database.models.template import WorkoutTemplateModel, WorkoutTemplateItemModel
 from app.infrastructure.database.models.preference import UserPreferenceModel
+from app.infrastructure.database.models.journal import JournalEntryModel
+from app.infrastructure.database.models.favorite import ExerciseFavoriteModel
 
 __all__ = [
     "UserModel",
@@ -16,4 +18,6 @@ __all__ = [
     "WorkoutTemplateModel",
     "WorkoutTemplateItemModel",
     "UserPreferenceModel",
+    "JournalEntryModel",
+    "ExerciseFavoriteModel",
 ]
