@@ -54,3 +54,5 @@ async def weekly_summary(user_id: CurrentUserId, db: DbSession) -> WeeklySummary
         total_volume_kg=round(total_volume, 2),
         total_duration_minutes=total_duration,
     )
+
+# WeeklySummary shape also defined in app.schemas.summary
