@@ -65,3 +65,5 @@ async def delete_entry(entry_id: UUID, user_id: CurrentUserId, db: DbSession) ->
         raise HTTPException(status_code=404, detail="Journal entry not found")
     entry.deleted_at = datetime.now(timezone.utc)
     await db.flush()
+
+# Mood values are free-text; domain helpers can validate optionally
