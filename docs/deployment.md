@@ -32,3 +32,7 @@ docker compose exec api alembic upgrade head
 - [ ] TLS termination (reverse proxy)
 - [ ] Managed PostgreSQL
 - [ ] Log aggregation
+
+
+## Migrations after pull
+Run `alembic upgrade head` so revisions 002 and 003 apply.
