@@ -67,3 +67,5 @@ async def get_my_streak(user_id: CurrentUserId, db: DbSession) -> StreakResponse
         last_workout_date=unique_days[0],
         total_workout_days=len(unique_days),
     )
+
+# StreakResponse shape also defined in app.schemas.streak
