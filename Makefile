@@ -53,3 +53,6 @@ test-file:
 
 format-only:
 	ruff format app tests
+
+models:
+	python -m scripts.list_models
