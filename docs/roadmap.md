@@ -15,3 +15,6 @@
 - [ ] Export workouts as CSV
 - [ ] WebSocket live session tracking
 - [ ] Frontend (Next.js)
+
+- [x] Journal & favorites
+- [x] Streaks & weekly summary
