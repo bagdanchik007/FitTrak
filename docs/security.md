@@ -21,3 +21,6 @@
 
 - Never commit `.env`
 - Generate secrets with `python -m scripts.generate_secret`
+
+## Journal privacy
+Journal entries are always scoped to the authenticated user_id.
