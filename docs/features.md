@@ -23,3 +23,5 @@
 - Docker, Alembic, CI, tests
 
 - Journal, favorites, streaks, weekly summary
+
+- Shared version module and error codes
