@@ -21,3 +21,5 @@ FEATURES = {
 
 def is_enabled(name: str) -> bool:
     return bool(FEATURES.get(name, False))
+
+# Keep in sync with /meta/features response
