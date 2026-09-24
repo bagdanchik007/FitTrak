@@ -21,3 +21,9 @@
 - /api/v1/summary/weekly
 - /api/v1/stats/dashboard
 - /api/v1/activity/feed
+
+
+## Docs
+- docs/streaks.md
+- docs/weekly-summary.md
+- docs/error-codes.md
