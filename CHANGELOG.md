@@ -47,3 +47,10 @@
 - `.dockerignore`, `py.typed`
 - Expanded unit/integration tests and docs
 
+
+
+## [0.4.1] - 2026-10-14
+### Added
+- Domain helpers for summary and activity
+- StreakService and shared version module
+- Error code and HTTP header constants
