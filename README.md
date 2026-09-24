@@ -204,3 +204,6 @@ curl -s http://localhost:8000/api/v1/progress/summary \
 - `/api/v1/favorites` – favorite exercises
 - `/api/v1/streaks/me` – current streak
 - `/api/v1/summary/weekly` – 7-day summary
+
+
+Version is defined in `app/core/version.py`.
