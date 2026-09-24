@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.api.router import api_router
+from app.core.version import __version__
 from app.core.config import get_settings
 from app.core.logging import setup_logging
 from app.core.exception_handlers import register_exception_handlers
@@ -33,7 +34,7 @@ app = FastAPI(
         "- Fully asynchronous stack\n"
         "- Docker-ready\n"
     ),
-    version="0.4.0",
+    version=__version__,
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
     docs_url="/docs",
     redoc_url="/redoc",
