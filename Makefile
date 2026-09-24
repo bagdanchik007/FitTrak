@@ -56,3 +56,9 @@ format-only:
 
 models:
 	python -m scripts.list_models
+
+check-imports:
+	python -m scripts.check_imports
+
+check-imports:
+	python -m scripts.check_imports
