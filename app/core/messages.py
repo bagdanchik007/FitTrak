@@ -1,0 +1,11 @@
+"""User-facing detail messages (centralized)."""
+
+USER_NOT_FOUND = "User not found"
+EXERCISE_NOT_FOUND = "Exercise not found"
+WORKOUT_NOT_FOUND = "Workout not found"
+GOAL_NOT_FOUND = "Goal not found"
+TEMPLATE_NOT_FOUND = "Template not found"
+JOURNAL_NOT_FOUND = "Journal entry not found"
+FAVORITE_NOT_FOUND = "Favorite not found"
+INVALID_CREDENTIALS = "Incorrect email or password"
+EMAIL_TAKEN = "A user with this email already exists"
