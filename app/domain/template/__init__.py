@@ -1,0 +1,1 @@
+"""Workout template domain package."""
