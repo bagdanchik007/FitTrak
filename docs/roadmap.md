@@ -18,3 +18,5 @@
 
 - [x] Journal & favorites
 - [x] Streaks & weekly summary
+
+- [x] Template domain layer
