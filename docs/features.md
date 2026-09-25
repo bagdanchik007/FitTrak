@@ -25,3 +25,6 @@
 - Journal, favorites, streaks, weekly summary
 
 - Shared version module and error codes
+
+- Template domain helpers and overview service
+- Central limits, enums, and API messages
