@@ -54,3 +54,10 @@
 - Domain helpers for summary and activity
 - StreakService and shared version module
 - Error code and HTTP header constants
+
+
+## [0.4.2] - 2026-10-15
+### Added
+- Template domain layer, mapper, overview service
+- Core limits, enums, and message constants
+- Architecture and conventions docs
