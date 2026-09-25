@@ -27,3 +27,5 @@
 - docs/streaks.md
 - docs/weekly-summary.md
 - docs/error-codes.md
+
+- docs/templates.md
