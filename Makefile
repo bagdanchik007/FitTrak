@@ -62,3 +62,6 @@ check-imports:
 
 check-imports:
 	python -m scripts.check_imports
+
+loc:
+	python -m scripts.count_lines
