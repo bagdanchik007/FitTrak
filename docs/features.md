@@ -28,3 +28,5 @@
 
 - Template domain helpers and overview service
 - Central limits, enums, and API messages
+
+- Preference domain + goal progress helpers
