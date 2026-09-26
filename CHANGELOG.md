@@ -61,3 +61,10 @@
 - Template domain layer, mapper, overview service
 - Core limits, enums, and message constants
 - Architecture and conventions docs
+
+
+## [0.4.3] - 2026-10-16
+### Added
+- Preference domain layer and mappers
+- Goal progress helpers and services
+- Timezone, status text, path constants
