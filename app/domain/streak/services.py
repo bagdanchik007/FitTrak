@@ -1,3 +1,5 @@
+"""Calendar-day streak calculations (pure)."""
+
 from datetime import date, timedelta
 
 
