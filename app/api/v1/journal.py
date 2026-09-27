@@ -4,6 +4,8 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.core.messages import JOURNAL_NOT_FOUND
+from app.domain.journal.services import normalize_mood
 from app.infrastructure.database.models.journal import JournalEntryModel
 from app.schemas.journal import JournalCreate, JournalRead, JournalUpdate
 
@@ -12,7 +14,9 @@ router = APIRouter(prefix="/journal", tags=["Journal"])
 
 @router.post("", response_model=JournalRead, status_code=status.HTTP_201_CREATED)
 async def create_entry(data: JournalCreate, user_id: CurrentUserId, db: DbSession) -> JournalRead:
-    entry = JournalEntryModel(id=uuid4(), user_id=user_id, **data.model_dump())
+    payload = data.model_dump()
+    payload["mood"] = normalize_mood(payload.get("mood"))
+    entry = JournalEntryModel(id=uuid4(), user_id=user_id, **payload)
     db.add(entry)
     await db.flush()
     await db.refresh(entry)
@@ -43,7 +47,7 @@ async def update_entry(
     )
     entry = (await db.execute(stmt)).scalar_one_or_none()
     if not entry:
-        raise HTTPException(status_code=404, detail="Journal entry not found")
+        raise HTTPException(status_code=404, detail=JOURNAL_NOT_FOUND)
     for k, v in data.model_dump(exclude_unset=True).items():
         setattr(entry, k, v)
     await db.flush()
@@ -62,7 +66,7 @@ async def delete_entry(entry_id: UUID, user_id: CurrentUserId, db: DbSession) ->
     )
     entry = (await db.execute(stmt)).scalar_one_or_none()
     if not entry:
-        raise HTTPException(status_code=404, detail="Journal entry not found")
+        raise HTTPException(status_code=404, detail=JOURNAL_NOT_FOUND)
     entry.deleted_at = datetime.now(timezone.utc)
     await db.flush()
 
