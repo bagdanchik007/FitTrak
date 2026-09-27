@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.limits import MAX_PAGE_SIZE
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.exercise import ExerciseModel
 from app.schemas.common import PaginatedResponse
@@ -56,7 +57,7 @@ async def list_exercises(
         select(ExerciseModel)
         .where(ExerciseModel.deleted_at.is_(None))
         .offset(skip)
-        .limit(min(limit, 100))
+        .limit(min(limit, MAX_PAGE_SIZE))
         .order_by(
             (ExerciseModel.created_at.desc() if order == "desc" else ExerciseModel.created_at.asc())
             if sort_by == "created_at"
