@@ -3,23 +3,16 @@
 from datetime import date, timedelta
 
 from fastapi import APIRouter
-from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
+from app.application.services.summary_service import build_weekly_totals
 from app.core.dependencies import CurrentUserId, DbSession
+from app.domain.summary.services import SessionStats
 from app.infrastructure.database.models.workout import WorkoutModel
+from app.schemas.summary import WeeklySummary
 
 router = APIRouter(prefix="/summary", tags=["Summary"])
-
-
-class WeeklySummary(BaseModel):
-    from_date: date
-    to_date: date
-    workouts: int
-    total_sets: int
-    total_volume_kg: float
-    total_duration_minutes: int
 
 
 @router.get("/weekly", response_model=WeeklySummary)
@@ -37,22 +30,27 @@ async def weekly_summary(user_id: CurrentUserId, db: DbSession) -> WeeklySummary
         )
     )
     workouts = (await db.execute(stmt)).scalars().all()
-    total_sets = 0
-    total_volume = 0.0
-    total_duration = 0
+    parts: list[SessionStats] = []
     for w in workouts:
-        total_duration += w.duration_minutes or 0
+        sets = 0
+        volume = 0.0
         for s in w.sets or []:
-            total_sets += 1
+            sets += 1
             if s.weight_kg is not None and s.reps is not None:
-                total_volume += s.weight_kg * s.reps
+                volume += s.weight_kg * s.reps
+        parts.append(
+            SessionStats(
+                sets=sets,
+                volume_kg=volume,
+                duration_minutes=w.duration_minutes or 0,
+            )
+        )
+    totals = build_weekly_totals(parts, workout_count=len(workouts))
     return WeeklySummary(
         from_date=from_d,
         to_date=to_d,
-        workouts=len(workouts),
-        total_sets=total_sets,
-        total_volume_kg=round(total_volume, 2),
-        total_duration_minutes=total_duration,
+        workouts=totals["workouts"],
+        total_sets=totals["total_sets"],
+        total_volume_kg=totals["total_volume_kg"],
+        total_duration_minutes=totals["total_duration_minutes"],
     )
-
-# WeeklySummary shape also defined in app.schemas.summary
