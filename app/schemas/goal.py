@@ -34,3 +34,4 @@ class GoalRead(GoalBase):
     user_id: UUID
     is_completed: bool
     created_at: datetime
+    # Use GET /goals/{id}/progress for percent_complete / is_overdue
