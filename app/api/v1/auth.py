@@ -3,9 +3,11 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.services.auth_service import AuthService
+from app.core.messages import INVALID_CREDENTIALS  # used by AuthService error mapping
 from app.core.dependencies import DbSession
 from app.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
 from app.schemas.user import PasswordChange, RefreshTokenRequest, Token, UserCreate, UserRead
+from app.core.messages import INVALID_CREDENTIALS  # used by AuthService error mapping
 from app.core.dependencies import CurrentUserId
 from app.core.rate_limit import rate_limit
 
