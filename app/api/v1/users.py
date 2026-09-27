@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.deps import get_user_service
 from app.application.services.user_service import UserService
+from app.core.messages import USER_NOT_FOUND
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
 from app.schemas.user import UserRead, UserUpdate
