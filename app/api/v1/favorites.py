@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.core.messages import EXERCISE_NOT_FOUND, FAVORITE_NOT_FOUND
 from app.infrastructure.database.models.exercise import ExerciseModel
 from app.infrastructure.database.models.favorite import ExerciseFavoriteModel
 from app.schemas.favorite import FavoriteCreate, FavoriteRead
@@ -21,7 +22,7 @@ async def add_favorite(data: FavoriteCreate, user_id: CurrentUserId, db: DbSessi
         )
     ).scalar_one_or_none()
     if not ex:
-        raise HTTPException(status_code=404, detail="Exercise not found")
+        raise HTTPException(status_code=404, detail=EXERCISE_NOT_FOUND)
 
     existing = (
         await db.execute(
@@ -60,6 +61,6 @@ async def remove_favorite(exercise_id: UUID, user_id: CurrentUserId, db: DbSessi
     )
     fav = (await db.execute(stmt)).scalar_one_or_none()
     if not fav:
-        raise HTTPException(status_code=404, detail="Favorite not found")
+        raise HTTPException(status_code=404, detail=FAVORITE_NOT_FOUND)
     await db.delete(fav)
     await db.flush()
