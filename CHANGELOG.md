@@ -1,3 +1,11 @@
+## [0.5.0] - 2026-10-17
+
+### Changed
+- Goals API uses domain progress helpers and auto-complete
+- Preferences normalize weight unit and weekly goal on write
+- Streaks/summary/activity/journal wired through domain services
+- Shared messages and status texts used in API errors
+
 ## [0.4.0] - 2026-10-12
 
 ### Added
