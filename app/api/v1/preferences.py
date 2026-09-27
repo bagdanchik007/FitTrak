@@ -4,6 +4,7 @@ from fastapi import APIRouter
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.domain.preference.services import clamp_weekly_goal, normalize_weight_unit
 from app.infrastructure.database.models.preference import UserPreferenceModel
 from app.schemas.preference import PreferenceRead, PreferenceUpdate
 
@@ -33,7 +34,12 @@ async def update_preferences(
     data: PreferenceUpdate, user_id: CurrentUserId, db: DbSession
 ) -> PreferenceRead:
     pref = await _get_or_create(db, user_id)
-    for k, v in data.model_dump(exclude_unset=True).items():
+    payload = data.model_dump(exclude_unset=True)
+    if "weight_unit" in payload:
+        payload["weight_unit"] = normalize_weight_unit(payload["weight_unit"])
+    if "weekly_goal_workouts" in payload and payload["weekly_goal_workouts"] is not None:
+        payload["weekly_goal_workouts"] = clamp_weekly_goal(payload["weekly_goal_workouts"])
+    for k, v in payload.items():
         setattr(pref, k, v)
     await db.flush()
     await db.refresh(pref)
