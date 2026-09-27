@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.domain.activity.services import sort_activity_items
 from app.infrastructure.database.models.body_weight import BodyWeightModel
 from app.infrastructure.database.models.workout import WorkoutModel
 
@@ -58,5 +59,6 @@ async def activity_feed(
             )
         )
 
-    items.sort(key=lambda x: x.occurred_on, reverse=True)
-    return items[:limit]
+    as_dicts = [i.model_dump() for i in items]
+    sorted_dicts = sort_activity_items(as_dicts, limit=limit)
+    return [ActivityItem(**d) for d in sorted_dicts]
