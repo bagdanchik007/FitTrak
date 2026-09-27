@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class PreferenceUpdate(BaseModel):
-    weight_unit: str | None = Field(None, pattern="^(kg|lbs)$")
+    weight_unit: str | None = Field(None, pattern="^(kg|lbs)$", description="Normalized to kg|lbs on write")
     language: str | None = Field(None, min_length=2, max_length=10)
     weekly_goal_workouts: int | None = Field(None, ge=1, le=14)
     email_reminders: bool | None = None
