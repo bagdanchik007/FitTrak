@@ -207,3 +207,6 @@ curl -s http://localhost:8000/api/v1/progress/summary \
 
 
 Version is defined in `app/core/version.py`.
+
+
+Current API version: **0.5.0** (see `app/core/version.py`).
