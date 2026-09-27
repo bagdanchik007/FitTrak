@@ -6,6 +6,7 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
+from app.core.limits import MAX_PAGE_SIZE
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
 from app.schemas.common import PaginatedResponse
@@ -102,7 +103,7 @@ async def list_workouts(
         stmt = stmt.where(WorkoutModel.performed_at >= from_date)
     if to_date:
         stmt = stmt.where(WorkoutModel.performed_at <= to_date)
-    stmt = stmt.order_by(WorkoutModel.performed_at.desc()).offset(skip).limit(min(limit, 50))
+    stmt = stmt.order_by(WorkoutModel.performed_at.desc()).offset(skip).limit(min(limit, MAX_PAGE_SIZE))
     result = await db.execute(stmt)
     workouts = result.scalars().all()
     return [_with_volume(w) for w in workouts]
