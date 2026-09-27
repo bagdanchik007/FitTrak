@@ -4,6 +4,7 @@ from fastapi import APIRouter, status
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.core.limits import MAX_PAGE_SIZE
 from app.infrastructure.database.models.body_weight import BodyWeightModel
 from app.schemas.body_weight import BodyWeightCreate, BodyWeightRead
 
@@ -28,7 +29,7 @@ async def list_weights(
         .where(BodyWeightModel.user_id == user_id)
         .order_by(BodyWeightModel.recorded_at.desc())
         .offset(skip)
-        .limit(min(limit, 100))
+        .limit(min(limit, MAX_PAGE_SIZE))
     )
     result = await db.execute(stmt)
     return [BodyWeightRead.model_validate(r) for r in result.scalars().all()]
