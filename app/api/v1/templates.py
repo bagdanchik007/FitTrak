@@ -5,6 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.core.messages import TEMPLATE_NOT_FOUND
 from app.infrastructure.database.models.template import WorkoutTemplateItemModel, WorkoutTemplateModel
 from app.schemas.template import TemplateCreate, TemplateRead
 
@@ -71,7 +72,7 @@ async def get_template(
     )
     tmpl = (await db.execute(stmt)).scalar_one_or_none()
     if not tmpl:
-        raise HTTPException(status_code=404, detail="Template not found")
+        raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
     return TemplateRead.model_validate(tmpl)
 
 
@@ -88,6 +89,6 @@ async def delete_template(
     )
     tmpl = (await db.execute(stmt)).scalar_one_or_none()
     if not tmpl:
-        raise HTTPException(status_code=404, detail="Template not found")
+        raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
     tmpl.deleted_at = datetime.now(timezone.utc)
     await db.flush()
