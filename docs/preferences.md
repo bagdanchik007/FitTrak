@@ -10,3 +10,5 @@ Fields:
 - `email_reminders` – bool
 
 Domain helpers normalize units and clamp weekly goals.
+
+On write, units are normalized and weekly goals clamped.

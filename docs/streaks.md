@@ -8,3 +8,5 @@
 - `total_workout_days` – distinct days with at least one workout
 
 Logic lives in `app/domain/streak/services.py` (pure, unit-tested).
+
+API uses `StreakService` which delegates to domain streak helpers.

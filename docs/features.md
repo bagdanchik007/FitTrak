@@ -30,3 +30,6 @@
 - Central limits, enums, and API messages
 
 - Preference domain + goal progress helpers
+
+- Goal progress endpoint and auto-complete on update
+- Domain-wired streaks, summary, activity, preferences

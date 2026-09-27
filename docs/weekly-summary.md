@@ -8,3 +8,5 @@
 - total duration (minutes)
 
 Domain helpers: `app/domain/summary/services.py`.
+
+Aggregation uses `build_weekly_totals` / `SessionStats` domain helpers.
