@@ -3,6 +3,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.core.config import get_settings
+from app.core.status_texts import DB_CONNECTED, DB_UNAVAILABLE, STATUS_OK
+from app.core.version import __version__
 from app.core.dependencies import DbSession
 
 router = APIRouter(tags=["Health"])
@@ -25,15 +27,15 @@ async def health() -> JSONResponse:
 async def readiness(db: DbSession) -> JSONResponse:
     try:
         await db.execute(text("SELECT 1"))
-        db_status = "ok"
+        db_status = STATUS_OK
     except Exception:
-        db_status = "unavailable"
+        db_status = DB_UNAVAILABLE
 
-    status_code = 200 if db_status == "ok" else 503
+    status_code = 200 if db_status == STATUS_OK else 503
     return JSONResponse(
         status_code=status_code,
         content={
-            "status": "ready" if db_status == "ok" else "not_ready",
+            "status": "ready" if db_status == STATUS_OK else "not_ready",
             "database": db_status,
         },
     )
