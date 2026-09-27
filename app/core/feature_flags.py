@@ -16,6 +16,8 @@ FEATURES = {
     "favorites": True,
     "streaks": True,
     "weekly_summary": True,
+    "goal_progress": True,
+    "preference_normalization": True,
 }
 
 
