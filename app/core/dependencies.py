@@ -1,3 +1,4 @@
+"""FastAPI dependencies: DB session, current user, rate limit."""
 from typing import Annotated
 from uuid import UUID
 
