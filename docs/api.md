@@ -71,3 +71,5 @@ Exercise list supports: search, muscle_group, equipment, sort_by, order, skip, l
 
 ## Goals / Body weight / Templates / Preferences / Activity
 See Swagger at /docs for full request bodies.
+
+Progress summary days query is clamped to 1..365.
