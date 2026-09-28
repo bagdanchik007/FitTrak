@@ -6,6 +6,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.core.messages import TEMPLATE_NOT_FOUND
+from app.core.limits import MAX_PAGE_SIZE  # reserved for list pagination
 from app.infrastructure.database.models.template import WorkoutTemplateItemModel, WorkoutTemplateModel
 from app.schemas.template import TemplateCreate, TemplateRead
 
