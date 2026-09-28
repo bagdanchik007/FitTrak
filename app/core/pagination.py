@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from app.core.constants import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
+from app.core.limits import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
 
 
 @dataclass(slots=True)
