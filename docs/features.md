@@ -33,3 +33,5 @@
 
 - Goal progress endpoint and auto-complete on update
 - Domain-wired streaks, summary, activity, preferences
+
+- Goals list pagination; progress days clamp; meta VersionResponse
