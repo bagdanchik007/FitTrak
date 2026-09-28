@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.core.limits import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
 from app.core.messages import JOURNAL_NOT_FOUND
 from app.domain.journal.services import normalize_mood
 from app.infrastructure.database.models.journal import JournalEntryModel
@@ -24,13 +25,13 @@ async def create_entry(data: JournalCreate, user_id: CurrentUserId, db: DbSessio
 
 
 @router.get("", response_model=list[JournalRead])
-async def list_entries(user_id: CurrentUserId, db: DbSession, skip: int = 0, limit: int = 20) -> list[JournalRead]:
+async def list_entries(user_id: CurrentUserId, db: DbSession, skip: int = 0, limit: int = DEFAULT_PAGE_SIZE) -> list[JournalRead]:
     stmt = (
         select(JournalEntryModel)
         .where(JournalEntryModel.user_id == user_id, JournalEntryModel.deleted_at.is_(None))
         .order_by(JournalEntryModel.created_at.desc())
         .offset(skip)
-        .limit(min(limit, 50))
+        .limit(min(limit, MAX_PAGE_SIZE))
     )
     result = await db.execute(stmt)
     return [JournalRead.model_validate(e) for e in result.scalars().all()]
