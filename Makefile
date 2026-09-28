@@ -65,3 +65,6 @@ check-imports:
 
 loc:
 	python -m scripts.count_lines
+
+verify:
+	python -m scripts.verify_structure
