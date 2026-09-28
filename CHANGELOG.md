@@ -1,3 +1,11 @@
+## [0.5.1] - 2026-10-18
+
+### Changed
+- Goals list pagination and progress wiring refined
+- Journal/exercises/workouts use shared page limits
+- Meta version response uses VersionResponse schema
+- Auth service uses shared message constants
+
 ## [0.5.0] - 2026-10-17
 
 ### Changed
