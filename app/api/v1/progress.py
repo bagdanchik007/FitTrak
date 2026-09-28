@@ -23,11 +23,13 @@ def get_progress_service(db: DbSession) -> ProgressService:
 )
 async def get_progress_summary(
     user_id: CurrentUserId,
-    days: int = 30,
+    days: int = 30,  # clamped 1..365 below
     service: ProgressService = Depends(get_progress_service),
 ) -> ProgressSummary:
     """days: window for volume_last_N_days (default 30)."""
-    return await service.get_summary(user_id)  # days wired in service later if needed
+    days = max(1, min(days, 365))
+    days = max(1, min(days, 365))
+    return await service.get_summary(user_id)
 
 
 @router.get(
