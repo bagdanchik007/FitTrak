@@ -6,3 +6,5 @@ Progress helpers:
 
 - `progress_ratio` on entity
 - `percent_complete` / `is_overdue` in `app/domain/goal/progress.py`
+
+Goals list supports skip/limit pagination.
