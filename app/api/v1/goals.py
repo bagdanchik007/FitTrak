@@ -53,13 +53,15 @@ async def list_goals(
     user_id: CurrentUserId,
     db: DbSession,
     completed: bool | None = None,
+    skip: int = 0,
+    limit: int = 50,
 ) -> list[GoalRead]:
     stmt = select(GoalModel).where(
         GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
     )
     if completed is not None:
         stmt = stmt.where(GoalModel.is_completed == completed)
-    stmt = stmt.order_by(GoalModel.created_at.desc())
+    stmt = stmt.order_by(GoalModel.created_at.desc()).offset(skip).limit(min(limit, 100))
     result = await db.execute(stmt)
     return [GoalRead.model_validate(g) for g in result.scalars().all()]
 
