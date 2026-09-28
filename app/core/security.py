@@ -1,3 +1,4 @@
+"""JWT access/refresh helpers. Access: type=access; Refresh: type=refresh."""
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
