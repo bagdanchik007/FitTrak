@@ -5,3 +5,5 @@
 - API routers stay thin; business rules in services/domain
 - Soft deletes via `deleted_at` where applicable
 - Auth required for user-owned resources
+
+- Prefer app.core.messages for user-facing API error strings
