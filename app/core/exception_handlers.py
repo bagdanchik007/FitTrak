@@ -1,6 +1,8 @@
 """Global exception handlers for FastAPI."""
 
+from app.core.errors import ErrorCode
 from fastapi import FastAPI, Request, status
+from app.core.errors import ErrorCode
 from fastapi.responses import JSONResponse
 
 from app.core.exceptions import AppException, to_http_exception
