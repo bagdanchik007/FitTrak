@@ -210,3 +210,5 @@ Version is defined in `app/core/version.py`.
 
 
 Current API version: **0.5.0** (see `app/core/version.py`).
+
+Run `make verify` to check package layout.
