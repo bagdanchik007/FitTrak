@@ -4,6 +4,7 @@ from uuid import uuid4
 from fastapi import HTTPException, status
 
 from app.core.config import get_settings
+from app.core.messages import EMAIL_TAKEN, INVALID_CREDENTIALS
 from app.core.security import (
     create_access_token,
     create_refresh_token,
@@ -36,7 +37,7 @@ class AuthService:
         if existing:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail="A user with this email already exists",
+                detail=EMAIL_TAKEN,
             )
 
         user = User(
@@ -57,7 +58,7 @@ class AuthService:
         if not user or not verify_password(password, user.hashed_password):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
+                detail=INVALID_CREDENTIALS,
                 headers={"WWW-Authenticate": "Bearer"},
             )
 
