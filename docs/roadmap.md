@@ -20,3 +20,5 @@
 - [x] Streaks & weekly summary
 
 - [x] Template domain layer
+
+- [x] Shared messages in AuthService and API routers
