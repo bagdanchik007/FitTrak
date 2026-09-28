@@ -23,3 +23,5 @@ pytest tests/integration -v
 ```bash
 pytest --cov=app --cov-report=term-missing
 ```
+
+Integration: test_preferences_normalize, test_goal_progress
