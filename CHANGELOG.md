@@ -1,3 +1,16 @@
+## [0.6.0] - 2026-10-19
+
+### Added
+- Goal completion endpoint
+- Body-weight delta summary
+- Composite index on workouts (user_id, performed_at)
+- Workout set_number uniqueness validation
+
+### Changed
+- Session volume calculated in domain layer
+- Workout and exercise repositories expose ownership/active lookups
+- OpenAPI tag descriptions for major resource groups
+
 ## [0.5.1] - 2026-10-18
 
 ### Changed
