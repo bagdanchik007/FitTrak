@@ -6,3 +6,5 @@
 4. **Infrastructure** (`app/infrastructure`) – SQLAlchemy, repositories, mappers  
 
 Dependencies point inward: API → Application → Domain ← Infrastructure.
+
+Derived metrics (volume, 1RM, streaks) belong in domain services, not routers.
