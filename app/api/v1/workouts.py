@@ -6,7 +6,9 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
-from app.core.limits import MAX_PAGE_SIZE
+from app.core.limits import MAX_PAGE_SIZE, MAX_SETS_PER_WORKOUT
+from app.core.messages import WORKOUT_NOT_FOUND
+from app.domain.workout.services import calculate_session_volume
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
 from app.schemas.common import PaginatedResponse
@@ -16,11 +18,7 @@ router = APIRouter(prefix="/workouts", tags=["Workouts"])
 
 def _with_volume(workout) -> WorkoutRead:
     data = WorkoutRead.model_validate(workout)
-    total = 0.0
-    for s in data.sets:
-        if s.weight_kg is not None and s.reps is not None:
-            total += s.weight_kg * s.reps
-    data.total_volume_kg = round(total, 2)
+    data.total_volume_kg = calculate_session_volume(data.sets)
     return data
 
 
@@ -37,6 +35,11 @@ async def create_workout(
     user_id: CurrentUserId,
     db: DbSession,
 ) -> WorkoutRead:
+    if len(data.sets) > MAX_SETS_PER_WORKOUT:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=f"A workout may contain at most {MAX_SETS_PER_WORKOUT} sets",
+        )
     workout = WorkoutModel(
         id=uuid4(),
         user_id=user_id,
@@ -131,7 +134,7 @@ async def get_workout(
     result = await db.execute(stmt)
     workout = result.scalar_one_or_none()
     if not workout:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=WORKOUT_NOT_FOUND)
     return _with_volume(workout)
 
 
@@ -154,7 +157,7 @@ async def delete_workout(
     result = await db.execute(stmt)
     workout = result.scalar_one_or_none()
     if not workout:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=WORKOUT_NOT_FOUND)
     workout.deleted_at = datetime.now(timezone.utc)
     await db.flush()
 
@@ -182,7 +185,7 @@ async def update_workout(
     result = await db.execute(stmt)
     workout = result.scalar_one_or_none()
     if not workout:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Workout not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=WORKOUT_NOT_FOUND)
     if data.title is not None:
         workout.title = data.title
     if data.notes is not None:
