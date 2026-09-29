@@ -86,3 +86,13 @@ class SQLAlchemyExerciseRepository(ExerciseRepository):
         model.deleted_at = datetime.now(timezone.utc)
         await self._session.flush()
         return True
+
+    async def get_active(self, exercise_id: UUID) -> Exercise | None:
+        stmt = select(ExerciseModel).where(
+            ExerciseModel.id == exercise_id,
+            ExerciseModel.deleted_at.is_(None),
+        )
+        result = await self._session.execute(stmt)
+        model = result.scalar_one_or_none()
+        return self._to_entity(model) if model else None
+
