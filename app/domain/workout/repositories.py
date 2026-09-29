@@ -25,3 +25,8 @@ class WorkoutRepository(ABC):
     @abstractmethod
     async def soft_delete(self, workout_id: UUID, user_id: UUID) -> bool:
         ...
+
+    @abstractmethod
+    async def get_owned(self, workout_id: UUID, user_id: UUID) -> Workout | None:
+        """Return workout only if it belongs to user and is not soft-deleted."""
+        ...
