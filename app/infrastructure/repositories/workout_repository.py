@@ -116,3 +116,18 @@ class SQLAlchemyWorkoutRepository(WorkoutRepository):
         model.deleted_at = datetime.now(timezone.utc)
         await self._session.flush()
         return True
+
+    async def get_owned(self, workout_id: UUID, user_id: UUID) -> Workout | None:
+        stmt = (
+            select(WorkoutModel)
+            .options(selectinload(WorkoutModel.sets))
+            .where(
+                WorkoutModel.id == workout_id,
+                WorkoutModel.user_id == user_id,
+                WorkoutModel.deleted_at.is_(None),
+            )
+        )
+        result = await self._session.execute(stmt)
+        model = result.scalar_one_or_none()
+        return self._to_entity(model) if model else None
+
