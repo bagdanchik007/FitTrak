@@ -5,7 +5,7 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class Settings  # token TTLs and DB URL are the primary runtime controls(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     # Security
     secret_key: str = Field(..., min_length=32)
-    access_token_expire_minutes: int = 30
+    access_token_expire_minutes  # short-lived bearer: int = 30
     refresh_token_expire_days: int = 7
     algorithm: str = "HS256"
 
