@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class WorkoutSetBase(BaseModel):
@@ -32,6 +32,13 @@ class WorkoutBase(BaseModel):
 
 class WorkoutCreate(WorkoutBase):
     sets: list[WorkoutSetCreate] = Field(default_factory=list, description="Optional; empty list allowed for planned workouts")
+
+    @model_validator(mode="after")
+    def unique_set_numbers(self) -> "WorkoutCreate":
+        numbers = [s.set_number for s in self.sets]
+        if len(numbers) != len(set(numbers)):
+            raise ValueError("set_number must be unique within a workout")
+        return self
 
 
 class WorkoutUpdate(BaseModel):
