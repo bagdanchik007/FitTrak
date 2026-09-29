@@ -31,3 +31,8 @@ class ExerciseRepository(ABC):
         ...
 
 # Interface only – concrete class lives in infrastructure
+
+    @abstractmethod
+    async def get_active(self, exercise_id: UUID):
+        """Fetch a non-deleted exercise by id."""
+        ...
