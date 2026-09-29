@@ -1,3 +1,4 @@
+"""Read-model queries for progress aggregates (not a write repository)."""
 from datetime import date, timedelta
 from uuid import UUID
 
