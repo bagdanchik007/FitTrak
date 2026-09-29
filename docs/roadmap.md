@@ -22,3 +22,5 @@
 - [x] Template domain layer
 
 - [x] Shared messages in AuthService and API routers
+
+- [x] Ownership-aware workout lookup and active exercise fetch
