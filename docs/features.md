@@ -35,3 +35,5 @@
 - Domain-wired streaks, summary, activity, preferences
 
 - Goals list pagination; progress days clamp; meta VersionResponse
+
+- Goal completion endpoint; body-weight delta; domain session volume
