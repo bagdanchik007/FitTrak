@@ -121,3 +121,22 @@ async def delete_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> N
         raise HTTPException(status_code=404, detail=GOAL_NOT_FOUND)
     goal.deleted_at = datetime.now(timezone.utc)
     await db.flush()
+
+
+@router.post("/{goal_id}/complete", response_model=GoalRead)
+async def complete_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> GoalRead:
+    stmt = select(GoalModel).where(
+        GoalModel.id == goal_id, GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
+    )
+    goal = (await db.execute(stmt)).scalar_one_or_none()
+    if not goal:
+        raise HTTPException(status_code=404, detail=GOAL_NOT_FOUND)
+    goal.is_completed = True
+    if goal.target_value is not None and goal.current_value is None:
+        goal.current_value = goal.target_value
+    elif goal.target_value is not None and goal.current_value is not None:
+        goal.current_value = max(goal.current_value, goal.target_value)
+    await db.flush()
+    await db.refresh(goal)
+    return GoalRead.model_validate(goal)
+
