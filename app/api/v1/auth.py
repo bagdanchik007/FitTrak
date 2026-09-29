@@ -27,6 +27,7 @@ def get_auth_service(db: DbSession) -> AuthService:
 async def register(
     data: UserCreate,
     service: AuthService = Depends(get_auth_service),
+    _: None = Depends(rate_limit(max_requests=5, window_seconds=60)),
 ) -> UserRead:
     return await service.register(data)
 
