@@ -29,3 +29,8 @@
 - docs/error-codes.md
 
 - docs/templates.md
+
+- POST /api/v1/progress/personal-record/check
+- GET /api/v1/journal/search
+- POST /api/v1/templates/{id}/duplicate
+- GET /api/v1/favorites/count
