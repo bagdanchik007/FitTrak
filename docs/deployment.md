@@ -38,3 +38,5 @@ docker compose exec api alembic upgrade head
 Run `alembic upgrade head` so revisions 002 and 003 apply.
 
 After pull: alembic upgrade head && make verify
+
+Migration 004 adds index `ix_workouts_user_performed_at`.
