@@ -5,6 +5,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.limits import MAX_PAGE_SIZE
+from app.core.messages import EXERCISE_NOT_FOUND
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.exercise import ExerciseModel
 from app.schemas.common import PaginatedResponse
@@ -92,7 +93,7 @@ async def get_exercise(
     result = await db.execute(stmt)
     exercise = result.scalar_one_or_none()
     if not exercise:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=EXERCISE_NOT_FOUND)
     return ExerciseRead.model_validate(exercise)
 
 
@@ -115,7 +116,7 @@ async def delete_exercise(
     result = await db.execute(stmt)
     exercise = result.scalar_one_or_none()
     if not exercise:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=EXERCISE_NOT_FOUND)
     if exercise.created_by is not None and exercise.created_by != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     used = await db.execute(
@@ -148,7 +149,7 @@ async def update_exercise(
     result = await db.execute(stmt)
     exercise = result.scalar_one_or_none()
     if not exercise:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Exercise not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=EXERCISE_NOT_FOUND)
     if data.name is not None:
         exercise.name = data.name
     if data.description is not None:
