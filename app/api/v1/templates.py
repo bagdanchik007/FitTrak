@@ -93,3 +93,28 @@ async def delete_template(
         raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
     tmpl.deleted_at = datetime.now(timezone.utc)
     await db.flush()
+
+
+@router.post("/{template_id}/duplicate", response_model=TemplateRead, status_code=status.HTTP_201_CREATED)
+async def duplicate_template(
+    template_id: UUID, user_id: CurrentUserId, db: DbSession
+) -> TemplateRead:
+    stmt = select(WorkoutTemplateModel).where(
+        WorkoutTemplateModel.id == template_id,
+        WorkoutTemplateModel.user_id == user_id,
+        WorkoutTemplateModel.deleted_at.is_(None),
+    )
+    src = (await db.execute(stmt)).scalar_one_or_none()
+    if not src:
+        raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
+    clone = WorkoutTemplateModel(
+        id=uuid4(),
+        user_id=user_id,
+        name=f"{src.name} (copy)",
+        description=src.description,
+    )
+    db.add(clone)
+    await db.flush()
+    await db.refresh(clone)
+    return TemplateRead.model_validate(clone)
+
