@@ -64,3 +64,15 @@ async def remove_favorite(exercise_id: UUID, user_id: CurrentUserId, db: DbSessi
         raise HTTPException(status_code=404, detail=FAVORITE_NOT_FOUND)
     await db.delete(fav)
     await db.flush()
+
+
+@router.get("/count")
+async def favorites_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(ExerciseFavoriteModel).where(
+        ExerciseFavoriteModel.user_id == user_id
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"count": int(total)}
+
