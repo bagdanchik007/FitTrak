@@ -17,6 +17,9 @@ FEATURES = {
     "streaks": True,
     "weekly_summary": True,
     "goal_progress": True,
+    "pr_check": True,
+    "journal_search": True,
+    "template_duplicate": True,
     "preference_normalization": True,
 }
 
