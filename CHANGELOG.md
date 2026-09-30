@@ -1,3 +1,14 @@
+## [0.6.1] - 2026-10-20
+
+### Added
+- Stateless personal-record evaluation endpoint
+- Journal title search
+- Template duplicate action
+- Favorites count endpoint
+
+### Fixed
+- Progress summary days clamp applied once
+
 ## [0.6.0] - 2026-10-19
 
 ### Added
