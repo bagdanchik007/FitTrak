@@ -24,3 +24,5 @@
 - [x] Shared messages in AuthService and API routers
 
 - [x] Ownership-aware workout lookup and active exercise fetch
+
+- [x] PR evaluation helper and journal search
