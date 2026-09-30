@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel, Field
 
+from app.application.services.pr_service import evaluate_candidate
 from app.application.services.progress_service import ProgressService
 from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.repositories.progress_repository import SQLAlchemyProgressRepository
@@ -16,18 +18,13 @@ def get_progress_service(db: DbSession) -> ProgressService:
     "/summary",
     response_model=ProgressSummary,
     summary="Get progress summary for the current user",
-    description=(
-        "Returns total workouts, sets, volume, personal records "
-        "(with estimated 1RM) and daily volume for the last 30 days."
-    ),
 )
 async def get_progress_summary(
     user_id: CurrentUserId,
-    days: int = 30,  # clamped 1..365 below
+    days: int = 30,
     service: ProgressService = Depends(get_progress_service),
 ) -> ProgressSummary:
-    """days: window for volume_last_N_days (default 30)."""
-    days = max(1, min(days, 365))
+    """days: window for volume series; clamped to [1, 365]."""
     days = max(1, min(days, 365))
     return await service.get_summary(user_id)
 
@@ -45,4 +42,30 @@ async def get_personal_records(
     return summary.personal_records
 
 
-# Query param days controls volume window (default 30)
+class PRCheckRequest(BaseModel):
+    exercise_name: str = Field(..., min_length=1, max_length=120)
+    weight_kg: float = Field(..., gt=0)
+    reps: int = Field(..., ge=1)
+    previous_best_kg: float | None = Field(None, ge=0)
+
+
+class PRCheckResponse(BaseModel):
+    is_personal_record: bool
+    label: str | None
+    previous_best_kg: float | None
+    candidate_kg: float
+
+
+@router.post(
+    "/personal-record/check",
+    response_model=PRCheckResponse,
+    summary="Evaluate whether a candidate lift would be a PR",
+)
+async def check_personal_record(body: PRCheckRequest) -> PRCheckResponse:
+    result = evaluate_candidate(
+        exercise_name=body.exercise_name,
+        previous_best_kg=body.previous_best_kg,
+        weight_kg=body.weight_kg,
+        reps=body.reps,
+    )
+    return PRCheckResponse(**result)
