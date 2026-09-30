@@ -72,3 +72,23 @@ async def delete_entry(entry_id: UUID, user_id: CurrentUserId, db: DbSession) ->
     await db.flush()
 
 # Mood values are free-text; domain helpers can validate optionally
+
+
+@router.get("/search", response_model=list[JournalRead])
+async def search_journal(
+    user_id: CurrentUserId,
+    db: DbSession,
+    q: str = "",
+    limit: int = DEFAULT_PAGE_SIZE,
+) -> list[JournalRead]:
+    stmt = select(JournalEntryModel).where(
+        JournalEntryModel.user_id == user_id,
+        JournalEntryModel.deleted_at.is_(None),
+    )
+    if q.strip():
+        pattern = f"%{q.strip()}%"
+        stmt = stmt.where(JournalEntryModel.title.ilike(pattern))
+    stmt = stmt.order_by(JournalEntryModel.created_at.desc()).limit(min(limit, MAX_PAGE_SIZE))
+    rows = (await db.execute(stmt)).scalars().all()
+    return [JournalRead.model_validate(r) for r in rows]
+
