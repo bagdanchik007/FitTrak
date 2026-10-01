@@ -39,3 +39,5 @@
 - Goal completion endpoint; body-weight delta; domain session volume
 
 - Personal-record check, journal search, template duplicate, favorites count
+
+- Workout metrics, goal reopen, body-weight latest, preferences reset
