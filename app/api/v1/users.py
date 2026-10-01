@@ -1,3 +1,4 @@
+from sqlalchemy import func, select
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -47,3 +48,15 @@ async def get_public_profile(
     service: UserService = Depends(get_user_service),
 ) -> UserRead:
     return await service.get_by_id(user_id)
+
+
+@router.get("/me/activity-summary")
+async def my_activity_summary(user_id: CurrentUserId, db: DbSession) -> dict:
+    from app.infrastructure.database.models.workout import WorkoutModel
+
+    stmt = select(func.count()).select_from(WorkoutModel).where(
+        WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None)
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"user_id": str(user_id), "total_workouts": int(total)}
+
