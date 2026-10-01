@@ -1,3 +1,13 @@
+## [0.6.2] - 2026-10-21
+
+### Added
+- Workout session metrics endpoint
+- Goal reopen action
+- Latest body-weight lookup
+- Preferences reset-to-defaults
+- User activity summary
+- Activity feed type filter
+
 ## [0.6.1] - 2026-10-20
 
 ### Added
