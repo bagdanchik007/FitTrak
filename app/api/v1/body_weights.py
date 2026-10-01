@@ -54,3 +54,17 @@ async def weight_delta(user_id: CurrentUserId, db: DbSession) -> dict:
         "to_date": str(rows[-1].recorded_at),
     }
 
+
+@router.get("/latest", response_model=BodyWeightRead)
+async def latest_body_weight(user_id: CurrentUserId, db: DbSession) -> BodyWeightRead:
+    stmt = (
+        select(BodyWeightModel)
+        .where(BodyWeightModel.user_id == user_id)
+        .order_by(BodyWeightModel.recorded_at.desc())
+        .limit(1)
+    )
+    row = (await db.execute(stmt)).scalar_one_or_none()
+    if not row:
+        raise HTTPException(status_code=404, detail="No body weight entries")
+    return BodyWeightRead.model_validate(row)
+
