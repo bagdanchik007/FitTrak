@@ -20,6 +20,9 @@ FEATURES = {
     "pr_check": True,
     "journal_search": True,
     "template_duplicate": True,
+    "workout_metrics": True,
+    "goal_reopen": True,
+    "preferences_reset": True,
     "preference_normalization": True,
 }
 
