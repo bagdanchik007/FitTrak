@@ -234,3 +234,24 @@ async def export_workouts_csv(
         )
     return PlainTextResponse("\n".join(lines), media_type="text/csv")
 
+
+@router.get("/{workout_id}/metrics")
+async def workout_metrics(
+    workout_id: UUID, user_id: CurrentUserId, db: DbSession
+) -> dict:
+    from app.application.services.workout_metrics_service import session_metrics
+
+    stmt = (
+        select(WorkoutModel)
+        .options(selectinload(WorkoutModel.sets))
+        .where(
+            WorkoutModel.id == workout_id,
+            WorkoutModel.user_id == user_id,
+            WorkoutModel.deleted_at.is_(None),
+        )
+    )
+    workout = (await db.execute(stmt)).scalar_one_or_none()
+    if not workout:
+        raise HTTPException(status_code=404, detail=WORKOUT_NOT_FOUND)
+    return session_metrics(workout.sets or [], workout.duration_minutes)
+
