@@ -34,3 +34,9 @@
 - GET /api/v1/journal/search
 - POST /api/v1/templates/{id}/duplicate
 - GET /api/v1/favorites/count
+
+- GET /api/v1/workouts/{id}/metrics
+- POST /api/v1/goals/{id}/reopen
+- GET /api/v1/body-weights/latest
+- POST /api/v1/preferences/me/reset
+- GET /api/v1/users/me/activity-summary
