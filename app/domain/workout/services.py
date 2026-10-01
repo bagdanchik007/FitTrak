@@ -33,3 +33,10 @@ def estimate_1rm(weight_kg: float, reps: int) -> float | None:
 def assert_set_numbers_unique(set_numbers: list[int]) -> None:
     if len(set_numbers) != len(set(set_numbers)):
         raise ValueError("set_number values must be unique within a workout")
+
+
+def sets_per_minute(set_count: int, duration_minutes: int | None) -> float | None:
+    """Training density; None when duration is missing or non-positive."""
+    if duration_minutes is None or duration_minutes <= 0 or set_count < 0:
+        return None
+    return round(set_count / duration_minutes, 2)
