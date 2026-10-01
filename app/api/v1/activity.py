@@ -23,7 +23,8 @@ class ActivityItem(BaseModel):
 
 @router.get("/feed", response_model=list[ActivityItem])
 async def activity_feed(
-    user_id: CurrentUserId, db: DbSession, limit: int = 20
+    user_id: CurrentUserId, db: DbSession, limit: int = 20,
+    type_filter: str | None = None
 ) -> list[ActivityItem]:
     items: list[ActivityItem] = []
 
@@ -60,5 +61,7 @@ async def activity_feed(
         )
 
     as_dicts = [i.model_dump() for i in items]
+    if type_filter:
+        as_dicts = [d for d in as_dicts if d.get("type") == type_filter]
     sorted_dicts = sort_activity_items(as_dicts, limit=limit)
     return [ActivityItem(**d) for d in sorted_dicts]
