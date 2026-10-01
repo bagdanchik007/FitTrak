@@ -12,3 +12,5 @@ Fields:
 Domain helpers normalize units and clamp weekly goals.
 
 On write, units are normalized and weekly goals clamped.
+
+Reset: POST /api/v1/preferences/me/reset restores kg/en/3/false defaults.
