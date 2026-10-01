@@ -140,3 +140,17 @@ async def complete_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) ->
     await db.refresh(goal)
     return GoalRead.model_validate(goal)
 
+
+@router.post("/{goal_id}/reopen", response_model=GoalRead)
+async def reopen_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> GoalRead:
+    stmt = select(GoalModel).where(
+        GoalModel.id == goal_id, GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
+    )
+    goal = (await db.execute(stmt)).scalar_one_or_none()
+    if not goal:
+        raise HTTPException(status_code=404, detail=GOAL_NOT_FOUND)
+    goal.is_completed = False
+    await db.flush()
+    await db.refresh(goal)
+    return GoalRead.model_validate(goal)
+
