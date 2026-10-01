@@ -8,3 +8,5 @@ Progress helpers:
 - `percent_complete` / `is_overdue` in `app/domain/goal/progress.py`
 
 Goals list supports skip/limit pagination.
+
+Reopen: POST /api/v1/goals/{id}/reopen clears is_completed.
