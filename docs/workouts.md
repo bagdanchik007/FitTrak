@@ -12,3 +12,5 @@ Total volume is `sum(weight_kg * reps)` over sets, computed in
 
 ## Export
 `GET /api/v1/workouts/export/csv` returns a CSV of the caller's sessions.
+
+Metrics: GET /api/v1/workouts/{id}/metrics returns volume, completed sets, density.
