@@ -27,3 +27,5 @@ Journal entries are always scoped to the authenticated user_id.
 
 
 Responses include X-Content-Type-Options and X-Frame-Options by default.
+
+Preference reset and goal reopen are authenticated user-scoped mutations.
