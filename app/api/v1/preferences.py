@@ -44,3 +44,16 @@ async def update_preferences(
     await db.flush()
     await db.refresh(pref)
     return PreferenceRead.model_validate(pref)
+
+
+@router.post("/me/reset", response_model=PreferenceRead)
+async def reset_preferences(user_id: CurrentUserId, db: DbSession) -> PreferenceRead:
+    pref = await _get_or_create(db, user_id)
+    pref.weight_unit = "kg"
+    pref.language = "en"
+    pref.weekly_goal_workouts = 3
+    pref.email_reminders = False
+    await db.flush()
+    await db.refresh(pref)
+    return PreferenceRead.model_validate(pref)
+
