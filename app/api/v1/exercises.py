@@ -215,3 +215,22 @@ async def seed_defaults(
         await db.refresh(ex)
     return [ExerciseRead.model_validate(e) for e in created]
 
+
+@router.get("/search")
+async def search_exercises(
+    user_id: CurrentUserId,
+    db: DbSession,
+    q: str = "",
+    limit: int = 20,
+):
+    from app.infrastructure.database.models.exercise import ExerciseModel
+    from sqlalchemy import select
+
+    stmt = select(ExerciseModel).where(ExerciseModel.deleted_at.is_(None))
+    if q.strip():
+        stmt = stmt.where(ExerciseModel.name.ilike(f"%{q.strip()}%"))
+    stmt = stmt.order_by(ExerciseModel.name.asc()).limit(min(limit, 50))
+    rows = (await db.execute(stmt)).scalars().all()
+    from app.schemas.exercise import ExerciseRead
+    return [ExerciseRead.model_validate(r) for r in rows]
+
