@@ -42,3 +42,5 @@ After pull: alembic upgrade head && make verify
 Migration 004 adds index `ix_workouts_user_performed_at`.
 
 No new migration in 0.6.2; restart API after deploy.
+
+0.6.3 requires no new migration.
