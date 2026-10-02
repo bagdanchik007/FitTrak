@@ -41,3 +41,5 @@
 - Personal-record check, journal search, template duplicate, favorites count
 
 - Workout metrics, goal reopen, body-weight latest, preferences reset
+
+- Recovery status, exercise search, template rename, mood stats, active goals count
