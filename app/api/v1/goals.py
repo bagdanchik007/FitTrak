@@ -154,3 +154,16 @@ async def reopen_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> G
     await db.refresh(goal)
     return GoalRead.model_validate(goal)
 
+
+@router.get("/active-count")
+async def active_goals_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(GoalModel).where(
+        GoalModel.user_id == user_id,
+        GoalModel.deleted_at.is_(None),
+        GoalModel.is_completed.is_(False),
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"active_goals": int(total)}
+
