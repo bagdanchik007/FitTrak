@@ -118,3 +118,24 @@ async def duplicate_template(
     await db.refresh(clone)
     return TemplateRead.model_validate(clone)
 
+
+@router.patch("/{template_id}/rename", response_model=TemplateRead)
+async def rename_template(
+    template_id: UUID,
+    user_id: CurrentUserId,
+    db: DbSession,
+    name: str,
+) -> TemplateRead:
+    stmt = select(WorkoutTemplateModel).where(
+        WorkoutTemplateModel.id == template_id,
+        WorkoutTemplateModel.user_id == user_id,
+        WorkoutTemplateModel.deleted_at.is_(None),
+    )
+    tpl = (await db.execute(stmt)).scalar_one_or_none()
+    if not tpl:
+        raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
+    tpl.name = name.strip() or tpl.name
+    await db.flush()
+    await db.refresh(tpl)
+    return TemplateRead.model_validate(tpl)
+
