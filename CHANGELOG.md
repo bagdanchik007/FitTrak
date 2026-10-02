@@ -1,3 +1,12 @@
+## [0.6.3] - 2026-10-22
+
+### Added
+- Recovery status endpoint (rest days since last workout)
+- Exercise name search
+- Template rename action
+- Journal mood statistics
+- Active goals count
+
 ## [0.6.2] - 2026-10-21
 
 ### Added
