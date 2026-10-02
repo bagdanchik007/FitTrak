@@ -33,3 +33,11 @@ def compute_longest_streak(workout_days: list[date]) -> int:
         else:
             run = 1
     return longest
+
+
+def rest_days_since(last_workout, today) -> int | None:
+    """Whole days since last workout date; None if never trained."""
+    if last_workout is None:
+        return None
+    delta = (today - last_workout).days
+    return max(0, delta)
