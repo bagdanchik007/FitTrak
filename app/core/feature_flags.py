@@ -23,6 +23,9 @@ FEATURES = {
     "workout_metrics": True,
     "goal_reopen": True,
     "preferences_reset": True,
+    "recovery_status": True,
+    "exercise_search": True,
+    "journal_mood_stats": True,
     "preference_normalization": True,
 }
 
