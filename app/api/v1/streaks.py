@@ -22,3 +22,21 @@ async def get_my_streak(user_id: CurrentUserId, db: DbSession) -> StreakResponse
     days = [row[0] for row in (await db.execute(stmt)).all()]
     summary = StreakService().summarize(days)
     return StreakResponse(**summary)
+
+
+@router.get("/me/recovery")
+async def get_recovery(user_id: CurrentUserId, db: DbSession) -> dict:
+    from datetime import date
+
+    from app.application.services.recovery_service import recovery_snapshot
+
+    stmt = (
+        select(WorkoutModel.performed_at)
+        .where(WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None))
+        .order_by(WorkoutModel.performed_at.desc())
+        .limit(1)
+    )
+    row = (await db.execute(stmt)).first()
+    last = row[0] if row else None
+    return recovery_snapshot(last, date.today())
+
