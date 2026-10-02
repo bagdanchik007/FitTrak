@@ -10,3 +10,5 @@ Progress helpers:
 Goals list supports skip/limit pagination.
 
 Reopen: POST /api/v1/goals/{id}/reopen clears is_completed.
+
+Active count: GET /api/v1/goals/active-count
