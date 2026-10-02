@@ -40,3 +40,9 @@
 - GET /api/v1/body-weights/latest
 - POST /api/v1/preferences/me/reset
 - GET /api/v1/users/me/activity-summary
+
+- GET /api/v1/streaks/me/recovery
+- GET /api/v1/exercises/search
+- PATCH /api/v1/templates/{id}/rename
+- GET /api/v1/journal/mood-stats
+- GET /api/v1/goals/active-count
