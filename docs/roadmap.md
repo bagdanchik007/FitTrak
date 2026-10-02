@@ -28,3 +28,5 @@
 - [x] PR evaluation helper and journal search
 
 - [x] Session metrics density and goal reopen
+
+- [x] Recovery status and exercise search
