@@ -209,6 +209,6 @@ curl -s http://localhost:8000/api/v1/progress/summary \
 Version is defined in `app/core/version.py`.
 
 
-Current API version: **0.6.2** (see `app/core/version.py`).
+Current API version: **0.6.3** (see `app/core/version.py`).
 
 Run `make verify` to check package layout.
