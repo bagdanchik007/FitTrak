@@ -92,3 +92,17 @@ async def search_journal(
     rows = (await db.execute(stmt)).scalars().all()
     return [JournalRead.model_validate(r) for r in rows]
 
+
+@router.get("/mood-stats")
+async def journal_mood_stats(user_id: CurrentUserId, db: DbSession) -> dict:
+    from collections import Counter
+
+    stmt = select(JournalEntryModel.mood).where(
+        JournalEntryModel.user_id == user_id,
+        JournalEntryModel.deleted_at.is_(None),
+        JournalEntryModel.mood.is_not(None),
+    )
+    moods = [m for (m,) in (await db.execute(stmt)).all() if m]
+    counts = dict(Counter(moods))
+    return {"total_with_mood": len(moods), "counts": counts}
+
