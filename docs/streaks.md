@@ -10,3 +10,5 @@
 Logic lives in `app/domain/streak/services.py` (pure, unit-tested).
 
 API uses `StreakService` which delegates to domain streak helpers.
+
+Recovery: GET /api/v1/streaks/me/recovery
