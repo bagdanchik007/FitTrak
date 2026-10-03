@@ -76,3 +76,15 @@ async def favorites_count(user_id: CurrentUserId, db: DbSession) -> dict[str, in
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
 
+
+@router.get("/exists/{exercise_id}")
+async def favorite_exists(
+    exercise_id: UUID, user_id: CurrentUserId, db: DbSession
+) -> dict[str, bool]:
+    stmt = select(ExerciseFavoriteModel).where(
+        ExerciseFavoriteModel.user_id == user_id,
+        ExerciseFavoriteModel.exercise_id == exercise_id,
+    )
+    fav = (await db.execute(stmt)).scalar_one_or_none()
+    return {"is_favorite": fav is not None}
+
