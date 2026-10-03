@@ -26,6 +26,8 @@ FEATURES = {
     "recovery_status": True,
     "exercise_search": True,
     "journal_mood_stats": True,
+    "weekly_goal_progress": True,
+    "favorite_exists": True,
     "preference_normalization": True,
 }
 
