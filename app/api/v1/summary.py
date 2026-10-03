@@ -54,3 +54,29 @@ async def weekly_summary(user_id: CurrentUserId, db: DbSession) -> WeeklySummary
         total_volume_kg=totals["total_volume_kg"],
         total_duration_minutes=totals["total_duration_minutes"],
     )
+
+
+@router.get("/weekly-goal")
+async def weekly_goal_progress(user_id: CurrentUserId, db: DbSession) -> dict:
+    from datetime import date, timedelta
+
+    from sqlalchemy import func, select
+
+    from app.application.services.weekly_goal_service import weekly_goal_status
+    from app.infrastructure.database.models.preference import UserPreferenceModel
+    from app.infrastructure.database.models.workout import WorkoutModel
+
+    to_d = date.today()
+    from_d = to_d - timedelta(days=6)
+    count_stmt = select(func.count()).select_from(WorkoutModel).where(
+        WorkoutModel.user_id == user_id,
+        WorkoutModel.deleted_at.is_(None),
+        WorkoutModel.performed_at >= from_d,
+        WorkoutModel.performed_at <= to_d,
+    )
+    done = int((await db.execute(count_stmt)).scalar_one())
+    pref_stmt = select(UserPreferenceModel).where(UserPreferenceModel.user_id == user_id)
+    pref = (await db.execute(pref_stmt)).scalar_one_or_none()
+    goal = pref.weekly_goal_workouts if pref else 3
+    return weekly_goal_status(done, goal)
+
