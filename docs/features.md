@@ -43,3 +43,5 @@
 - Workout metrics, goal reopen, body-weight latest, preferences reset
 
 - Recovery status, exercise search, template rename, mood stats, active goals count
+
+- Weekly goal progress, resource counts, favorite exists, meta build
