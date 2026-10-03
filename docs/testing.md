@@ -29,3 +29,5 @@ Integration: test_preferences_normalize, test_goal_progress
 New: test_workout_metrics_service, test_goal_reopen
 
 New: test_recovery_service, test_recovery
+
+New: test_weekly_goal_service, test_weekly_goal
