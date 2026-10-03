@@ -1,3 +1,12 @@
+## [0.6.4] - 2026-10-23
+
+### Added
+- Weekly goal progress endpoint
+- Workouts and body-weight counts
+- Favorite existence check
+- Meta build info
+- Logout-all placeholder for multi-device sessions
+
 ## [0.6.3] - 2026-10-22
 
 ### Added
