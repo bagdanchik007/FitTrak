@@ -23,3 +23,9 @@ async def version() -> VersionResponse:
 @router.get("/features")
 async def features() -> dict[str, bool]:
     return dict(FEATURES)
+
+
+@router.get("/build")
+async def build_info() -> dict[str, str]:
+    return {"version": __version__, "api": "v1"}
+
