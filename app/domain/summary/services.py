@@ -24,3 +24,10 @@ def average_volume_per_workout(total_volume: float, workouts: int) -> float:
     if workouts <= 0:
         return 0.0
     return round(total_volume / workouts, 2)
+
+
+def progress_toward_weekly_goal(workouts_done: int, weekly_goal: int) -> float:
+    """Ratio of completed workouts to weekly goal, capped at 1.0."""
+    if weekly_goal <= 0:
+        return 0.0
+    return min(1.0, round(workouts_done / weekly_goal, 3))
