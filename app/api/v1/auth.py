@@ -84,3 +84,10 @@ async def logout() -> None:
 # change-password is rate-limited to reduce brute-force risk
 
 # logout returns 204; tokens are client-discarded (stateless JWT)
+
+
+@router.post("/logout-all", status_code=204)
+async def logout_all_devices() -> None:
+    """Placeholder for global refresh-token invalidation across devices."""
+    return None
+
