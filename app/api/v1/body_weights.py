@@ -68,3 +68,14 @@ async def latest_body_weight(user_id: CurrentUserId, db: DbSession) -> BodyWeigh
         raise HTTPException(status_code=404, detail="No body weight entries")
     return BodyWeightRead.model_validate(row)
 
+
+@router.get("/count")
+async def body_weights_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(BodyWeightModel).where(
+        BodyWeightModel.user_id == user_id
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"count": int(total)}
+
