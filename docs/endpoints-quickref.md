@@ -46,3 +46,9 @@
 - PATCH /api/v1/templates/{id}/rename
 - GET /api/v1/journal/mood-stats
 - GET /api/v1/goals/active-count
+
+- GET /api/v1/summary/weekly-goal
+- GET /api/v1/workouts/count
+- GET /api/v1/body-weights/count
+- GET /api/v1/favorites/exists/{exercise_id}
+- GET /api/v1/meta/build
