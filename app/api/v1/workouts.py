@@ -255,3 +255,14 @@ async def workout_metrics(
         raise HTTPException(status_code=404, detail=WORKOUT_NOT_FOUND)
     return session_metrics(workout.sets or [], workout.duration_minutes)
 
+
+@router.get("/count")
+async def workouts_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(WorkoutModel).where(
+        WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None)
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"count": int(total)}
+
