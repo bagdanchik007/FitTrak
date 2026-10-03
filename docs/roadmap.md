@@ -30,3 +30,5 @@
 - [x] Session metrics density and goal reopen
 
 - [x] Recovery status and exercise search
+
+- [x] Weekly goal progress and resource counts
