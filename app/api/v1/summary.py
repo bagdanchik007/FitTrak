@@ -78,5 +78,5 @@ async def weekly_goal_progress(user_id: CurrentUserId, db: DbSession) -> dict:
     pref_stmt = select(UserPreferenceModel).where(UserPreferenceModel.user_id == user_id)
     pref = (await db.execute(pref_stmt)).scalar_one_or_none()
     goal = pref.weekly_goal_workouts if pref else 3
-    return weekly_goal_status(done, goal)
+    return weekly_goal_status(done, goal, from_date=from_d, to_date=to_d)
 
