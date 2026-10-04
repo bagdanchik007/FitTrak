@@ -1,3 +1,13 @@
+## [0.6.5] - 2026-10-24
+
+### Changed
+- Weekly goal status includes window dates and status label
+- Recovery snapshot includes actionable recommendation
+- Workout metrics include peak estimated 1RM and density band
+- PR check reports margin versus previous best
+- Preferences language normalized to supported codes
+- Goals list-with-progress enrichment endpoint
+
 ## [0.6.4] - 2026-10-23
 
 ### Added
