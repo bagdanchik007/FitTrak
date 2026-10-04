@@ -167,3 +167,45 @@ async def active_goals_count(user_id: CurrentUserId, db: DbSession) -> dict[str,
     total = (await db.execute(stmt)).scalar_one()
     return {"active_goals": int(total)}
 
+
+@router.get("/with-progress")
+async def list_goals_with_progress(
+    user_id: CurrentUserId, db: DbSession, completed: bool | None = None
+) -> list[dict]:
+    from datetime import date
+
+    from app.domain.goal.entities import Goal
+    from app.domain.goal.progress import is_overdue, percent_complete
+
+    stmt = select(GoalModel).where(
+        GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
+    )
+    if completed is not None:
+        stmt = stmt.where(GoalModel.is_completed == completed)
+    stmt = stmt.order_by(GoalModel.created_at.desc())
+    rows = (await db.execute(stmt)).scalars().all()
+    out = []
+    for g in rows:
+        domain = Goal(
+            id=g.id,
+            user_id=g.user_id,
+            title=g.title,
+            description=g.description,
+            target_value=g.target_value,
+            current_value=g.current_value,
+            unit=g.unit,
+            deadline=g.deadline,
+            is_completed=g.is_completed,
+            created_at=g.created_at,
+            updated_at=g.updated_at,
+            deleted_at=g.deleted_at,
+        )
+        out.append(
+            {
+                **GoalRead.model_validate(g).model_dump(mode="json"),
+                "percent_complete": percent_complete(domain),
+                "is_overdue": is_overdue(domain, date.today()),
+            }
+        )
+    return out
+
