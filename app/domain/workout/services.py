@@ -40,3 +40,14 @@ def sets_per_minute(set_count: int, duration_minutes: int | None) -> float | Non
     if duration_minutes is None or duration_minutes <= 0 or set_count < 0:
         return None
     return round(set_count / duration_minutes, 2)
+
+
+def density_band(sets_per_min: float | None) -> str | None:
+    """Coarse training density classification for analytics."""
+    if sets_per_min is None:
+        return None
+    if sets_per_min < 0.3:
+        return "low"
+    if sets_per_min < 0.7:
+        return "moderate"
+    return "high"
