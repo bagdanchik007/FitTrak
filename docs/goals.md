@@ -12,3 +12,5 @@ Goals list supports skip/limit pagination.
 Reopen: POST /api/v1/goals/{id}/reopen clears is_completed.
 
 Active count: GET /api/v1/goals/active-count
+
+Enriched list: GET /api/v1/goals/with-progress adds percent_complete and is_overdue.
