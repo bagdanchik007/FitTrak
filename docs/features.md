@@ -45,3 +45,5 @@
 - Recovery status, exercise search, template rename, mood stats, active goals count
 
 - Weekly goal progress, resource counts, favorite exists, meta build
+
+- Deepened weekly goal labels, recovery recommendations, density bands, PR margins
