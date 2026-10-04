@@ -5,6 +5,8 @@ from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.domain.preference.services import clamp_weekly_goal, normalize_weight_unit
+
+ALLOWED_LANGUAGES = frozenset({"en", "de", "uk", "pl"})
 from app.infrastructure.database.models.preference import UserPreferenceModel
 from app.schemas.preference import PreferenceRead, PreferenceUpdate
 
@@ -39,6 +41,9 @@ async def update_preferences(
         payload["weight_unit"] = normalize_weight_unit(payload["weight_unit"])
     if "weekly_goal_workouts" in payload and payload["weekly_goal_workouts"] is not None:
         payload["weekly_goal_workouts"] = clamp_weekly_goal(payload["weekly_goal_workouts"])
+    if "language" in payload and payload["language"]:
+        lang = str(payload["language"]).lower()[:2]
+        payload["language"] = lang if lang in ALLOWED_LANGUAGES else "en"
     for k, v in payload.items():
         setattr(pref, k, v)
     await db.flush()
