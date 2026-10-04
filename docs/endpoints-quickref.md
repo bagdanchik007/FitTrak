@@ -52,3 +52,5 @@
 - GET /api/v1/body-weights/count
 - GET /api/v1/favorites/exists/{exercise_id}
 - GET /api/v1/meta/build
+
+- GET /api/v1/goals/with-progress
