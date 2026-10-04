@@ -28,6 +28,8 @@ FEATURES = {
     "journal_mood_stats": True,
     "weekly_goal_progress": True,
     "favorite_exists": True,
+    "goals_with_progress": True,
+    "density_bands": True,
     "preference_normalization": True,
 }
 
