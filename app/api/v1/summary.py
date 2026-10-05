@@ -68,15 +68,18 @@ async def weekly_goal_progress(user_id: CurrentUserId, db: DbSession) -> dict:
 
     to_d = date.today()
     from_d = to_d - timedelta(days=6)
-    count_stmt = select(func.count()).select_from(WorkoutModel).where(
-        WorkoutModel.user_id == user_id,
-        WorkoutModel.deleted_at.is_(None),
-        WorkoutModel.performed_at >= from_d,
-        WorkoutModel.performed_at <= to_d,
+    count_stmt = (
+        select(func.count())
+        .select_from(WorkoutModel)
+        .where(
+            WorkoutModel.user_id == user_id,
+            WorkoutModel.deleted_at.is_(None),
+            WorkoutModel.performed_at >= from_d,
+            WorkoutModel.performed_at <= to_d,
+        )
     )
     done = int((await db.execute(count_stmt)).scalar_one())
     pref_stmt = select(UserPreferenceModel).where(UserPreferenceModel.user_id == user_id)
     pref = (await db.execute(pref_stmt)).scalar_one_or_none()
     goal = pref.weekly_goal_workouts if pref else 3
     return weekly_goal_status(done, goal, from_date=from_d, to_date=to_d)
-

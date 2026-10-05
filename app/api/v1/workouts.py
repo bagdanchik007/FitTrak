@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import UTC, date
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
@@ -6,22 +6,20 @@ from fastapi.responses import PlainTextResponse
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
+from app.core.dependencies import CurrentUserId, DbSession
 from app.core.limits import MAX_PAGE_SIZE, MAX_SETS_PER_WORKOUT
 from app.core.messages import WORKOUT_NOT_FOUND
 from app.domain.workout.services import calculate_session_volume
-from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
-from app.schemas.common import PaginatedResponse
 from app.schemas.workout import WorkoutCreate, WorkoutRead, WorkoutUpdate
 
 router = APIRouter(prefix="/workouts", tags=["Workouts"])
+
 
 def _with_volume(workout) -> WorkoutRead:
     data = WorkoutRead.model_validate(workout)
     data.total_volume_kg = calculate_session_volume(data.sets)
     return data
-
-
 
 
 @router.post(
@@ -106,7 +104,11 @@ async def list_workouts(
         stmt = stmt.where(WorkoutModel.performed_at >= from_date)
     if to_date:
         stmt = stmt.where(WorkoutModel.performed_at <= to_date)
-    stmt = stmt.order_by(WorkoutModel.performed_at.desc()).offset(skip).limit(min(limit, MAX_PAGE_SIZE))
+    stmt = (
+        stmt.order_by(WorkoutModel.performed_at.desc())
+        .offset(skip)
+        .limit(min(limit, MAX_PAGE_SIZE))
+    )
     result = await db.execute(stmt)
     workouts = result.scalars().all()
     return [_with_volume(w) for w in workouts]
@@ -148,7 +150,8 @@ async def delete_workout(
     user_id: CurrentUserId,
     db: DbSession,
 ) -> None:
-    from datetime import datetime, timezone
+    from datetime import datetime
+
     stmt = select(WorkoutModel).where(
         WorkoutModel.id == workout_id,
         WorkoutModel.user_id == user_id,
@@ -158,7 +161,7 @@ async def delete_workout(
     workout = result.scalar_one_or_none()
     if not workout:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=WORKOUT_NOT_FOUND)
-    workout.deleted_at = datetime.now(timezone.utc)
+    workout.deleted_at = datetime.now(UTC)
     await db.flush()
 
 
@@ -236,9 +239,7 @@ async def export_workouts_csv(
 
 
 @router.get("/{workout_id}/metrics")
-async def workout_metrics(
-    workout_id: UUID, user_id: CurrentUserId, db: DbSession
-) -> dict:
+async def workout_metrics(workout_id: UUID, user_id: CurrentUserId, db: DbSession) -> dict:
     from app.application.services.workout_metrics_service import session_metrics
 
     stmt = (
@@ -258,11 +259,11 @@ async def workout_metrics(
 
 @router.get("/count")
 async def workouts_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
-    from sqlalchemy import func
 
-    stmt = select(func.count()).select_from(WorkoutModel).where(
-        WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None)
+    stmt = (
+        select(func.count())
+        .select_from(WorkoutModel)
+        .where(WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None))
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
-

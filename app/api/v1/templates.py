@@ -1,3 +1,4 @@
+from datetime import UTC
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
@@ -6,8 +7,10 @@ from sqlalchemy.orm import selectinload
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.core.messages import TEMPLATE_NOT_FOUND
-from app.core.limits import MAX_PAGE_SIZE  # reserved for list pagination
-from app.infrastructure.database.models.template import WorkoutTemplateItemModel, WorkoutTemplateModel
+from app.infrastructure.database.models.template import (
+    WorkoutTemplateItemModel,
+    WorkoutTemplateModel,
+)
 from app.schemas.template import TemplateCreate, TemplateRead
 
 router = APIRouter(prefix="/templates", tags=["Templates"])
@@ -59,9 +62,7 @@ async def list_templates(user_id: CurrentUserId, db: DbSession) -> list[Template
 
 
 @router.get("/{template_id}", response_model=TemplateRead)
-async def get_template(
-    template_id: UUID, user_id: CurrentUserId, db: DbSession
-) -> TemplateRead:
+async def get_template(template_id: UUID, user_id: CurrentUserId, db: DbSession) -> TemplateRead:
     stmt = (
         select(WorkoutTemplateModel)
         .options(selectinload(WorkoutTemplateModel.items))
@@ -78,10 +79,8 @@ async def get_template(
 
 
 @router.delete("/{template_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_template(
-    template_id: UUID, user_id: CurrentUserId, db: DbSession
-) -> None:
-    from datetime import datetime, timezone
+async def delete_template(template_id: UUID, user_id: CurrentUserId, db: DbSession) -> None:
+    from datetime import datetime
 
     stmt = select(WorkoutTemplateModel).where(
         WorkoutTemplateModel.id == template_id,
@@ -91,11 +90,13 @@ async def delete_template(
     tmpl = (await db.execute(stmt)).scalar_one_or_none()
     if not tmpl:
         raise HTTPException(status_code=404, detail=TEMPLATE_NOT_FOUND)
-    tmpl.deleted_at = datetime.now(timezone.utc)
+    tmpl.deleted_at = datetime.now(UTC)
     await db.flush()
 
 
-@router.post("/{template_id}/duplicate", response_model=TemplateRead, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/{template_id}/duplicate", response_model=TemplateRead, status_code=status.HTTP_201_CREATED
+)
 async def duplicate_template(
     template_id: UUID, user_id: CurrentUserId, db: DbSession
 ) -> TemplateRead:
@@ -138,4 +139,3 @@ async def rename_template(
     await db.flush()
     await db.refresh(tpl)
     return TemplateRead.model_validate(tpl)
-

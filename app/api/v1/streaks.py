@@ -39,4 +39,3 @@ async def get_recovery(user_id: CurrentUserId, db: DbSession) -> dict:
     row = (await db.execute(stmt)).first()
     last = row[0] if row else None
     return recovery_snapshot(last, date.today())
-
