@@ -5,10 +5,10 @@ from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
 from app.domain.preference.services import clamp_weekly_goal, normalize_weight_unit
-
-ALLOWED_LANGUAGES = frozenset({"en", "de", "uk", "pl"})
 from app.infrastructure.database.models.preference import UserPreferenceModel
 from app.schemas.preference import PreferenceRead, PreferenceUpdate
+
+ALLOWED_LANGUAGES = frozenset({"en", "de", "uk", "pl"})
 
 router = APIRouter(prefix="/preferences", tags=["Preferences"])
 
@@ -61,4 +61,3 @@ async def reset_preferences(user_id: CurrentUserId, db: DbSession) -> Preference
     await db.flush()
     await db.refresh(pref)
     return PreferenceRead.model_validate(pref)
-
