@@ -1,12 +1,12 @@
+from datetime import UTC
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import func, select
-from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.dependencies import CurrentUserId, DbSession
 from app.core.limits import MAX_PAGE_SIZE
 from app.core.messages import EXERCISE_NOT_FOUND
-from app.core.dependencies import CurrentUserId, DbSession
 from app.infrastructure.database.models.exercise import ExerciseModel
 from app.schemas.common import PaginatedResponse
 from app.schemas.exercise import ExerciseCreate, ExerciseRead, ExerciseUpdate
@@ -66,11 +66,10 @@ async def list_exercises(
         )
     )
     result = await db.execute(stmt)
-    count_stmt = select(func.count()).select_from(
-        select(ExerciseModel).where(ExerciseModel.deleted_at.is_(None)).subquery()
-    )
     # recount with filters is approximate if we don't rebuild; simple total of page filter
-    total_result = await db.execute(select(func.count()).select_from(ExerciseModel).where(ExerciseModel.deleted_at.is_(None)))
+    total_result = await db.execute(
+        select(func.count()).select_from(ExerciseModel).where(ExerciseModel.deleted_at.is_(None))
+    )
     total = total_result.scalar() or 0
     exercises = result.scalars().all()
     items = [ExerciseRead.model_validate(e) for e in exercises]
@@ -107,8 +106,10 @@ async def delete_exercise(
     user_id: CurrentUserId,
     db: DbSession,
 ) -> None:
-    from datetime import datetime, timezone
+    from datetime import datetime
+
     from app.infrastructure.database.models.workout import WorkoutSetModel
+
     stmt = select(ExerciseModel).where(
         ExerciseModel.id == exercise_id,
         ExerciseModel.deleted_at.is_(None),
@@ -120,14 +121,16 @@ async def delete_exercise(
     if exercise.created_by is not None and exercise.created_by != user_id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not enough permissions")
     used = await db.execute(
-        select(func.count()).select_from(WorkoutSetModel).where(WorkoutSetModel.exercise_id == exercise_id)
+        select(func.count())
+        .select_from(WorkoutSetModel)
+        .where(WorkoutSetModel.exercise_id == exercise_id)
     )
     if (used.scalar() or 0) > 0:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="Exercise is referenced in workout sets and cannot be deleted",
         )
-    exercise.deleted_at = datetime.now(timezone.utc)
+    exercise.deleted_at = datetime.now(UTC)
     await db.flush()
 
 
@@ -223,8 +226,9 @@ async def search_exercises(
     q: str = "",
     limit: int = 20,
 ):
-    from app.infrastructure.database.models.exercise import ExerciseModel
     from sqlalchemy import select
+
+    from app.infrastructure.database.models.exercise import ExerciseModel
 
     stmt = select(ExerciseModel).where(ExerciseModel.deleted_at.is_(None))
     if q.strip():
@@ -232,5 +236,5 @@ async def search_exercises(
     stmt = stmt.order_by(ExerciseModel.name.asc()).limit(min(limit, 50))
     rows = (await db.execute(stmt)).scalars().all()
     from app.schemas.exercise import ExerciseRead
-    return [ExerciseRead.model_validate(r) for r in rows]
 
+    return [ExerciseRead.model_validate(r) for r in rows]
