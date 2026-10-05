@@ -1,6 +1,6 @@
 """Unit tests for AuthService (with mocked repository)."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
@@ -32,8 +32,8 @@ async def test_register_success(service, mock_repo):
         full_name="New User",
         is_active=True,
         is_superuser=False,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
     mock_repo.create.return_value = created_user
 
@@ -54,12 +54,10 @@ async def test_register_duplicate_email(service, mock_repo):
         full_name=None,
         is_active=True,
         is_superuser=False,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
 
     with pytest.raises(HTTPException) as exc:
-        await service.register(
-            UserCreate(email="exists@example.com", password="SecurePass123!")
-        )
+        await service.register(UserCreate(email="exists@example.com", password="SecurePass123!"))
     assert exc.value.status_code == 409

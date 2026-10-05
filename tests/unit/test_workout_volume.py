@@ -1,12 +1,13 @@
 from types import SimpleNamespace
 
+import pytest
+
 from app.domain.workout.services import (
     assert_set_numbers_unique,
     calculate_session_volume,
     count_completed_sets,
     estimate_1rm,
 )
-import pytest
 
 
 def test_session_volume():

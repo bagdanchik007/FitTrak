@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from uuid import uuid4
 
 from app.application.services.goal_progress_service import goal_status
@@ -6,7 +6,7 @@ from app.domain.goal.entities import Goal
 
 
 def test_goal_status():
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     g = Goal(
         id=uuid4(),
         user_id=uuid4(),

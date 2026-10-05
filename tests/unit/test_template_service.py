@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from app.application.services.template_service import template_overview
@@ -7,7 +7,7 @@ from app.domain.template.entities import TemplateItem, WorkoutTemplate
 
 def test_template_overview():
     tid = uuid4()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     t = WorkoutTemplate(
         tid,
         uuid4(),

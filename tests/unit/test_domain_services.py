@@ -1,6 +1,10 @@
 from uuid import uuid4
 
-from app.domain.exercise.services import is_known_equipment, is_known_muscle_group, normalize_exercise_name
+from app.domain.exercise.services import (
+    is_known_equipment,
+    is_known_muscle_group,
+    normalize_exercise_name,
+)
 from app.domain.user.services import display_name, normalize_user_email
 from app.domain.workout.entities import WorkoutSet
 from app.domain.workout.services import calculate_session_volume, estimate_1rm
@@ -18,8 +22,12 @@ def test_known_muscle_and_equipment():
 
 def test_session_volume():
     sets = [
-        WorkoutSet(id=uuid4(), workout_id=uuid4(), exercise_id=uuid4(), set_number=1, reps=10, weight_kg=50),
-        WorkoutSet(id=uuid4(), workout_id=uuid4(), exercise_id=uuid4(), set_number=2, reps=5, weight_kg=60),
+        WorkoutSet(
+            id=uuid4(), workout_id=uuid4(), exercise_id=uuid4(), set_number=1, reps=10, weight_kg=50
+        ),
+        WorkoutSet(
+            id=uuid4(), workout_id=uuid4(), exercise_id=uuid4(), set_number=2, reps=5, weight_kg=60
+        ),
     ]
     assert calculate_session_volume(sets) == 800.0
 

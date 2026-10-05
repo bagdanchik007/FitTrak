@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from uuid import uuid4
 
 from app.domain.goal.entities import Goal
@@ -6,7 +6,7 @@ from app.domain.goal.progress import is_overdue, percent_complete
 
 
 def test_percent_complete():
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     g = Goal(
         id=uuid4(),
         user_id=uuid4(),
@@ -24,7 +24,7 @@ def test_percent_complete():
 
 
 def test_is_overdue():
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     g = Goal(
         id=uuid4(),
         user_id=uuid4(),

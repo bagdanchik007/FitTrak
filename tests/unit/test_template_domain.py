@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from app.domain.template.entities import TemplateItem, WorkoutTemplate
@@ -7,7 +7,7 @@ from app.domain.template.services import sorted_items, total_target_sets
 
 def _template() -> WorkoutTemplate:
     tid = uuid4()
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     items = [
         TemplateItem(uuid4(), tid, uuid4(), 3, 10, 1),
         TemplateItem(uuid4(), tid, uuid4(), 4, 8, 0),

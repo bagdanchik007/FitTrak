@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import timedelta
 
 from app.core.datetime_utils import days_ago, is_within_last_days, today
 
