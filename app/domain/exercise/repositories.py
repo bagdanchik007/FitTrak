@@ -6,8 +6,7 @@ from app.domain.exercise.entities import Exercise
 
 class ExerciseRepository(ABC):
     @abstractmethod
-    async def get_by_id(self, exercise_id: UUID) -> Exercise | None:
-        ...
+    async def get_by_id(self, exercise_id: UUID) -> Exercise | None: ...
 
     @abstractmethod
     async def list(
@@ -15,22 +14,18 @@ class ExerciseRepository(ABC):
         skip: int = 0,
         limit: int = 50,
         muscle_group: str | None = None,
-    ) -> list[Exercise]:
-        ...
+    ) -> list[Exercise]: ...
 
     @abstractmethod
-    async def create(self, exercise: Exercise) -> Exercise:
-        ...
+    async def create(self, exercise: Exercise) -> Exercise: ...
 
     @abstractmethod
-    async def update(self, exercise: Exercise) -> Exercise:
-        ...
+    async def update(self, exercise: Exercise) -> Exercise: ...
 
     @abstractmethod
-    async def soft_delete(self, exercise_id: UUID) -> bool:
-        ...
+    async def soft_delete(self, exercise_id: UUID) -> bool: ...
 
-# Interface only – concrete class lives in infrastructure
+    # Interface only – concrete class lives in infrastructure
 
     @abstractmethod
     async def get_active(self, exercise_id: UUID):

@@ -6,5 +6,4 @@ from app.domain.progress.entities import ProgressSummary
 
 class ProgressRepository(ABC):
     @abstractmethod
-    async def get_summary(self, user_id: UUID) -> ProgressSummary:
-        ...
+    async def get_summary(self, user_id: UUID) -> ProgressSummary: ...

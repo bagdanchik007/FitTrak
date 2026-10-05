@@ -29,4 +29,5 @@ class ProgressSummary:
     personal_records: list[PersonalRecord]
     volume_last_30_days: list[VolumeEntry]
 
+
 # Pure domain data – no ORM or HTTP types

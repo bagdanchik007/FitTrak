@@ -15,4 +15,5 @@ class Exercise:
     updated_at: datetime
     deleted_at: datetime | None = None
 
+
 # Domain entity – free of framework and persistence concerns
