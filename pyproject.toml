@@ -42,6 +42,16 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "C4", "SIM"]
+ignore = [
+    "B008",  # FastAPI Depends() in defaults is intentional
+    "E501",  # long lines acceptable in route signatures and SQL
+    "N818",  # AppException naming kept for domain clarity
+    "UP040",  # TypeAlias style retained for readability
+    "UP046",  # Generic[T] style retained for pydantic models
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B017"]
 
 [tool.mypy]
 python_version = "3.12"
