@@ -1,4 +1,5 @@
 """Async session factory. Request-scoped sessions commit in dependency teardown."""
+
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -31,5 +32,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         except Exception:
             await session.rollback()
             raise
+
 
 # Sessions are request-scoped via FastAPI dependency injection

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID
 
 from sqlalchemy import select
@@ -83,7 +83,7 @@ class SQLAlchemyExerciseRepository(ExerciseRepository):
         model = result.scalar_one_or_none()
         if not model:
             return False
-        model.deleted_at = datetime.now(timezone.utc)
+        model.deleted_at = datetime.now(UTC)
         await self._session.flush()
         return True
 
@@ -95,4 +95,3 @@ class SQLAlchemyExerciseRepository(ExerciseRepository):
         result = await self._session.execute(stmt)
         model = result.scalar_one_or_none()
         return self._to_entity(model) if model else None
-

@@ -1,10 +1,15 @@
-from datetime import date, datetime
+from datetime import date
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, String, Text, func
+from sqlalchemy import Boolean, Date, Float, ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.infrastructure.database.base import Base, SoftDeleteMixin, TimestampMixin, UUIDPrimaryKeyMixin
+from app.infrastructure.database.base import (
+    Base,
+    SoftDeleteMixin,
+    TimestampMixin,
+    UUIDPrimaryKeyMixin,
+)
 
 
 class GoalModel(Base, UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin):

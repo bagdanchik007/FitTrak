@@ -1,4 +1,5 @@
 """Read-model queries for progress aggregates (not a write repository)."""
+
 from datetime import date, timedelta
 from uuid import UUID
 
@@ -123,6 +124,7 @@ class SQLAlchemyProgressRepository(ProgressRepository):
             personal_records=personal_records,
             volume_last_30_days=volume_last_30_days,
         )
+
 
 # Aggregation queries for PRs and daily volume run in a single session
 

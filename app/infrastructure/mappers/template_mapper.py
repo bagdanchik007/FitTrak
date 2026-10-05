@@ -1,5 +1,8 @@
 from app.domain.template.entities import TemplateItem, WorkoutTemplate
-from app.infrastructure.database.models.template import WorkoutTemplateItemModel, WorkoutTemplateModel
+from app.infrastructure.database.models.template import (
+    WorkoutTemplateItemModel,
+    WorkoutTemplateModel,
+)
 
 
 def model_to_template(model: WorkoutTemplateModel) -> WorkoutTemplate:

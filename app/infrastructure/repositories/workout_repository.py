@@ -1,9 +1,9 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.domain.workout.entities import Workout, WorkoutSet
 from app.domain.workout.repositories import WorkoutRepository
@@ -113,7 +113,7 @@ class SQLAlchemyWorkoutRepository(WorkoutRepository):
         model = result.scalar_one_or_none()
         if not model:
             return False
-        model.deleted_at = datetime.now(timezone.utc)
+        model.deleted_at = datetime.now(UTC)
         await self._session.flush()
         return True
 
@@ -130,4 +130,3 @@ class SQLAlchemyWorkoutRepository(WorkoutRepository):
         result = await self._session.execute(stmt)
         model = result.scalar_one_or_none()
         return self._to_entity(model) if model else None
-

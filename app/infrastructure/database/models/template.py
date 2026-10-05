@@ -2,7 +2,12 @@ from sqlalchemy import ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.infrastructure.database.base import Base, SoftDeleteMixin, TimestampMixin, UUIDPrimaryKeyMixin
+from app.infrastructure.database.base import (
+    Base,
+    SoftDeleteMixin,
+    TimestampMixin,
+    UUIDPrimaryKeyMixin,
+)
 
 
 class WorkoutTemplateModel(Base, UUIDPrimaryKeyMixin, TimestampMixin, SoftDeleteMixin):
@@ -26,7 +31,10 @@ class WorkoutTemplateItemModel(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     __tablename__ = "workout_template_items"
 
     template_id: Mapped[UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("workout_templates.id", ondelete="CASCADE"), nullable=False, index=True
+        UUID(as_uuid=True),
+        ForeignKey("workout_templates.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
     )
     exercise_id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("exercises.id", ondelete="RESTRICT"), nullable=False
