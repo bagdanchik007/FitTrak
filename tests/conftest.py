@@ -59,4 +59,5 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
 
     app.dependency_overrides.clear()
 
+
 # Test DB is created/dropped per session; each test gets a clean transaction

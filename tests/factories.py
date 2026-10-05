@@ -1,12 +1,12 @@
 """Test data factories (simple, no external deps)."""
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from uuid import uuid4
 
-from app.domain.user.entities import User
 from app.domain.exercise.entities import Exercise
-from app.schemas.user import UserCreate
+from app.domain.user.entities import User
 from app.schemas.exercise import ExerciseCreate
+from app.schemas.user import UserCreate
 from app.schemas.workout import WorkoutCreate, WorkoutSetCreate
 
 
@@ -19,7 +19,7 @@ def make_user_create(
 
 
 def make_user_entity(email: str = "entity@example.com") -> User:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return User(
         id=uuid4(),
         email=email,
@@ -37,7 +37,7 @@ def make_exercise_create(name: str = "Factory Lift") -> ExerciseCreate:
 
 
 def make_exercise_entity(name: str = "Entity Lift") -> Exercise:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return Exercise(
         id=uuid4(),
         name=name,

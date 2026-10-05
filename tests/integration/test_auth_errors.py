@@ -33,4 +33,5 @@ async def test_change_password_wrong_current_returns_400(client: AsyncClient):
     )
     assert resp.status_code == 400
 
+
 # change-password wrong current covered in same module
