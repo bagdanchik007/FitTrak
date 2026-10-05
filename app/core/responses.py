@@ -18,7 +18,9 @@ class ErrorBody(BaseModel):
     code: str | None = None
 
 
-def error_dict(detail: str, request_id: str | None = None, code: str | None = None) -> dict[str, Any]:
+def error_dict(
+    detail: str, request_id: str | None = None, code: str | None = None
+) -> dict[str, Any]:
     body: dict[str, Any] = {"detail": detail}
     if request_id:
         body["request_id"] = request_id
