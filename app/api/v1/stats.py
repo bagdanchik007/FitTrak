@@ -1,4 +1,5 @@
 """Dashboard stats for the authenticated user (totals and recent activity)."""
+
 from fastapi import APIRouter, Depends
 
 from app.application.services.stats_service import DashboardStats, StatsService

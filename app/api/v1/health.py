@@ -3,9 +3,8 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from app.core.config import get_settings
-from app.core.status_texts import DB_CONNECTED, DB_UNAVAILABLE, STATUS_OK
-from app.core.version import __version__
 from app.core.dependencies import DbSession
+from app.core.status_texts import DB_UNAVAILABLE, STATUS_OK
 
 router = APIRouter(tags=["Health"])
 settings = get_settings()
@@ -39,5 +38,6 @@ async def readiness(db: DbSession) -> JSONResponse:
             "database": db_status,
         },
     )
+
 
 # /health = liveness (process up); /health/ready = readiness (DB up)

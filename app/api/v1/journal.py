@@ -1,3 +1,4 @@
+from datetime import UTC
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
@@ -25,7 +26,9 @@ async def create_entry(data: JournalCreate, user_id: CurrentUserId, db: DbSessio
 
 
 @router.get("", response_model=list[JournalRead])
-async def list_entries(user_id: CurrentUserId, db: DbSession, skip: int = 0, limit: int = DEFAULT_PAGE_SIZE) -> list[JournalRead]:
+async def list_entries(
+    user_id: CurrentUserId, db: DbSession, skip: int = 0, limit: int = DEFAULT_PAGE_SIZE
+) -> list[JournalRead]:
     stmt = (
         select(JournalEntryModel)
         .where(JournalEntryModel.user_id == user_id, JournalEntryModel.deleted_at.is_(None))
@@ -58,7 +61,7 @@ async def update_entry(
 
 @router.delete("/{entry_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_entry(entry_id: UUID, user_id: CurrentUserId, db: DbSession) -> None:
-    from datetime import datetime, timezone
+    from datetime import datetime
 
     stmt = select(JournalEntryModel).where(
         JournalEntryModel.id == entry_id,
@@ -68,8 +71,9 @@ async def delete_entry(entry_id: UUID, user_id: CurrentUserId, db: DbSession) ->
     entry = (await db.execute(stmt)).scalar_one_or_none()
     if not entry:
         raise HTTPException(status_code=404, detail=JOURNAL_NOT_FOUND)
-    entry.deleted_at = datetime.now(timezone.utc)
+    entry.deleted_at = datetime.now(UTC)
     await db.flush()
+
 
 # Mood values are free-text; domain helpers can validate optionally
 
@@ -105,4 +109,3 @@ async def journal_mood_stats(user_id: CurrentUserId, db: DbSession) -> dict:
     moods = [m for (m,) in (await db.execute(stmt)).all() if m]
     counts = dict(Counter(moods))
     return {"total_with_mood": len(moods), "counts": counts}
-
