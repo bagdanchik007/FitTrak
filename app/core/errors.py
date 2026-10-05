@@ -1,5 +1,6 @@
 """Stable error code constants for API clients."""
 
+
 class ErrorCode:
     NOT_FOUND = "not_found"
     CONFLICT = "conflict"
