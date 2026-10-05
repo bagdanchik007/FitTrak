@@ -1,4 +1,5 @@
 """FastAPI dependencies: DB session, current user, rate limit."""
+
 from typing import Annotated
 from uuid import UUID
 
@@ -27,19 +28,19 @@ async def get_current_user_id(
 
     payload = decode_token(token)
     if payload is None:
-        raise credentials_exception
+        raise credentials_exception from None
 
     if payload.get("type") != "access":
-        raise credentials_exception
+        raise credentials_exception from None
 
     user_id: str | None = payload.get("sub")
     if user_id is None:
-        raise credentials_exception
+        raise credentials_exception from None
 
     try:
         return UUID(user_id)
     except ValueError:
-        raise credentials_exception
+        raise credentials_exception from None
 
 
 # Type aliases for cleaner dependency injection
