@@ -22,4 +22,5 @@ class PaginatedResponse(BaseModel, Generic[T]):
     skip: int
     limit: int
 
+
 # Generic pagination wrapper can be reused across list endpoints

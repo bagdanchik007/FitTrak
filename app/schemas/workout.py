@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class WorkoutSetBase(BaseModel):
@@ -27,11 +27,15 @@ class WorkoutBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=150)
     notes: str | None = None
     performed_at: date
-    duration_minutes: int | None = Field(None, ge=0, le=600)  # aligns with MAX_WORKOUT_DURATION_MINUTES
+    duration_minutes: int | None = Field(
+        None, ge=0, le=600
+    )  # aligns with MAX_WORKOUT_DURATION_MINUTES
 
 
 class WorkoutCreate(WorkoutBase):
-    sets: list[WorkoutSetCreate] = Field(default_factory=list, description="Optional; empty list allowed for planned workouts")
+    sets: list[WorkoutSetCreate] = Field(
+        default_factory=list, description="Optional; empty list allowed for planned workouts"
+    )
 
     @model_validator(mode="after")
     def unique_set_numbers(self) -> "WorkoutCreate":
@@ -45,7 +49,9 @@ class WorkoutUpdate(BaseModel):
     title: str | None = Field(None, min_length=1, max_length=150)
     notes: str | None = None
     performed_at: date | None = None
-    duration_minutes: int | None = Field(None, ge=0, le=600)  # aligns with MAX_WORKOUT_DURATION_MINUTES
+    duration_minutes: int | None = Field(
+        None, ge=0, le=600
+    )  # aligns with MAX_WORKOUT_DURATION_MINUTES
 
 
 class WorkoutRead(WorkoutBase):
@@ -56,5 +62,6 @@ class WorkoutRead(WorkoutBase):
     created_at: datetime
     sets: list[WorkoutSetRead] = []
     total_volume_kg: float | None = None
+
 
 # duration_minutes capped at 600 (10 hours)
