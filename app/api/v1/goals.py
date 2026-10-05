@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, HTTPException, status
@@ -56,9 +56,7 @@ async def list_goals(
     skip: int = 0,
     limit: int = 50,
 ) -> list[GoalRead]:
-    stmt = select(GoalModel).where(
-        GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
-    )
+    stmt = select(GoalModel).where(GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None))
     if completed is not None:
         stmt = stmt.where(GoalModel.is_completed == completed)
     stmt = stmt.order_by(GoalModel.created_at.desc()).offset(skip).limit(min(limit, 100))
@@ -119,7 +117,7 @@ async def delete_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> N
     goal = (await db.execute(stmt)).scalar_one_or_none()
     if not goal:
         raise HTTPException(status_code=404, detail=GOAL_NOT_FOUND)
-    goal.deleted_at = datetime.now(timezone.utc)
+    goal.deleted_at = datetime.now(UTC)
     await db.flush()
 
 
@@ -159,10 +157,14 @@ async def reopen_goal(goal_id: UUID, user_id: CurrentUserId, db: DbSession) -> G
 async def active_goals_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
     from sqlalchemy import func
 
-    stmt = select(func.count()).select_from(GoalModel).where(
-        GoalModel.user_id == user_id,
-        GoalModel.deleted_at.is_(None),
-        GoalModel.is_completed.is_(False),
+    stmt = (
+        select(func.count())
+        .select_from(GoalModel)
+        .where(
+            GoalModel.user_id == user_id,
+            GoalModel.deleted_at.is_(None),
+            GoalModel.is_completed.is_(False),
+        )
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"active_goals": int(total)}
@@ -177,9 +179,7 @@ async def list_goals_with_progress(
     from app.domain.goal.entities import Goal
     from app.domain.goal.progress import is_overdue, percent_complete
 
-    stmt = select(GoalModel).where(
-        GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None)
-    )
+    stmt = select(GoalModel).where(GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None))
     if completed is not None:
         stmt = stmt.where(GoalModel.is_completed == completed)
     stmt = stmt.order_by(GoalModel.created_at.desc())
@@ -208,4 +208,3 @@ async def list_goals_with_progress(
             }
         )
     return out
-

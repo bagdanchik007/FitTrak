@@ -70,8 +70,10 @@ async def remove_favorite(exercise_id: UUID, user_id: CurrentUserId, db: DbSessi
 async def favorites_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
     from sqlalchemy import func
 
-    stmt = select(func.count()).select_from(ExerciseFavoriteModel).where(
-        ExerciseFavoriteModel.user_id == user_id
+    stmt = (
+        select(func.count())
+        .select_from(ExerciseFavoriteModel)
+        .where(ExerciseFavoriteModel.user_id == user_id)
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
@@ -87,4 +89,3 @@ async def favorite_exists(
     )
     fav = (await db.execute(stmt)).scalar_one_or_none()
     return {"is_favorite": fav is not None}
-

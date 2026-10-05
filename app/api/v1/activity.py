@@ -23,8 +23,7 @@ class ActivityItem(BaseModel):
 
 @router.get("/feed", response_model=list[ActivityItem])
 async def activity_feed(
-    user_id: CurrentUserId, db: DbSession, limit: int = 20,
-    type_filter: str | None = None
+    user_id: CurrentUserId, db: DbSession, limit: int = 20, type_filter: str | None = None
 ) -> list[ActivityItem]:
     items: list[ActivityItem] = []
 
