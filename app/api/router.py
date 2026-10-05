@@ -1,6 +1,24 @@
 from fastapi import APIRouter
 
-from app.api.v1 import activity, auth, body_weights, exercises, favorites, goals, health, journal, meta, preferences, progress, stats, streaks, summary, templates, users, workouts
+from app.api.v1 import (
+    activity,
+    auth,
+    body_weights,
+    exercises,
+    favorites,
+    goals,
+    health,
+    journal,
+    meta,
+    preferences,
+    progress,
+    stats,
+    streaks,
+    summary,
+    templates,
+    users,
+    workouts,
+)
 
 api_router = APIRouter()
 
