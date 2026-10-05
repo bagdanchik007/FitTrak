@@ -11,13 +11,23 @@ from app.core.config import get_settings
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 settings = get_settings()
 
+# bcrypt accepts at most 72 bytes; normalize before hash/verify
+_MAX_PASSWORD_BYTES = 72
+
+
+def _normalize_password(password: str) -> str:
+    raw = password.encode("utf-8")
+    if len(raw) <= _MAX_PASSWORD_BYTES:
+        return password
+    return raw[:_MAX_PASSWORD_BYTES].decode("utf-8", errors="ignore")
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return pwd_context.verify(_normalize_password(plain_password), hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    return pwd_context.hash(_normalize_password(password))
 
 
 def create_access_token(subject: str | Any, expires_delta: timedelta | None = None) -> str:
@@ -41,8 +51,3 @@ def decode_token(token: str) -> dict[str, Any] | None:
         return payload
     except JWTError:
         return None
-
-
-# Tokens include a 'type' claim to distinguish access vs refresh
-
-# Access tokens: type=access; Refresh tokens: type=refresh – never interchange
