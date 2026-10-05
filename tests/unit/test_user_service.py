@@ -1,9 +1,8 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import AsyncMock
 from uuid import uuid4
 
 import pytest
-from fastapi import HTTPException
 
 from app.application.services.user_service import UserService
 from app.domain.user.entities import User
@@ -23,7 +22,7 @@ def service(mock_repo):
 @pytest.mark.asyncio
 async def test_get_by_id_not_found(service, mock_repo):
     mock_repo.get_by_id.return_value = None
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa: B017
         await service.get_by_id(uuid4())
 
 
@@ -36,8 +35,8 @@ async def test_update_profile_name(service, mock_repo):
         full_name="Old",
         is_active=True,
         is_superuser=False,
-        created_at=datetime.now(timezone.utc),
-        updated_at=datetime.now(timezone.utc),
+        created_at=datetime.now(UTC),
+        updated_at=datetime.now(UTC),
     )
     mock_repo.get_by_id.return_value = user
     mock_repo.update.return_value = user

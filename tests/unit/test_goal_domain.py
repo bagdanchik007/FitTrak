@@ -1,4 +1,4 @@
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from uuid import uuid4
 
 from app.domain.goal.entities import Goal
@@ -6,20 +6,20 @@ from app.domain.goal.services import is_goal_achieved, remaining_to_target
 
 
 def _goal(**kwargs) -> Goal:
-    now = datetime.now(timezone.utc)
-    base = dict(
-        id=uuid4(),
-        user_id=uuid4(),
-        title="Squat 140kg",
-        description=None,
-        target_value=140,
-        current_value=120,
-        unit="kg",
-        deadline=date.today(),
-        is_completed=False,
-        created_at=now,
-        updated_at=now,
-    )
+    now = datetime.now(UTC)
+    base = {
+        "id": uuid4(),
+        "user_id": uuid4(),
+        "title": "Squat 140kg",
+        "description": None,
+        "target_value": 140,
+        "current_value": 120,
+        "unit": "kg",
+        "deadline": date.today(),
+        "is_completed": False,
+        "created_at": now,
+        "updated_at": now,
+    }
     base.update(kwargs)
     return Goal(**base)
 
