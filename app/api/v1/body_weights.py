@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
@@ -12,7 +12,9 @@ router = APIRouter(prefix="/body-weights", tags=["Body Weight"])
 
 
 @router.post("", response_model=BodyWeightRead, status_code=status.HTTP_201_CREATED)
-async def log_weight(data: BodyWeightCreate, user_id: CurrentUserId, db: DbSession) -> BodyWeightRead:
+async def log_weight(
+    data: BodyWeightCreate, user_id: CurrentUserId, db: DbSession
+) -> BodyWeightRead:
     row = BodyWeightModel(id=uuid4(), user_id=user_id, **data.model_dump())
     db.add(row)
     await db.flush()
@@ -73,9 +75,8 @@ async def latest_body_weight(user_id: CurrentUserId, db: DbSession) -> BodyWeigh
 async def body_weights_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
     from sqlalchemy import func
 
-    stmt = select(func.count()).select_from(BodyWeightModel).where(
-        BodyWeightModel.user_id == user_id
+    stmt = (
+        select(func.count()).select_from(BodyWeightModel).where(BodyWeightModel.user_id == user_id)
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
-
