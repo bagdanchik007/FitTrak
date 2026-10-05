@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from fastapi import HTTPException, status
@@ -20,7 +20,6 @@ from app.schemas.user import Token, UserCreate, UserRead
 class AuthService:
     def __init__(self, user_repo: UserRepository) -> None:
         self._user_repo = user_repo
-
 
     def _build_token_response(self, user_id: str, remember_me: bool = False) -> Token:
         settings = get_settings()
@@ -47,8 +46,8 @@ class AuthService:
             full_name=data.full_name,
             is_active=True,
             is_superuser=False,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
         )
         created = await self._user_repo.create(user)
         return UserRead.model_validate(created)
@@ -69,7 +68,7 @@ class AuthService:
             )
 
         # Update last login
-        user.last_login_at = datetime.now(timezone.utc)
+        user.last_login_at = datetime.now(UTC)
         await self._user_repo.update(user)
 
         settings = get_settings()
@@ -77,10 +76,12 @@ class AuthService:
             access_token=create_access_token(subject=str(user.id)),
             refresh_token=create_refresh_token(subject=str(user.id)),
             access_expires_in=settings.access_token_expire_minutes * 60,
-            refresh_expires_in=(30 if remember_me else settings.refresh_token_expire_days) * 24 * 3600,
+            refresh_expires_in=(30 if remember_me else settings.refresh_token_expire_days)
+            * 24
+            * 3600,
         )
 
-# Passwords are hashed with bcrypt via passlib before persistence
+    # Passwords are hashed with bcrypt via passlib before persistence
 
     async def refresh(self, refresh_token: str) -> Token:
         payload = decode_token(refresh_token)

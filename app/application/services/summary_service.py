@@ -1,6 +1,10 @@
 """Weekly summary application helpers."""
 
-from app.domain.summary.services import SessionStats, average_volume_per_workout, merge_session_stats
+from app.domain.summary.services import (
+    SessionStats,
+    average_volume_per_workout,
+    merge_session_stats,
+)
 
 
 def build_weekly_totals(parts: list[SessionStats], workout_count: int) -> dict:

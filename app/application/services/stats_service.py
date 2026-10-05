@@ -2,9 +2,10 @@
 
 from uuid import UUID
 
+from pydantic import BaseModel
+
 from app.domain.progress.repositories import ProgressRepository
 from app.domain.workout.repositories import WorkoutRepository
-from pydantic import BaseModel
 
 
 class DashboardStats(BaseModel):

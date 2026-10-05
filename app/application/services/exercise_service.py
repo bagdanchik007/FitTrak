@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from app.core.exceptions import NotFoundError
@@ -19,8 +19,8 @@ class ExerciseService:
             muscle_group=data.muscle_group,
             equipment=data.equipment,
             created_by=user_id,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
         )
         created = await self._repo.create(exercise)
         return ExerciseRead.model_validate(created)

@@ -1,14 +1,14 @@
 """Goal application service (thin wrapper for future domain logic)."""
 
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
-from datetime import datetime, timezone
 
 from app.domain.goal.entities import Goal
 from app.schemas.goal import GoalCreate, GoalRead
 
 
 def build_goal_entity(user_id: UUID, data: GoalCreate) -> Goal:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     return Goal(
         id=uuid4(),
         user_id=user_id,

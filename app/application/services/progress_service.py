@@ -40,4 +40,5 @@ class ProgressService:
             ],
         )
 
+
 # Maps domain ProgressSummary into API response schemas

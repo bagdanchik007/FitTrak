@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import UUID, uuid4
 
 from app.core.exceptions import NotFoundError
@@ -32,8 +32,8 @@ class WorkoutService:
             notes=data.notes,
             performed_at=data.performed_at,
             duration_minutes=data.duration_minutes,
-            created_at=datetime.now(timezone.utc),
-            updated_at=datetime.now(timezone.utc),
+            created_at=datetime.now(UTC),
+            updated_at=datetime.now(UTC),
             sets=sets,
         )
         created = await self._repo.create(workout)
