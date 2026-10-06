@@ -1,16 +1,22 @@
-"""Journal domain helpers."""
+"""Journal pure helpers."""
 
-ALLOWED_MOODS = {"happy", "neutral", "tired", "motivated", "sore", "great"}
+ALLOWED_MOODS = frozenset(
+    {"great", "good", "ok", "low", "bad", "tired", "energized", "sore"}
+)
 
 
 def normalize_mood(mood: str | None) -> str | None:
     if mood is None:
         return None
     value = mood.strip().lower()
-    return value if value else None
+    return value or None
 
 
-def is_allowed_mood(mood: str | None) -> bool:
-    if mood is None:
-        return True
-    return normalize_mood(mood) in ALLOWED_MOODS
+def is_allowed_mood(mood: str) -> bool:
+    return mood in ALLOWED_MOODS
+
+
+def word_count(text: str | None) -> int:
+    if not text:
+        return 0
+    return len([w for w in text.split() if w.strip()])
