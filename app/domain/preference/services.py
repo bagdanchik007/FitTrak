@@ -24,3 +24,7 @@ def normalize_language(value: str | None) -> str:
         return "en"
     code = value.strip().lower()[:2]
     return code if code in ALLOWED_LANGUAGES else "en"
+
+
+def reminders_enabled(email_reminders: bool | None) -> bool:
+    return bool(email_reminders)
