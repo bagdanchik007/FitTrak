@@ -47,10 +47,12 @@ async def weight_delta(user_id: CurrentUserId, db: DbSession) -> dict:
     )
     rows = (await db.execute(stmt)).scalars().all()
     if len(rows) < 2:
-        return {"delta_kg": None, "samples": len(rows)}
+        return {"delta_kg": None, "samples": len(rows), "trend": "unknown"}
     delta = round(rows[-1].weight_kg - rows[0].weight_kg, 2)
+    from app.domain.body_weight.services import trend_direction
     return {
         "delta_kg": delta,
+        "trend": trend_direction(delta),
         "samples": len(rows),
         "from_date": str(rows[0].recorded_at),
         "to_date": str(rows[-1].recorded_at),
