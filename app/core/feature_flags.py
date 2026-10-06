@@ -30,6 +30,9 @@ FEATURES = {
     "favorite_exists": True,
     "goals_with_progress": True,
     "density_bands": True,
+    "consistency_score": True,
+    "volume_load_bands": True,
+    "body_weight_trend": True,
     "preference_normalization": True,
 }
 
