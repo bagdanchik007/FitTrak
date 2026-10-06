@@ -7,6 +7,7 @@ from sqlalchemy import func, select
 from app.core.dependencies import CurrentUserId, DbSession
 from app.core.limits import MAX_PAGE_SIZE
 from app.core.messages import EXERCISE_NOT_FOUND
+from app.domain.exercise.services import normalize_exercise_name
 from app.infrastructure.database.models.exercise import ExerciseModel
 from app.schemas.common import PaginatedResponse
 from app.schemas.exercise import ExerciseCreate, ExerciseRead, ExerciseUpdate
@@ -27,7 +28,7 @@ async def create_exercise(
 ) -> ExerciseRead:
     exercise = ExerciseModel(
         id=uuid4(),
-        name=data.name,
+        name=normalize_exercise_name(data.name),
         description=data.description,
         muscle_group=data.muscle_group,
         equipment=data.equipment,
