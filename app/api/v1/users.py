@@ -58,4 +58,19 @@ async def my_activity_summary(user_id: CurrentUserId, db: DbSession) -> dict:
         .where(WorkoutModel.user_id == user_id, WorkoutModel.deleted_at.is_(None))
     )
     total = (await db.execute(stmt)).scalar_one()
-    return {"user_id": str(user_id), "total_workouts": int(total)}
+    from datetime import date, timedelta
+
+    from sqlalchemy import func as sa_func
+
+    week_ago = date.today() - timedelta(days=6)
+    week_stmt = select(sa_func.count()).select_from(WorkoutModel).where(
+        WorkoutModel.user_id == user_id,
+        WorkoutModel.deleted_at.is_(None),
+        WorkoutModel.performed_at >= week_ago,
+    )
+    week = int((await db.execute(week_stmt)).scalar_one())
+    return {
+        "user_id": str(user_id),
+        "total_workouts": int(total),
+        "workouts_last_7_days": week,
+    }
