@@ -51,3 +51,26 @@ def density_band(sets_per_min: float | None) -> str | None:
     if sets_per_min < 0.7:
         return "moderate"
     return "high"
+
+
+def average_working_weight(sets: list[SetLike]) -> float | None:
+    """Mean weight across sets that include both weight and reps."""
+    weights = [
+        float(s.weight_kg)
+        for s in sets
+        if s.weight_kg is not None and s.reps is not None and s.reps > 0
+    ]
+    if not weights:
+        return None
+    return round(sum(weights) / len(weights), 2)
+
+
+def volume_load_band(volume_kg: float) -> str:
+    """Coarse session load band for dashboards."""
+    if volume_kg < 1_000:
+        return "light"
+    if volume_kg < 5_000:
+        return "moderate"
+    if volume_kg < 12_000:
+        return "heavy"
+    return "very_heavy"
