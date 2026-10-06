@@ -8,7 +8,7 @@ from sqlalchemy import select
 from app.core.dependencies import CurrentUserId, DbSession
 from app.core.messages import GOAL_NOT_FOUND
 from app.domain.goal.entities import Goal
-from app.domain.goal.progress import is_overdue, percent_complete
+from app.domain.goal.progress import is_overdue, percent_complete, remaining_to_target
 from app.infrastructure.database.models.goal import GoalModel
 from app.schemas.goal import GoalCreate, GoalRead, GoalUpdate
 
@@ -177,7 +177,7 @@ async def list_goals_with_progress(
     from datetime import date
 
     from app.domain.goal.entities import Goal
-    from app.domain.goal.progress import is_overdue, percent_complete
+    from app.domain.goal.progress import is_overdue, percent_complete, remaining_to_target
 
     stmt = select(GoalModel).where(GoalModel.user_id == user_id, GoalModel.deleted_at.is_(None))
     if completed is not None:
@@ -205,6 +205,7 @@ async def list_goals_with_progress(
                 **GoalRead.model_validate(g).model_dump(mode="json"),
                 "percent_complete": percent_complete(domain),
                 "is_overdue": is_overdue(domain, date.today()),
+                "remaining_to_target": remaining_to_target(g.current_value, g.target_value),
             }
         )
     return out
