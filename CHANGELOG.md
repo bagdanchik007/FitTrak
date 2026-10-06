@@ -1,3 +1,14 @@
+## [0.7.0] - 2026-10-26
+
+### Added
+- Session average working weight and volume load bands
+- Consistency score endpoint under streaks
+- Goal remaining_to_target on with-progress list
+- Body-weight trend direction on delta
+- Exercise name normalization and compound hints
+- Template name normalization helpers
+- User activity summary includes last-7-days count
+
 ## [0.6.5] - 2026-10-24
 
 ### Changed

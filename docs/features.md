@@ -47,3 +47,5 @@
 - Weekly goal progress, resource counts, favorite exists, meta build
 
 - Deepened weekly goal labels, recovery recommendations, density bands, PR margins
+
+- Consistency score, volume load bands, body-weight trend, goal remaining

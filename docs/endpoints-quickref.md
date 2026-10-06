@@ -54,3 +54,5 @@
 - GET /api/v1/meta/build
 
 - GET /api/v1/goals/with-progress
+
+- GET /api/v1/streaks/me/consistency
