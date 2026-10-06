@@ -39,3 +39,25 @@ async def get_recovery(user_id: CurrentUserId, db: DbSession) -> dict:
     row = (await db.execute(stmt)).first()
     last = row[0] if row else None
     return recovery_snapshot(last, date.today())
+
+
+@router.get("/me/consistency")
+async def get_consistency(user_id: CurrentUserId, db: DbSession, window_days: int = 28) -> dict:
+    from datetime import date, timedelta
+
+    from app.application.services.consistency_service import consistency_report
+
+    window_days = max(7, min(window_days, 90))
+    from_d = date.today() - timedelta(days=window_days - 1)
+    stmt = (
+        select(WorkoutModel.performed_at)
+        .where(
+            WorkoutModel.user_id == user_id,
+            WorkoutModel.deleted_at.is_(None),
+            WorkoutModel.performed_at >= from_d,
+        )
+        .distinct()
+    )
+    days = {row[0] for row in (await db.execute(stmt)).all()}
+    return consistency_report(len(days), window_days)
+
