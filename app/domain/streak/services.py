@@ -41,3 +41,10 @@ def rest_days_since(last_workout, today) -> int | None:
         return None
     delta = (today - last_workout).days
     return max(0, delta)
+
+
+def consistency_score(workout_days: int, window_days: int = 28) -> float:
+    """Share of days trained in a window, clamped to [0, 1]."""
+    if window_days <= 0:
+        return 0.0
+    return round(min(1.0, max(0.0, workout_days / window_days)), 3)
