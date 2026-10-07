@@ -56,3 +56,7 @@
 - GET /api/v1/goals/with-progress
 
 - GET /api/v1/streaks/me/consistency
+
+- GET /api/v1/summary/training-days
+- GET /api/v1/templates/count
+- GET /api/v1/journal/count
