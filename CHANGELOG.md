@@ -1,3 +1,12 @@
+## [0.7.1] - 2026-10-27
+
+### Added
+- Average RPE on session metrics
+- Goal status labels on with-progress list
+- Template and journal counts
+- Training-days summary endpoint
+- Activity type labels helper
+
 ## [0.7.0] - 2026-10-26
 
 ### Added
