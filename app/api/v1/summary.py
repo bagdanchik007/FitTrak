@@ -83,3 +83,22 @@ async def weekly_goal_progress(user_id: CurrentUserId, db: DbSession) -> dict:
     pref = (await db.execute(pref_stmt)).scalar_one_or_none()
     goal = pref.weekly_goal_workouts if pref else 3
     return weekly_goal_status(done, goal, from_date=from_d, to_date=to_d)
+
+
+@router.get("/training-days")
+async def training_days(user_id: CurrentUserId, db: DbSession, days: int = 7) -> dict:
+    from datetime import date, timedelta
+
+    from sqlalchemy import func
+
+    days = max(1, min(days, 90))
+    from_d = date.today() - timedelta(days=days - 1)
+    stmt = select(func.count(func.distinct(WorkoutModel.performed_at))).where(
+        WorkoutModel.user_id == user_id,
+        WorkoutModel.deleted_at.is_(None),
+        WorkoutModel.performed_at >= from_d,
+    )
+    # WorkoutModel may need import
+    count = int((await db.execute(stmt)).scalar_one())
+    return {"window_days": days, "training_days": count}
+
