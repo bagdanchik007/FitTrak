@@ -139,3 +139,16 @@ async def rename_template(
     await db.flush()
     await db.refresh(tpl)
     return TemplateRead.model_validate(tpl)
+
+
+@router.get("/count")
+async def templates_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(WorkoutTemplateModel).where(
+        WorkoutTemplateModel.user_id == user_id,
+        WorkoutTemplateModel.deleted_at.is_(None),
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"count": int(total)}
+
