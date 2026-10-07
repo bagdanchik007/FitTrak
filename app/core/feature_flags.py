@@ -33,6 +33,9 @@ FEATURES = {
     "consistency_score": True,
     "volume_load_bands": True,
     "body_weight_trend": True,
+    "average_rpe": True,
+    "goal_status_labels": True,
+    "training_days": True,
     "preference_normalization": True,
 }
 
