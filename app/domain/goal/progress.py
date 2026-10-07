@@ -21,3 +21,17 @@ def remaining_to_target(current: float | None, target: float | None) -> float | 
         return None
     cur = current or 0.0
     return round(max(0.0, float(target) - float(cur)), 2)
+
+
+def goal_status_label(*, is_completed: bool, is_overdue: bool, percent: float | None) -> str:
+    if is_completed:
+        return "completed"
+    if is_overdue:
+        return "overdue"
+    if percent is None:
+        return "open"
+    if percent >= 75:
+        return "near_target"
+    if percent > 0:
+        return "in_progress"
+    return "not_started"
