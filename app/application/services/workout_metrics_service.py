@@ -7,6 +7,7 @@ from app.domain.workout.services import (
     density_band,
     estimate_1rm,
     sets_per_minute,
+    average_rpe,
     volume_load_band,
 )
 
@@ -31,4 +32,5 @@ def session_metrics(sets, duration_minutes: int | None) -> dict:
         "density_band": density_band(spm),
         "average_working_weight_kg": average_working_weight(sets),
         "volume_load_band": volume_load_band(volume),
+        "average_rpe": average_rpe(sets),
     }
