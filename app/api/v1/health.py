@@ -1,3 +1,4 @@
+from app.core.version import __version__
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
@@ -16,7 +17,7 @@ async def health() -> JSONResponse:
         content={
             "status": "healthy",
             "app": settings.app_name,
-            "version": "0.1.0",
+            "version": __version__,
             "environment": settings.app_env,
         }
     )
