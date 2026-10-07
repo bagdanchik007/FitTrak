@@ -109,3 +109,16 @@ async def journal_mood_stats(user_id: CurrentUserId, db: DbSession) -> dict:
     moods = [m for (m,) in (await db.execute(stmt)).all() if m]
     counts = dict(Counter(moods))
     return {"total_with_mood": len(moods), "counts": counts}
+
+
+@router.get("/count")
+async def journal_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]:
+    from sqlalchemy import func
+
+    stmt = select(func.count()).select_from(JournalEntryModel).where(
+        JournalEntryModel.user_id == user_id,
+        JournalEntryModel.deleted_at.is_(None),
+    )
+    total = (await db.execute(stmt)).scalar_one()
+    return {"count": int(total)}
+
