@@ -74,3 +74,15 @@ def volume_load_band(volume_kg: float) -> str:
     if volume_kg < 12_000:
         return "heavy"
     return "very_heavy"
+
+
+def average_rpe(sets: list[SetLike]) -> float | None:
+    """Mean RPE across sets that provide an RPE value."""
+    values = []
+    for s in sets:
+        rpe = getattr(s, "rpe", None)
+        if rpe is not None:
+            values.append(float(rpe))
+    if not values:
+        return None
+    return round(sum(values) / len(values), 1)
