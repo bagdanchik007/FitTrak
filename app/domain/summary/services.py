@@ -41,3 +41,17 @@ def weekly_goal_label(workouts_done: int, weekly_goal: int) -> str:
     if workouts_done == 0:
         return "not_started"
     return "in_progress"
+
+
+def frequency_band(training_days: int, window_days: int) -> str:
+    """Coarse training frequency classification."""
+    if window_days <= 0:
+        return "unknown"
+    ratio = training_days / window_days
+    if ratio >= 0.5:
+        return "high"
+    if ratio >= 0.25:
+        return "moderate"
+    if ratio > 0:
+        return "low"
+    return "none"
