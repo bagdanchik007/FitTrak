@@ -36,6 +36,9 @@ FEATURES = {
     "average_rpe": True,
     "goal_status_labels": True,
     "training_days": True,
+    "frequency_band": True,
+    "pr_improvement_pct": True,
+    "favorites_capacity": True,
     "preference_normalization": True,
 }
 
