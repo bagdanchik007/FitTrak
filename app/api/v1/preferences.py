@@ -61,3 +61,14 @@ async def reset_preferences(user_id: CurrentUserId, db: DbSession) -> Preference
     await db.flush()
     await db.refresh(pref)
     return PreferenceRead.model_validate(pref)
+
+
+@router.get("/me/effective")
+async def effective_preferences(user_id: CurrentUserId, db: DbSession) -> dict:
+    pref = await _get_or_create(user_id, db)
+    return {
+        "weekly_goal_workouts": pref.weekly_goal_workouts or 3,
+        "weight_unit": pref.weight_unit or "kg",
+        "language": pref.language or "en",
+    }
+
