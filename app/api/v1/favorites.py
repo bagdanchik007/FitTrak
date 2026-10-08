@@ -76,7 +76,9 @@ async def favorites_count(user_id: CurrentUserId, db: DbSession) -> dict[str, in
         .where(ExerciseFavoriteModel.user_id == user_id)
     )
     total = (await db.execute(stmt)).scalar_one()
-    return {"count": int(total)}
+    from app.domain.favorite.services import favorites_capacity_hint
+    total_i = int(total)
+    return {"count": total_i, "capacity": favorites_capacity_hint(total_i)}
 
 
 @router.get("/exists/{exercise_id}")
