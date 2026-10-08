@@ -63,6 +63,7 @@ async def weekly_goal_progress(user_id: CurrentUserId, db: DbSession) -> dict:
     from sqlalchemy import func, select
 
     from app.application.services.weekly_goal_service import weekly_goal_status
+from app.domain.summary.services import frequency_band
     from app.infrastructure.database.models.preference import UserPreferenceModel
     from app.infrastructure.database.models.workout import WorkoutModel
 
@@ -100,5 +101,9 @@ async def training_days(user_id: CurrentUserId, db: DbSession, days: int = 7) ->
     )
     # WorkoutModel may need import
     count = int((await db.execute(stmt)).scalar_one())
-    return {"window_days": days, "training_days": count}
+    return {
+        "window_days": days,
+        "training_days": count,
+        "frequency_band": frequency_band(count, days),
+    }
 
