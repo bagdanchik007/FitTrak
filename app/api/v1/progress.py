@@ -55,6 +55,7 @@ class PRCheckResponse(BaseModel):
     previous_best_kg: float | None
     candidate_kg: float
     margin_kg: float | None = None
+    improvement_pct: float | None = None
 
 
 @router.post(
