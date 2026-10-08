@@ -51,3 +51,5 @@
 - Consistency score, volume load bands, body-weight trend, goal remaining
 
 - Average RPE, goal status labels, training-days, template/journal counts
+
+- Frequency band, PR improvement %, favorites capacity, effective preferences
