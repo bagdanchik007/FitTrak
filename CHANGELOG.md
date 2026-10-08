@@ -1,3 +1,13 @@
+## [0.7.2] - 2026-10-28
+
+### Added
+- Training frequency band on training-days endpoint
+- PR improvement percentage versus previous best
+- Favorites capacity hint on count endpoint
+- Effective preferences snapshot endpoint
+- Build channel metadata on meta/build
+- Longest rest-gap domain helper
+
 ## [0.7.1] - 2026-10-27
 
 ### Added
