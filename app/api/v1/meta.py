@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from app.core.config import get_settings
 from app.core.feature_flags import FEATURES
 from app.core.version import __version__
+from app.core.build_info import API_COMPAT, BUILD_CHANNEL
 from app.schemas.meta import VersionResponse
 
 router = APIRouter(prefix="/meta", tags=["Meta"])
@@ -27,4 +28,4 @@ async def features() -> dict[str, bool]:
 
 @router.get("/build")
 async def build_info() -> dict[str, str]:
-    return {"version": __version__, "api": "v1"}
+    return {"version": __version__, "api": API_COMPAT, "channel": BUILD_CHANNEL}
