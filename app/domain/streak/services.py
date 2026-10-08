@@ -48,3 +48,13 @@ def consistency_score(workout_days: int, window_days: int = 28) -> float:
     if window_days <= 0:
         return 0.0
     return round(min(1.0, max(0.0, workout_days / window_days)), 3)
+
+
+def longest_gap_days(sorted_dates: list) -> int | None:
+    """Largest gap in days between consecutive workout dates; None if <2 dates."""
+    if len(sorted_dates) < 2:
+        return None
+    gaps = []
+    for i in range(1, len(sorted_dates)):
+        gaps.append((sorted_dates[i] - sorted_dates[i - 1]).days)
+    return max(gaps) if gaps else None
