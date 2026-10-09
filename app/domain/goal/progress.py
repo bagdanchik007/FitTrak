@@ -35,3 +35,11 @@ def goal_status_label(*, is_completed: bool, is_overdue: bool, percent: float | 
     if percent > 0:
         return "in_progress"
     return "not_started"
+
+
+def is_on_track(percent: float | None, days_elapsed: int, days_total: int) -> bool | None:
+    """Whether percent complete matches or exceeds time elapsed share."""
+    if percent is None or days_total <= 0:
+        return None
+    expected = (days_elapsed / days_total) * 100
+    return percent >= expected * 0.9
