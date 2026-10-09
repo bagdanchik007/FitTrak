@@ -1,3 +1,14 @@
+## [0.8.0] - 2026-10-29
+
+### Added
+- Session duration band on workout metrics
+- Goal on-track helper against schedule
+- Journal mood polarity breakdown endpoint
+- CSV export helpers
+- Pagination clamp utilities and meta endpoint
+- User display-name helper
+- Empty dashboard defaults
+
 ## [0.7.2] - 2026-10-28
 
 ### Added
