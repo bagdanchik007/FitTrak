@@ -53,3 +53,5 @@
 - Average RPE, goal status labels, training-days, template/journal counts
 
 - Frequency band, PR improvement %, favorites capacity, effective preferences
+
+- Duration band, mood polarity, pagination meta, CSV export helpers (0.8.0)
