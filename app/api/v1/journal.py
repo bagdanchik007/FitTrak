@@ -122,3 +122,19 @@ async def journal_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int]
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
 
+
+@router.get("/mood-polarity")
+async def mood_polarity_breakdown(user_id: CurrentUserId, db: DbSession) -> dict:
+    from collections import Counter
+
+    from app.domain.journal.services import mood_polarity
+
+    stmt = select(JournalEntryModel.mood).where(
+        JournalEntryModel.user_id == user_id,
+        JournalEntryModel.deleted_at.is_(None),
+        JournalEntryModel.mood.is_not(None),
+    )
+    moods = [r[0] for r in (await db.execute(stmt)).all()]
+    counts = Counter(mood_polarity(m) for m in moods)
+    return {"positive": counts.get("positive", 0), "neutral": counts.get("neutral", 0), "negative": counts.get("negative", 0)}
+
