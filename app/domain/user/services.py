@@ -1,10 +1,4 @@
-"""User domain helpers."""
-
-from app.core.validators import normalize_email
-
-
-def normalize_user_email(email: str) -> str:
-    return normalize_email(email)
+"""User domain pure helpers."""
 
 
 def display_name(full_name: str | None, email: str) -> str:
