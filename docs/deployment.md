@@ -46,3 +46,5 @@ No new migration in 0.6.2; restart API after deploy.
 0.6.3 requires no new migration.
 
 0.6.4 requires no new migration.
+
+0.8.0 requires no new migration.
