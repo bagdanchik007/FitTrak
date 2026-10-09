@@ -60,3 +60,6 @@
 - GET /api/v1/summary/training-days
 - GET /api/v1/templates/count
 - GET /api/v1/journal/count
+
+- GET /api/v1/meta/pagination
+- GET /api/v1/journal/mood-polarity
