@@ -1,21 +1,15 @@
-"""Pagination helpers."""
-
-from dataclasses import dataclass
+"""Pagination clamp helpers."""
 
 from app.core.limits import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
 
 
-@dataclass(slots=True)
-class PageParams:
-    skip: int = 0
-    limit: int = DEFAULT_PAGE_SIZE
-
-    def __post_init__(self) -> None:
-        self.skip = max(0, self.skip)
-        self.limit = min(max(1, self.limit), MAX_PAGE_SIZE)
-
-
-def clamp_limit(limit: int, default: int = DEFAULT_PAGE_SIZE, maximum: int = MAX_PAGE_SIZE) -> int:
-    if limit < 1:
+def clamp_limit(limit: int | None, default: int = DEFAULT_PAGE_SIZE) -> int:
+    if limit is None:
         return default
-    return min(limit, maximum)
+    return max(1, min(int(limit), MAX_PAGE_SIZE))
+
+
+def clamp_skip(skip: int | None) -> int:
+    if skip is None or skip < 0:
+        return 0
+    return int(skip)
