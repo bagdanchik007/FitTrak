@@ -1,6 +1,7 @@
 """Derived workout metrics for API responses."""
 
 from app.domain.workout.services import (
+    duration_band,
     average_working_weight,
     calculate_session_volume,
     count_completed_sets,
@@ -8,6 +9,7 @@ from app.domain.workout.services import (
     estimate_1rm,
     sets_per_minute,
     average_rpe,
+    duration_band,
     volume_load_band,
 )
 
@@ -33,4 +35,5 @@ def session_metrics(sets, duration_minutes: int | None) -> dict:
         "average_working_weight_kg": average_working_weight(sets),
         "volume_load_band": volume_load_band(volume),
         "average_rpe": average_rpe(sets),
+        "duration_band": duration_band(duration_minutes),
     }
