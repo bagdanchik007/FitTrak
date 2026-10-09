@@ -32,3 +32,5 @@
 - [x] Recovery status and exercise search
 
 - [x] Weekly goal progress and resource counts
+
+- [x] Duration band, mood polarity, pagination meta, export helpers
