@@ -37,3 +37,12 @@ class StatsService:
             total_volume_kg=summary.total_volume_kg,
             workouts_last_7_days=last_7,
         )
+
+
+def empty_dashboard() -> dict:
+    return {
+        "total_workouts": 0,
+        "total_volume_kg": 0.0,
+        "active_goals": 0,
+        "current_streak": 0,
+    }
