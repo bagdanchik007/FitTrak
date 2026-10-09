@@ -39,6 +39,9 @@ FEATURES = {
     "frequency_band": True,
     "pr_improvement_pct": True,
     "favorites_capacity": True,
+    "duration_band": True,
+    "mood_polarity": True,
+    "pagination_meta": True,
     "preference_normalization": True,
 }
 
