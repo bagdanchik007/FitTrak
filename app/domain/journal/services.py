@@ -20,3 +20,16 @@ def word_count(text: str | None) -> int:
     if not text:
         return 0
     return len([w for w in text.split() if w.strip()])
+
+
+def mood_polarity(mood: str | None) -> str:
+    if not mood:
+        return "neutral"
+    positive = {"great", "good", "energized"}
+    negative = {"bad", "low", "tired", "sore"}
+    m = mood.lower()
+    if m in positive:
+        return "positive"
+    if m in negative:
+        return "negative"
+    return "neutral"
