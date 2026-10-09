@@ -86,3 +86,15 @@ def average_rpe(sets: list[SetLike]) -> float | None:
     if not values:
         return None
     return round(sum(values) / len(values), 1)
+
+
+def duration_band(minutes: int | None) -> str | None:
+    if minutes is None or minutes <= 0:
+        return None
+    if minutes < 30:
+        return "short"
+    if minutes < 60:
+        return "standard"
+    if minutes < 90:
+        return "long"
+    return "extended"
