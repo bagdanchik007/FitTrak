@@ -29,3 +29,11 @@ async def features() -> dict[str, bool]:
 @router.get("/build")
 async def build_info() -> dict[str, str]:
     return {"version": __version__, "api": API_COMPAT, "channel": BUILD_CHANNEL}
+
+
+@router.get("/pagination")
+async def pagination_defaults() -> dict:
+    from app.core.limits import DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
+
+    return {"default_page_size": DEFAULT_PAGE_SIZE, "max_page_size": MAX_PAGE_SIZE}
+
