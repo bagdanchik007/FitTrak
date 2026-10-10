@@ -43,3 +43,9 @@ def is_on_track(percent: float | None, days_elapsed: int, days_total: int) -> bo
         return None
     expected = (days_elapsed / days_total) * 100
     return percent >= expected * 0.9
+
+
+def days_until_deadline(deadline, today) -> int | None:
+    if deadline is None:
+        return None
+    return (deadline - today).days
