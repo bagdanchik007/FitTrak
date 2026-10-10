@@ -98,3 +98,16 @@ def duration_band(minutes: int | None) -> str | None:
     if minutes < 90:
         return "long"
     return "extended"
+
+
+def suggested_rest_seconds(*, reps: int | None, weight_kg: float | None) -> int:
+    """Heuristic rest interval between sets based on load intensity."""
+    if reps is None or reps <= 0:
+        return 90
+    if weight_kg is not None and weight_kg >= 100 and reps <= 5:
+        return 180
+    if reps <= 5:
+        return 150
+    if reps <= 8:
+        return 120
+    return 60
