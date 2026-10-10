@@ -34,3 +34,5 @@
 - [x] Weekly goal progress and resource counts
 
 - [x] Duration band, mood polarity, pagination meta, export helpers
+
+- [x] Rest suggestions, muscle normalize, streak milestones
