@@ -18,6 +18,7 @@ async def health() -> JSONResponse:
             "status": "healthy",
             "app": settings.app_name,
             "version": __version__,
+            "features_enabled": True,
             "environment": settings.app_env,
         }
     )
