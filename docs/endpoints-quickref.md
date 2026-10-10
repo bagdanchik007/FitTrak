@@ -63,3 +63,6 @@
 
 - GET /api/v1/meta/pagination
 - GET /api/v1/journal/mood-polarity
+
+- GET /api/v1/workouts/rest-suggestion
+- GET /api/v1/streaks/me/milestone
