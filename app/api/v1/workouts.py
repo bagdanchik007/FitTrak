@@ -267,3 +267,15 @@ async def workouts_count(user_id: CurrentUserId, db: DbSession) -> dict[str, int
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
+
+
+@router.get("/rest-suggestion")
+async def rest_suggestion_endpoint(
+    reps: int | None = None,
+    weight_kg: float | None = None,
+) -> dict:
+    """Heuristic rest guidance; does not persist data."""
+    from app.application.services.rest_service import rest_suggestion
+
+    return rest_suggestion(reps, weight_kg)
+
