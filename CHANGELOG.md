@@ -1,3 +1,11 @@
+## [0.8.1] - 2026-10-30
+
+### Added
+- Rest interval suggestion endpoint for sets
+- Muscle group normalization helpers
+- Streak milestone labels
+- Days until deadline on goals with-progress
+
 ## [0.8.0] - 2026-10-29
 
 ### Added
