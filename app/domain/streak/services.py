@@ -58,3 +58,11 @@ def longest_gap_days(sorted_dates: list) -> int | None:
     for i in range(1, len(sorted_dates)):
         gaps.append((sorted_dates[i] - sorted_dates[i - 1]).days)
     return max(gaps) if gaps else None
+
+
+def streak_milestone(current_streak: int) -> str | None:
+    milestones = (7, 14, 30, 60, 90, 180, 365)
+    for m in reversed(milestones):
+        if current_streak >= m:
+            return f"{m}_days"
+    return None
