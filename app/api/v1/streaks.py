@@ -1,3 +1,4 @@
+from app.domain.streak.services import streak_milestone
 """Workout streak calculation for the current user."""
 
 from fastapi import APIRouter
