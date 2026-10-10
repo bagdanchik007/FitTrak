@@ -9,6 +9,7 @@ from app.core.dependencies import CurrentUserId, DbSession
 from app.core.messages import GOAL_NOT_FOUND
 from app.domain.goal.entities import Goal
 from app.domain.goal.progress import (
+    days_until_deadline,
     goal_status_label,
     is_overdue,
     percent_complete,
@@ -183,6 +184,7 @@ async def list_goals_with_progress(
 
     from app.domain.goal.entities import Goal
     from app.domain.goal.progress import (
+    days_until_deadline,
     goal_status_label,
     is_overdue,
     percent_complete,
@@ -216,6 +218,7 @@ async def list_goals_with_progress(
                 "percent_complete": percent_complete(domain),
                 "is_overdue": is_overdue(domain, date.today()),
                 "remaining_to_target": remaining_to_target(g.current_value, g.target_value),
+                "days_until_deadline": days_until_deadline(g.deadline, date.today()),
                 "status": goal_status_label(
                     is_completed=g.is_completed,
                     is_overdue=is_overdue(domain, date.today()),
