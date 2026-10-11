@@ -24,3 +24,4 @@ __all__ = [
     "JournalEntryModel",
     "ExerciseFavoriteModel",
 ]
+from app.infrastructure.database.models.refresh_token import RefreshTokenModel  # noqa: F401
