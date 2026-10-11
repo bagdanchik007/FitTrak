@@ -209,6 +209,11 @@ curl -s http://localhost:8000/api/v1/progress/summary \
 Version is defined in `app/core/version.py`.
 
 
-Current API version: **0.8.1** (see `app/core/version.py`).
+Current API version: **0.9.0** (see `app/core/version.py`).
 
 Run `make verify` to check package layout.
+
+
+## Frontend
+
+See `frontend/README.md` — React + TypeScript + Tailwind.
