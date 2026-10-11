@@ -226,6 +226,8 @@ async def export_workouts_csv(
     )
     result = await db.execute(stmt)
     workouts = result.scalars().all()
+    from app.application.services.export_service import format_csv_row, workout_csv_header
+    # summary-level export (one row per workout)
     lines = ["date,title,duration_minutes,sets_count,total_volume_kg"]
     for w in workouts:
         vol = 0.0
@@ -235,7 +237,11 @@ async def export_workouts_csv(
         lines.append(
             f"{w.performed_at},{w.title.replace(',', ' ')},{w.duration_minutes or ''},{len(w.sets or [])},{round(vol, 2)}"
         )
-    return PlainTextResponse("\n".join(lines), media_type="text/csv")
+    return PlainTextResponse(
+        "\n".join(lines),
+        media_type="text/csv",
+        headers={"Content-Disposition": 'attachment; filename="workouts.csv"'},
+    )
 
 
 @router.get("/{workout_id}/metrics")
