@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.application.services.auth_service import AuthService
@@ -86,3 +86,31 @@ async def logout() -> None:
 async def logout_all_devices() -> None:
     """Placeholder for global refresh-token invalidation across devices."""
     return None
+
+
+@router.post("/request-verification")
+async def request_email_verification(
+    user_id: CurrentUserId,
+    db: DbSession,
+) -> dict:
+    """Issue a verification token (email delivery is application-configured)."""
+    from app.application.services.email_verification_service import issue_verification_token
+
+    token = await issue_verification_token(db, user_id)
+    if token is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    await db.commit()
+    # In production do not return the token; returned here for API testing.
+    return {"status": "issued", "token": token}
+
+
+@router.post("/verify-email")
+async def verify_email(token: str, db: DbSession) -> dict:
+    from app.application.services.email_verification_service import verify_email_token
+
+    ok = await verify_email_token(db, token)
+    if not ok:
+        raise HTTPException(status_code=400, detail="Invalid or expired verification token")
+    await db.commit()
+    return {"status": "verified"}
+
