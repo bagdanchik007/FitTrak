@@ -10,11 +10,11 @@
 
 ## Next
 
-- [ ] Refresh token rotation stored in DB
-- [ ] Email verification
-- [ ] Export workouts as CSV
+- [x] Refresh token rotation stored in DB
+- [x] Email verification (token issue + verify endpoints)
+- [x] Export workouts as CSV (download header)
 - [ ] WebSocket live session tracking
-- [ ] Frontend (Next.js)
+- [x] Frontend scaffold (React + TypeScript + Vite + Tailwind)
 
 - [x] Journal & favorites
 - [x] Streaks & weekly summary
@@ -36,3 +36,7 @@
 - [x] Duration band, mood polarity, pagination meta, export helpers
 
 - [x] Rest suggestions, muscle normalize, streak milestones
+
+
+## 0.9.0
+- Refresh tokens table, email verification, frontend SPA
