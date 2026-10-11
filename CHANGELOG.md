@@ -1,3 +1,11 @@
+## [0.9.0] - 2026-10-31
+
+### Added
+- Refresh token model, rotation service and migration
+- Email verification request/verify endpoints
+- CSV export Content-Disposition attachment header
+- Frontend: React + TypeScript + Vite + Tailwind (login, register, dashboard, workouts)
+
 ## [0.8.1] - 2026-10-30
 
 ### Added
