@@ -57,3 +57,5 @@
 - Duration band, mood polarity, pagination meta, CSV export helpers (0.8.0)
 
 - Rest suggestions, muscle group normalize, streak milestones, deadline days (0.8.1)
+
+- Refresh token store, email verification, frontend SPA (0.9.0)
