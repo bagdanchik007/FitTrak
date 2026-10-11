@@ -1,8 +1,7 @@
-import asyncio
-from collections.abc import AsyncGenerator
-from typing import Any
+"""Shared pytest fixtures for unit and integration tests."""
 
-import pytest
+from collections.abc import AsyncGenerator
+
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -14,26 +13,25 @@ from app.main import app
 
 settings = get_settings()
 
-# Use a separate test database URL if provided, otherwise fall back
-TEST_DATABASE_URL = settings.database_url.replace("/fittrack", "/fittrack_test")
+# Prefer explicit test DB; fall back to swapping path segment if present
+_raw_url = settings.database_url
+TEST_DATABASE_URL = (
+    _raw_url
+    if "fittrack_test" in _raw_url
+    else _raw_url.replace("/fittrack", "/fittrack_test")
+)
 
 
-@pytest.fixture(scope="session")
-def event_loop() -> Any:
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest_asyncio.fixture(scope="session")
+@pytest_asyncio.fixture
 async def engine():
-    engine = create_async_engine(TEST_DATABASE_URL, echo=False)
-    async with engine.begin() as conn:
+    """Function-scoped engine so pytest-asyncio loop scopes stay consistent."""
+    eng = create_async_engine(TEST_DATABASE_URL, echo=False)
+    async with eng.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    yield engine
-    async with engine.begin() as conn:
+    yield eng
+    async with eng.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-    await engine.dispose()
+    await eng.dispose()
 
 
 @pytest_asyncio.fixture
@@ -50,14 +48,11 @@ async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
         yield db_session
 
     app.dependency_overrides[get_db] = override_get_db
-
-    async with AsyncClient(
-        transport=ASGITransport(app=app),
-        base_url="http://test",
-    ) as ac:
-        yield ac
-
-    app.dependency_overrides.clear()
-
-
-# Test DB is created/dropped per session; each test gets a clean transaction
+    try:
+        async with AsyncClient(
+            transport=ASGITransport(app=app),
+            base_url="http://test",
+        ) as ac:
+            yield ac
+    finally:
+        app.dependency_overrides.clear()
