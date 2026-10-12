@@ -1,8 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { Dashboard } from "./pages/Dashboard";
+import { Goals } from "./pages/Goals";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
+import { Notifications } from "./pages/Notifications";
 import { Register } from "./pages/Register";
 import { Workouts } from "./pages/Workouts";
 
@@ -16,6 +18,8 @@ export default function App() {
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="workouts" element={<Workouts />} />
+          <Route path="goals" element={<Goals />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
