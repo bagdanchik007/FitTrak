@@ -27,6 +27,12 @@ export function Layout() {
                 <NavLink to="/workouts" className={linkClass}>
                   Workouts
                 </NavLink>
+                <NavLink to="/goals" className={linkClass}>
+                  Goals
+                </NavLink>
+                <NavLink to="/notifications" className={linkClass}>
+                  Alerts
+                </NavLink>
                 <button
                   type="button"
                   className="ml-2 px-3 py-2 text-sm text-slate-400 hover:text-white"
