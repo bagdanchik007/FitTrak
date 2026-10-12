@@ -37,3 +37,21 @@ async def pagination_defaults() -> dict:
 
     return {"default_page_size": DEFAULT_PAGE_SIZE, "max_page_size": MAX_PAGE_SIZE}
 
+
+@router.post("/password-strength")
+async def check_password_strength(payload: dict) -> dict:
+    """Client-side helper: score a candidate password without storing it."""
+    from app.domain.user.password_policy import (
+        is_password_acceptable,
+        password_strength_label,
+        password_strength_score,
+    )
+
+    password = str(payload.get("password") or "")
+    score = password_strength_score(password)
+    return {
+        "score": score,
+        "label": password_strength_label(score),
+        "acceptable": is_password_acceptable(password),
+    }
+
