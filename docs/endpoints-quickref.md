@@ -66,3 +66,6 @@
 
 - GET /api/v1/workouts/rest-suggestion
 - GET /api/v1/streaks/me/milestone
+
+- GET /api/v1/notifications
+- POST /api/v1/meta/password-strength

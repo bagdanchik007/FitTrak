@@ -1,3 +1,10 @@
+## [0.9.1] - 2026-11-01
+
+### Added
+- Password strength scoring endpoint
+- In-app notifications derived from workouts and goals
+- Frontend Goals and Notifications pages
+
 ## [0.9.0] - 2026-10-31
 
 ### Added

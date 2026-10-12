@@ -40,3 +40,5 @@
 
 ## 0.9.0
 - Refresh tokens table, email verification, frontend SPA
+
+- [x] Notifications feed + password strength + Goals UI

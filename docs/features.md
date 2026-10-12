@@ -59,3 +59,5 @@
 - Rest suggestions, muscle group normalize, streak milestones, deadline days (0.8.1)
 
 - Refresh token store, email verification, frontend SPA (0.9.0)
+
+- Password strength meta endpoint, notifications feed, Goals/Alerts UI (0.9.1)
