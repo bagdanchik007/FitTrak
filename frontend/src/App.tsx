@@ -5,6 +5,7 @@ import { Goals } from "./pages/Goals";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Notifications } from "./pages/Notifications";
+import { Streaks } from "./pages/Streaks";
 import { Register } from "./pages/Register";
 import { Workouts } from "./pages/Workouts";
 
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="workouts" element={<Workouts />} />
           <Route path="goals" element={<Goals />} />
           <Route path="notifications" element={<Notifications />} />
+          <Route path="streaks" element={<Streaks />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
