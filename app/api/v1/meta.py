@@ -55,3 +55,15 @@ async def check_password_strength(payload: dict) -> dict:
         "acceptable": is_password_acceptable(password),
     }
 
+@router.get("/timezones")
+async def list_common_timezones() -> dict:
+    return {
+        "timezones": [
+            "UTC",
+            "Europe/Berlin",
+            "Europe/Kyiv",
+            "America/New_York",
+            "America/Los_Angeles",
+            "Asia/Tokyo",
+        ]
+    }
