@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
-from app.domain.preference.services import clamp_weekly_goal, normalize_weight_unit
+from app.domain.preference.services import normalize_theme,  clamp_weekly_goal, normalize_weight_unit
 from app.infrastructure.database.models.preference import UserPreferenceModel
 from app.schemas.preference import PreferenceRead, PreferenceUpdate
 
