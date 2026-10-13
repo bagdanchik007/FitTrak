@@ -111,3 +111,14 @@ def suggested_rest_seconds(*, reps: int | None, weight_kg: float | None) -> int:
     if reps <= 8:
         return 120
     return 60
+
+
+def truncate_notes(notes: str | None, max_len: int = 500) -> str | None:
+    if notes is None:
+        return None
+    cleaned = notes.strip()
+    if not cleaned:
+        return None
+    if len(cleaned) <= max_len:
+        return cleaned
+    return cleaned[: max_len - 1] + "…"
