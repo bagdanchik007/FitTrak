@@ -107,3 +107,63 @@ async def training_days(user_id: CurrentUserId, db: DbSession, days: int = 7) ->
         "frequency_band": frequency_band(count, days),
     }
 
+
+@router.get("/volume-trend")
+async def volume_trend(user_id: CurrentUserId, db: DbSession) -> dict:
+    """Compare last 7 days volume to the previous 7 days."""
+    from datetime import date, timedelta
+
+    from sqlalchemy import select
+
+    from app.application.services.volume_trend_service import trend_direction, volume_trend_pct
+    from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
+
+    today = date.today()
+    cur_from = today - timedelta(days=6)
+    prev_from = today - timedelta(days=13)
+    prev_to = today - timedelta(days=7)
+
+    async def window_volume(start, end) -> float:
+        stmt = (
+            select(WorkoutModel)
+            .where(
+                WorkoutModel.user_id == user_id,
+                WorkoutModel.deleted_at.is_(None),
+                WorkoutModel.performed_at >= start,
+                WorkoutModel.performed_at <= end,
+            )
+        )
+        workouts = (await db.execute(stmt)).scalars().all()
+        total = 0.0
+        for w in workouts:
+            await db.refresh(w, attribute_names=["sets"]) if False else None
+        # load sets via separate query for simplicity
+        from sqlalchemy.orm import selectinload
+
+        stmt2 = (
+            select(WorkoutModel)
+            .options(selectinload(WorkoutModel.sets))
+            .where(
+                WorkoutModel.user_id == user_id,
+                WorkoutModel.deleted_at.is_(None),
+                WorkoutModel.performed_at >= start,
+                WorkoutModel.performed_at <= end,
+            )
+        )
+        rows = (await db.execute(stmt2)).scalars().all()
+        for w in rows:
+            for s in w.sets or []:
+                if s.weight_kg is not None and s.reps is not None:
+                    total += float(s.weight_kg) * int(s.reps)
+        return round(total, 2)
+
+    current = await window_volume(cur_from, today)
+    previous = await window_volume(prev_from, prev_to)
+    pct = volume_trend_pct(current, previous)
+    return {
+        "current_7d_volume_kg": current,
+        "previous_7d_volume_kg": previous,
+        "change_pct": pct,
+        "direction": trend_direction(pct),
+    }
+
