@@ -63,3 +63,5 @@
 - Password strength meta endpoint, notifications feed, Goals/Alerts UI (0.9.1)
 
 - Volume trend, body-weight week-delta, Streaks UI (0.9.2)
+
+- WebSocket live session tracking (0.10.0)

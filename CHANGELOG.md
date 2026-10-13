@@ -1,3 +1,11 @@
+## [0.10.0] - 2026-11-03
+
+### Added
+- WebSocket live workout session tracking
+- Live session HTTP status endpoint
+- Live session domain event normalization
+- Frontend Live session page
+
 ## [0.9.2] - 2026-11-02
 
 ### Added

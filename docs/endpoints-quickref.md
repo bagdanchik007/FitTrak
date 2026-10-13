@@ -73,3 +73,6 @@
 - GET /api/v1/summary/volume-trend
 - GET /api/v1/body-weights/week-delta
 - GET /api/v1/meta/timezones
+
+- WS /api/v1/ws/live-session
+- GET /api/v1/live-session/status
