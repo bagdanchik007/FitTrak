@@ -13,7 +13,7 @@
 - [x] Refresh token rotation stored in DB
 - [x] Email verification (token issue + verify endpoints)
 - [x] Export workouts as CSV (download header)
-- [ ] WebSocket live session tracking
+- [x] WebSocket live session tracking
 - [x] Frontend scaffold (React + TypeScript + Vite + Tailwind)
 
 - [x] Journal & favorites
@@ -44,3 +44,7 @@
 - [x] Notifications feed + password strength + Goals UI
 
 - [x] Volume trend + week-delta + Streaks UI
+
+
+## 0.10.0
+- [x] WebSocket live session + frontend Live page
