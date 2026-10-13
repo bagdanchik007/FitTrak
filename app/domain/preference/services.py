@@ -28,3 +28,11 @@ def normalize_language(value: str | None) -> str:
 
 def reminders_enabled(email_reminders: bool | None) -> bool:
     return bool(email_reminders)
+
+
+def normalize_theme(theme: str | None) -> str:
+    allowed = {"system", "light", "dark"}
+    if not theme:
+        return "system"
+    value = theme.strip().lower()
+    return value if value in allowed else "system"
