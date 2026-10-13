@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    live,
     notifications,
     activity,
     auth,
@@ -40,4 +41,5 @@ api_router.include_router(favorites.router)
 api_router.include_router(streaks.router)
 api_router.include_router(summary.router)
 api_router.include_router(notifications.router)
+api_router.include_router(live.router)
 api_router.include_router(health.router)
