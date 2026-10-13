@@ -1,3 +1,13 @@
+## [0.9.2] - 2026-11-02
+
+### Added
+- Volume trend endpoint (7d vs prior 7d)
+- Body-weight week-delta endpoint
+- Workout notes truncation helper
+- Theme normalization helper
+- Common timezones meta list
+- Frontend Streaks page
+
 ## [0.9.1] - 2026-11-01
 
 ### Added

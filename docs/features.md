@@ -61,3 +61,5 @@
 - Refresh token store, email verification, frontend SPA (0.9.0)
 
 - Password strength meta endpoint, notifications feed, Goals/Alerts UI (0.9.1)
+
+- Volume trend, body-weight week-delta, Streaks UI (0.9.2)

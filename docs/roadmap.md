@@ -42,3 +42,5 @@
 - Refresh tokens table, email verification, frontend SPA
 
 - [x] Notifications feed + password strength + Goals UI
+
+- [x] Volume trend + week-delta + Streaks UI
