@@ -33,6 +33,9 @@ export function Layout() {
                 <NavLink to="/notifications" className={linkClass}>
                   Alerts
                 </NavLink>
+                <NavLink to="/streaks" className={linkClass}>
+                  Streaks
+                </NavLink>
                 <button
                   type="button"
                   className="ml-2 px-3 py-2 text-sm text-slate-400 hover:text-white"
