@@ -42,6 +42,7 @@ FEATURES = {
     "duration_band": True,
     "mood_polarity": True,
     "pagination_meta": True,
+    "live_session": True,
     "rest_suggestion": True,
     "streak_milestones": True,
     "preference_normalization": True,
