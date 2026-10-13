@@ -82,3 +82,29 @@ async def body_weights_count(user_id: CurrentUserId, db: DbSession) -> dict[str,
     )
     total = (await db.execute(stmt)).scalar_one()
     return {"count": int(total)}
+
+
+@router.get("/week-delta")
+async def body_weight_week_delta(user_id: CurrentUserId, db: DbSession) -> dict:
+    from datetime import date, timedelta
+
+    from sqlalchemy import select
+
+    from app.infrastructure.database.models.body_weight import BodyWeightModel
+
+    since = date.today() - timedelta(days=7)
+    stmt = (
+        select(BodyWeightModel)
+        .where(
+            BodyWeightModel.user_id == user_id,
+            BodyWeightModel.deleted_at.is_(None),
+            BodyWeightModel.recorded_at >= since,
+        )
+        .order_by(BodyWeightModel.recorded_at.asc())
+    )
+    rows = (await db.execute(stmt)).scalars().all()
+    if len(rows) < 2:
+        return {"delta_kg": None, "samples": len(rows)}
+    delta = round(float(rows[-1].weight_kg) - float(rows[0].weight_kg), 2)
+    return {"delta_kg": delta, "samples": len(rows), "from": str(rows[0].recorded_at), "to": str(rows[-1].recorded_at)}
+
