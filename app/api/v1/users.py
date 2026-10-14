@@ -74,3 +74,32 @@ async def my_activity_summary(user_id: CurrentUserId, db: DbSession) -> dict:
         "total_workouts": int(total),
         "workouts_last_7_days": week,
     }
+
+
+@router.post("/me/soft-delete")
+async def soft_delete_me(user_id: CurrentUserId, db: DbSession) -> dict:
+    """Soft-delete the authenticated account (demo-safe anonymization)."""
+    from datetime import UTC, datetime
+
+    from sqlalchemy import select
+
+    from app.domain.user.account import anonymized_email, can_soft_delete
+    from app.infrastructure.database.models.user import UserModel
+
+    stmt = select(UserModel).where(UserModel.id == user_id, UserModel.deleted_at.is_(None))
+    user = (await db.execute(stmt)).scalar_one_or_none()
+    if user is None:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail="User not found")
+    if not can_soft_delete(is_active=user.is_active, is_superuser=user.is_superuser):
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=403, detail="Account cannot be deleted")
+    user.is_active = False
+    user.email = anonymized_email(str(user.id))
+    user.deleted_at = datetime.now(UTC)
+    await db.flush()
+    await db.commit()
+    return {"status": "deleted"}
+
