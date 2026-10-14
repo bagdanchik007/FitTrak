@@ -43,6 +43,8 @@ FEATURES = {
     "mood_polarity": True,
     "pagination_meta": True,
     "live_session": True,
+    "account_soft_delete": True,
+    "audit_events": True,
     "rest_suggestion": True,
     "streak_milestones": True,
     "preference_normalization": True,
