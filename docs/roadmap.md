@@ -8,43 +8,32 @@
 - Stats dashboard
 - Docker, Alembic, CI, tests
 
-## Next
+## Platform (completed)
 
 - [x] Refresh token rotation stored in DB
 - [x] Email verification (token issue + verify endpoints)
 - [x] Export workouts as CSV (download header)
 - [x] WebSocket live session tracking
 - [x] Frontend scaffold (React + TypeScript + Vite + Tailwind)
+- [x] Journal & favorites, streaks & weekly summary
+- [x] Notifications, password strength, Goals UI
+- [x] Volume trend, week-delta, Streaks UI
+- [x] Account soft-delete + audit event shaping
+- [x] Frontend Journal / Body weight / Exercises / Preferences
 
-- [x] Journal & favorites
-- [x] Streaks & weekly summary
+## Future (optional)
 
-- [x] Template domain layer
+- [ ] Redis-backed live session for multi-instance deploys
+- [ ] Real email delivery for verification tokens
+- [ ] Mobile-responsive charting on dashboard
 
-- [x] Shared messages in AuthService and API routers
+## Releases
 
-- [x] Ownership-aware workout lookup and active exercise fetch
+### 0.11.0
+- Soft-delete account, audit helper, more SPA screens
 
-- [x] PR evaluation helper and journal search
+### 0.10.0
+- WebSocket live session + frontend Live page
 
-- [x] Session metrics density and goal reopen
-
-- [x] Recovery status and exercise search
-
-- [x] Weekly goal progress and resource counts
-
-- [x] Duration band, mood polarity, pagination meta, export helpers
-
-- [x] Rest suggestions, muscle normalize, streak milestones
-
-
-## 0.9.0
-- Refresh tokens table, email verification, frontend SPA
-
-- [x] Notifications feed + password strength + Goals UI
-
-- [x] Volume trend + week-delta + Streaks UI
-
-
-## 0.10.0
-- [x] WebSocket live session + frontend Live page
+### 0.9.x
+- Refresh tokens, email verification, frontend SPA baseline

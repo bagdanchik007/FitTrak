@@ -76,3 +76,6 @@
 
 - WS /api/v1/ws/live-session
 - GET /api/v1/live-session/status
+
+- POST /api/v1/users/me/soft-delete
+- GET /api/v1/meta/audit-example

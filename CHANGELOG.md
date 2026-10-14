@@ -1,3 +1,10 @@
+## [0.11.0] - 2026-11-04
+
+### Added
+- Account soft-delete endpoint
+- Audit event helper and meta example
+- Frontend Journal, Body weight, Exercises, Preferences pages
+
 ## [0.10.0] - 2026-11-03
 
 ### Added
