@@ -67,3 +67,9 @@ async def list_common_timezones() -> dict:
             "Asia/Tokyo",
         ]
     }
+
+@router.get("/audit-example")
+async def audit_example() -> dict:
+    from app.domain.audit.services import build_audit_event
+
+    return build_audit_event(action="read", resource="meta", resource_id="audit-example")
