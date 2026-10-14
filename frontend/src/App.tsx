@@ -5,7 +5,11 @@ import { Goals } from "./pages/Goals";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Notifications } from "./pages/Notifications";
+import { BodyWeight } from "./pages/BodyWeight";
+import { Exercises } from "./pages/Exercises";
+import { Journal } from "./pages/Journal";
 import { LiveSession } from "./pages/LiveSession";
+import { Preferences } from "./pages/Preferences";
 import { Streaks } from "./pages/Streaks";
 import { Register } from "./pages/Register";
 import { Workouts } from "./pages/Workouts";
@@ -24,6 +28,10 @@ export default function App() {
           <Route path="notifications" element={<Notifications />} />
           <Route path="streaks" element={<Streaks />} />
           <Route path="live" element={<LiveSession />} />
+          <Route path="journal" element={<Journal />} />
+          <Route path="body-weight" element={<BodyWeight />} />
+          <Route path="exercises" element={<Exercises />} />
+          <Route path="preferences" element={<Preferences />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
