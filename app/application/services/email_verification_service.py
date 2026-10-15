@@ -36,3 +36,14 @@ async def verify_email_token(db: AsyncSession, token: str) -> bool:
     user.email_verification_token = None
     await db.flush()
     return True
+
+
+async def issue_and_deliver_verification(db, user_id, email: str) -> dict:
+    """Issue token and attempt delivery (SMTP or dev log)."""
+    from app.application.services.email_delivery_service import send_verification_email
+
+    token = await issue_verification_token(db, user_id)
+    if token is None:
+        return {"status": "error", "detail": "user_not_found"}
+    delivery = send_verification_email(to=email, token=token)
+    return {"token": token, "delivery": delivery}
