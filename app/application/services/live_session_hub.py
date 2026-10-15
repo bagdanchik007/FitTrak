@@ -11,6 +11,7 @@ from typing import Any
 from fastapi import WebSocket
 
 from app.domain.live.services import normalize_live_event
+from app.infrastructure.live.redis_backend import get_redis_backend
 
 
 @dataclass
@@ -81,6 +82,12 @@ class LiveSessionHub:
                 "last_event": state.last_event,
                 "server_time": datetime.now(UTC).isoformat(),
             }
+        backend = get_redis_backend()
+        if backend is not None:
+            try:
+                backend.save_session(user_id, snapshot)
+            except Exception:
+                pass
         await self.broadcast(user_id, {"type": "session_update", "session": snapshot})
         return snapshot
 
