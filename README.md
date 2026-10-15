@@ -1,10 +1,14 @@
-# FitTrack API
+# FitTrack
 
-Modern, production-ready fitness tracking backend built with **FastAPI**, **Clean Architecture**, **SQLAlchemy 2.0** and **PostgreSQL**.
+**Version 1.0.0** — Portfolio-ready fitness tracking platform.
+
+Backend: **FastAPI** · **Clean Architecture** · **SQLAlchemy 2.0** · **PostgreSQL** · **Docker**  
+Frontend: **React** · **TypeScript** · **Vite** · **Tailwind CSS**
 
 ![Python](https://img.shields.io/badge/Python-3.12+-blue?logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791?logo=postgresql)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
 ![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
@@ -12,210 +16,107 @@ Modern, production-ready fitness tracking backend built with **FastAPI**, **Clea
 
 ## Features
 
-- **Clean Architecture** – Domain, Application, Infrastructure and API layers clearly separated
-- **Async everything** – FastAPI + SQLAlchemy 2.0 async + asyncpg
-- **JWT Authentication** – Access + Refresh tokens
-- **Exercises & Workouts** – Full CRUD with nested sets (reps, weight, RPE)
-- **Soft deletes** – Data is never hard-deleted
-- **Docker-ready** – Multi-stage build + docker-compose with healthchecks
-- **Alembic migrations** – Proper database versioning
-- **Beautiful OpenAPI docs** – Available at `/docs`
-- **Structured & type-safe** – Pydantic v2 + mypy-ready
+- Clean Architecture (domain / application / infrastructure / API)
+- Async FastAPI + SQLAlchemy 2.0 + Alembic
+- JWT access + refresh tokens (rotation in DB)
+- Email verification (SMTP or dev log)
+- Exercises, workouts, goals, body weight, journal, favorites
+- Streaks, weekly summary, volume trends, personal records
+- WebSocket live session tracking (optional Redis snapshots)
+- CSV export, soft deletes, feature flags
+- React SPA with dashboard chart, live session UI, and more
 
 ---
 
-## Quick Start
+## Quick start
 
-### 1. Clone & setup environment
+### Prerequisites
+
+- Python 3.12+ 
+- Docker (for PostgreSQL) **or** local Postgres
+- Node.js 20+ (for the frontend)
+
+### 1. Environment
 
 ```bash
+git clone https://github.com/YOUR_USERNAME/fittrack.git
+cd fittrack
 cp .env.example .env
-# Edit .env and set a strong SECRET_KEY
 ```
 
-### 2. Start with Docker (recommended)
+Edit `.env`: set a strong `SECRET_KEY` (32+ chars). For local Postgres:
+
+```env
+DATABASE_URL=postgresql+asyncpg://fittrack:fittrack_secret@localhost:5432/fittrack
+```
+
+### 2. Database
+
+```bash
+docker compose up -d db
+```
+
+### 3. Backend
+
+```bash
+python -m venv .venv
+# Windows Git Bash: source .venv/Scripts/activate
+# Windows: py -m venv .venv && source .venv/Scripts/activate
+pip install -e ".[dev]"
+alembic upgrade head
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+- API: http://localhost:8000  
+- OpenAPI: http://localhost:8000/docs  
+- Health: http://localhost:8000/api/v1/health  
+
+### 4. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+- UI: http://localhost:5173  
+
+### Full stack with Docker
 
 ```bash
 docker compose up --build
 ```
 
-The API will be available at: **http://localhost:8000**
+---
 
-- Interactive docs: http://localhost:8000/docs
-- Health check: http://localhost:8000/health
+## Project structure
 
-### 3. Run migrations (already done by docker-compose)
-
-```bash
-docker compose exec api alembic upgrade head
+```
+app/
+  api/v1/          # HTTP & WebSocket routers
+  application/     # Services & DTOs
+  domain/          # Pure domain logic
+  infrastructure/  # DB models, repositories, Redis
+  core/            # Config, security, feature flags
+frontend/          # React + TypeScript + Tailwind SPA
+migrations/        # Alembic
+tests/             # Unit & integration
+docs/              # Architecture & feature docs
 ```
 
 ---
 
-## Project Structure
+## Documentation
 
-```text
-fittrack/
-├── app/
-│   ├── api/                  # HTTP layer (routers)
-│   ├── application/          # Use cases / services
-│   ├── core/                 # Config, security, dependencies
-│   ├── domain/               # Business entities & repository interfaces
-│   ├── infrastructure/       # Database, concrete repositories
-│   └── schemas/              # Pydantic request/response models
-├── migrations/               # Alembic
-├── tests/
-├── Dockerfile
-├── docker-compose.yml
-└── pyproject.toml
-```
-
----
-
-## API Overview
-
-| Method | Endpoint                      | Description                  |
-|--------|-------------------------------|------------------------------|
-| POST   | `/api/v1/auth/register`       | Register new user            |
-| POST   | `/api/v1/auth/login`          | Login (returns tokens)       |
-| POST   | `/api/v1/auth/refresh`        | Refresh access token         |
-| POST   | `/api/v1/auth/change-password`| Change password              |
-| PATCH  | `/api/v1/users/me`            | Update profile               |
-| PATCH  | `/api/v1/exercises/{id}`      | Update exercise              |
-| PATCH  | `/api/v1/workouts/{id}`       | Update workout               |
-| GET    | `/api/v1/users/me`            | Current user profile         |
-| POST   | `/api/v1/exercises`           | Create exercise              |
-| GET    | `/api/v1/exercises`           | List exercises               |
-| POST   | `/api/v1/workouts`            | Create workout + sets        |
-| GET    | `/api/v1/workouts`            | List my workouts             |
-| DELETE | `/api/v1/workouts/{id}`       | Soft-delete a workout        |
-| GET    | `/api/v1/progress/summary`    | Progress, PRs & volume       |
-| CRUD   | `/api/v1/goals`               | Fitness goals                |
-| CRUD   | `/api/v1/body-weights`        | Body weight log              |
-| CRUD   | `/api/v1/templates`           | Workout templates            |
-| GET/PUT| `/api/v1/preferences/me`      | User preferences             |
-| GET    | `/api/v1/activity/feed`       | Activity feed                |
-| DELETE | `/api/v1/exercises/{id}`      | Soft-delete an exercise      |
-
----
-
-## Local Development (without Docker)
-
-```bash
-# Install uv if you don't have it
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Create venv & install
-uv venv
-source .venv/bin/activate
-uv pip install -e ".[dev]"
-
-# Start PostgreSQL (or use docker only for db)
-docker compose up db -d
-
-# Run migrations
-alembic upgrade head
-
-# Start server
-uvicorn app.main:app --reload
-```
-
----
-
-## Tech Stack
-
-- **Python 3.12+**
-- **FastAPI**
-- **SQLAlchemy 2.0** (async)
-- **PostgreSQL 16**
-- **Alembic**
-- **Pydantic v2**
-- **python-jose** + **passlib** (JWT + bcrypt)
-- **Docker** + **docker-compose**
-- **Ruff** + **mypy** + **pytest**
-
----
-
-## Roadmap / Possible Extensions
-
-- [ ] Progress endpoints (Personal Records, volume charts)
-- [ ] Cursor-based pagination
-- [ ] Rate limiting
-- [ ] Background tasks (e.g. weekly summary emails)
-- [ ] Soft-delete endpoints + restore
-- [ ] Frontend (Next.js / React)
+- [Roadmap](docs/roadmap.md) — completed (v1.0.0)
+- [Features](docs/features.md)
+- [Architecture](docs/architecture-layers.md)
+- [Live session](docs/live-session.md)
+- [Deployment](docs/deployment.md)
+- [Contributing](docs/contributing.md)
 
 ---
 
 ## License
 
-MIT
-
----
-
-## Development Notes
-
-- Use `docker compose logs -f api` to follow application logs
-- After model changes run: `alembic revision --autogenerate -m "description"`
-- Keep the domain layer free of framework dependencies
-
-## Contributing
-
-This is a portfolio project. Feel free to fork and extend it.
-
-
-## Troubleshooting
-
-| Problem | Fix |
-|--------|-----|
-| DB connection refused | Wait for healthcheck: `docker compose ps` |
-| 401 on every request | Check SECRET_KEY is set and tokens not expired |
-| CORS errors from frontend | Add origin to `CORS_ORIGINS` in `.env` |
-| Migration errors | `docker compose exec api alembic upgrade head` |
-
-
-## Example requests
-
-```bash
-# Register
-curl -s -X POST http://localhost:8000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"you@example.com","password":"SecurePass123!","full_name":"You"}'
-
-# Login
-curl -s -X POST http://localhost:8000/api/v1/auth/login \
-  -d "username=you@example.com&password=SecurePass123!"
-
-# Progress (replace TOKEN)
-curl -s http://localhost:8000/api/v1/progress/summary \
-  -H "Authorization: Bearer TOKEN"
-```
-
-
-### Layer responsibilities
-- **Domain**: entities & repository interfaces (no framework)
-- **Application**: use-case services
-- **Infrastructure**: SQLAlchemy models & repos
-- **API**: FastAPI routers only
-
-
-### Journal & streaks
-- `/api/v1/journal` – training diary
-- `/api/v1/favorites` – favorite exercises
-- `/api/v1/streaks/me` – current streak
-- `/api/v1/summary/weekly` – 7-day summary
-
-
-Version is defined in `app/core/version.py`.
-
-
-Current API version: **1.0.0** (see `app/core/version.py`).
-
-Run `make verify` to check package layout.
-
-
-## Frontend
-
-See `frontend/README.md` — React + TypeScript + Tailwind.
-
-Live session WebSocket: `/api/v1/ws/live-session?token=...`
+MIT — see [LICENSE](LICENSE).

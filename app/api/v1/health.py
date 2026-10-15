@@ -43,3 +43,9 @@ async def readiness(db: DbSession) -> JSONResponse:
 
 
 # /health = liveness (process up); /health/ready = readiness (DB up)
+
+@router.get("/health/version")
+async def health_version() -> dict:
+    from app.domain.system.services import build_health_payload
+
+    return build_health_payload()
