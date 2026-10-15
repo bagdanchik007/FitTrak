@@ -30,7 +30,18 @@ class Settings(BaseSettings):
     database_url: str = Field(..., description="Async SQLAlchemy database URL")
 
     # CORS
-    cors_origins: list[str] = ["http://localhost:3000", "http://localhost:8000"]
+    cors_origins: list[str] = ["http://localhost:3000", "http://localhost:8000", "http://localhost:5173"]
+
+    # Optional Redis for multi-instance live sessions
+    redis_url: str | None = None
+
+    # Optional SMTP for real email delivery
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_user: str | None = None
+    smtp_password: str | None = None
+    smtp_from: str = "noreply@fittrack.local"
+    smtp_tls: bool = True
 
     @field_validator("cors_origins", mode="before")
     @classmethod
