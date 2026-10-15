@@ -94,14 +94,17 @@ async def request_email_verification(
     db: DbSession,
 ) -> dict:
     """Issue a verification token (email delivery is application-configured)."""
-    from app.application.services.email_verification_service import issue_verification_token
+    from app.application.services.email_verification_service import issue_and_deliver_verification
+    from app.infrastructure.database.models.user import UserModel
+    from sqlalchemy import select
 
-    token = await issue_verification_token(db, user_id)
-    if token is None:
+    user = (await db.execute(select(UserModel).where(UserModel.id == user_id))).scalar_one_or_none()
+    if user is None:
         raise HTTPException(status_code=404, detail="User not found")
+    result = await issue_and_deliver_verification(db, user_id, user.email)
     await db.commit()
-    # In production do not return the token; returned here for API testing.
-    return {"status": "issued", "token": token}
+    # Token returned in non-production for testing only
+    return {"status": "issued", "token": result.get("token"), "delivery": result.get("delivery")}
 
 
 @router.post("/verify-email")
