@@ -1,15 +1,57 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { me } from "../api/auth";
-import { fetchDashboard, fetchStreak } from "../api/dashboard";
+import { fetchDashboard, fetchStreak, fetchWorkouts } from "../api/dashboard";
 import { isAuthenticated } from "../lib/auth";
-import type { Dashboard as Dash, UserMe } from "../types/api";
+import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
+
+function VolumeChart({ workouts }: { workouts: Workout[] }) {
+  const points = workouts
+    .slice(0, 7)
+    .reverse()
+    .map((w) => Number(w.total_volume_kg ?? 0));
+  const max = Math.max(...points, 1);
+  const w = 320;
+  const h = 100;
+  const barW = points.length ? w / points.length - 6 : 0;
+
+  return (
+    <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+      <p className="text-xs uppercase tracking-wide text-slate-500 mb-3">
+        Recent volume (kg)
+      </p>
+      {points.length === 0 ? (
+        <p className="text-sm text-slate-500">No workout volume yet.</p>
+      ) : (
+        <svg viewBox={`0 0 ${w} ${h}`} className="w-full max-w-md h-28" role="img" aria-label="Volume chart">
+          {points.map((v, i) => {
+            const barH = (v / max) * (h - 10);
+            const x = i * (barW + 6) + 4;
+            const y = h - barH;
+            return (
+              <rect
+                key={i}
+                x={x}
+                y={y}
+                width={barW}
+                height={barH}
+                rx={3}
+                className="fill-sky-500"
+              />
+            );
+          })}
+        </svg>
+      )}
+    </div>
+  );
+}
 
 export function Dashboard() {
   const navigate = useNavigate();
   const [user, setUser] = useState<UserMe | null>(null);
   const [dash, setDash] = useState<Dash | null>(null);
   const [streak, setStreak] = useState<Record<string, unknown> | null>(null);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,11 +59,12 @@ export function Dashboard() {
       navigate("/login");
       return;
     }
-    Promise.all([me(), fetchDashboard(), fetchStreak()])
-      .then(([u, d, s]) => {
+    Promise.all([me(), fetchDashboard(), fetchStreak(), fetchWorkouts()])
+      .then(([u, d, s, w]) => {
         setUser(u);
         setDash(d);
         setStreak(s);
+        setWorkouts(Array.isArray(w) ? w : []);
       })
       .catch((e) => setError(e instanceof Error ? e.message : "Failed to load"));
   }, [navigate]);
@@ -54,6 +97,7 @@ export function Dashboard() {
           </div>
         ))}
       </div>
+      <VolumeChart workouts={workouts} />
       <Link to="/workouts" className="inline-block text-sm text-brand-500 hover:underline">
         View recent workouts →
       </Link>
