@@ -67,3 +67,5 @@
 - WebSocket live session tracking (0.10.0)
 
 - Account soft-delete, audit events, Journal/Weight/Exercises/Prefs UI (0.11.0)
+
+- SMTP delivery, Redis live backend, dashboard chart (1.0.0)

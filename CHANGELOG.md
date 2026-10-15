@@ -1,3 +1,11 @@
+## [1.0.0] - 2026-11-05
+
+### Added
+- SMTP email delivery service (falls back to structured log in development)
+- Optional Redis backend for live session snapshots
+- Dashboard volume bar chart (responsive SVG)
+- Roadmap marked complete
+
 ## [0.11.0] - 2026-11-04
 
 ### Added
