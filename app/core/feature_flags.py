@@ -48,6 +48,8 @@ FEATURES = {
     "smtp_email": True,
     "redis_live": True,
     "dashboard_charts": True,
+    "ai_coach": True,
+    "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
     "preference_normalization": True,
