@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Notifications } from "./pages/Notifications";
 import { BodyWeight } from "./pages/BodyWeight";
+import { Coach } from "./pages/Coach";
 import { Exercises } from "./pages/Exercises";
 import { Journal } from "./pages/Journal";
 import { LiveSession } from "./pages/LiveSession";
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="body-weight" element={<BodyWeight />} />
           <Route path="exercises" element={<Exercises />} />
           <Route path="preferences" element={<Preferences />} />
+          <Route path="coach" element={<Coach />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
