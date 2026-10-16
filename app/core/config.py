@@ -43,6 +43,9 @@ class Settings(BaseSettings):
     smtp_from: str = "noreply@fittrack.local"
     smtp_tls: bool = True
 
+    # Optional OpenAI for AI coach (empty = rule engine)
+    openai_api_key: str | None = None
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: str | list[str]) -> list[str]:
