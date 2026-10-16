@@ -58,3 +58,4 @@ Thumbs.db
 
 # Local Alembic versions (if any)
 migrations/versions/*_local.py
+frontend/node_modules/
