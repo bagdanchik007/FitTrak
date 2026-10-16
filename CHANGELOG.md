@@ -1,3 +1,16 @@
+## [1.2.0] - 2026-11-07
+
+### Added
+- PWA: manifest, service worker, installable icons
+- AI coach API (`/ai/suggest-workout`, `/ai/coach`) — rules + optional OpenAI
+- Coach page in the SPA
+
+## [1.1.0] - 2026-11-06
+
+### Added
+- Responsive layout: mobile drawer + desktop nav
+- Safe-area insets and touch-friendly CSS
+
 ## [1.0.0] - 2026-11-05
 
 ### Added
