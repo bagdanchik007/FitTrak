@@ -1,3 +1,6 @@
+### 1.2.0
+- PWA + AI coach (rules / optional OpenAI)
+
 # Roadmap
 
 ## Status: **Complete (v1.0.0)**
