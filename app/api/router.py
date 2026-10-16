@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from app.api.v1 import (
+    ai,
     live,
     notifications,
     activity,
@@ -42,4 +43,5 @@ api_router.include_router(streaks.router)
 api_router.include_router(summary.router)
 api_router.include_router(notifications.router)
 api_router.include_router(live.router)
+api_router.include_router(ai.router)
 api_router.include_router(health.router)
