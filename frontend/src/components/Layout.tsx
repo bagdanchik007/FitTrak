@@ -3,139 +3,251 @@ import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-do
 import { logout } from "../api/auth";
 import { isAuthenticated } from "../lib/auth";
 
-const linkClass = ({ isActive }: { isActive: boolean }) =>
-  `block w-full px-3 py-2.5 rounded-lg text-sm font-medium transition ${
-    isActive ? "bg-brand-600 text-white" : "text-slate-300 hover:bg-slate-800"
-  }`;
+const RELEASES_URL =
+  import.meta.env.VITE_APP_DOWNLOAD_URL ||
+  "https://github.com/bagdanchik007/FitTrak/releases/latest";
 
-const navItems = [
-  { to: "/dashboard", label: "Dashboard" },
-  { to: "/workouts", label: "Workouts" },
+/** Primary destinations — bottom bar on mobile, top of sidebar on desktop */
+const primaryNav = [
+  { to: "/dashboard", label: "Home", short: "Home" },
+  { to: "/workouts", label: "Workouts", short: "Train" },
+  { to: "/coach", label: "Coach", short: "Coach" },
+  { to: "/live", label: "Live", short: "Live" },
+] as const;
+
+/** Secondary — sidebar (desktop) / “More” drawer (mobile) */
+const moreNav = [
   { to: "/goals", label: "Goals" },
   { to: "/streaks", label: "Streaks" },
-  { to: "/live", label: "Live" },
   { to: "/journal", label: "Journal" },
   { to: "/body-weight", label: "Weight" },
   { to: "/exercises", label: "Exercises" },
   { to: "/notifications", label: "Alerts" },
-  { to: "/preferences", label: "Prefs" },
-  { to: "/coach", label: "Coach" },
+  { to: "/preferences", label: "Settings" },
 ] as const;
+
+const sideLink = ({ isActive }: { isActive: boolean }) =>
+  `flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+    isActive ? "bg-brand-600 text-white" : "text-slate-300 hover:bg-slate-800"
+  }`;
+
+const bottomLink = ({ isActive }: { isActive: boolean }) =>
+  `flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition ${
+    isActive ? "text-brand-500" : "text-slate-400"
+  }`;
 
 export function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const authed = isAuthenticated();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
-  // Close mobile menu on route change
   useEffect(() => {
-    setMenuOpen(false);
+    setMoreOpen(false);
   }, [location.pathname]);
 
-  // Prevent body scroll when drawer open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = moreOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [moreOpen]);
 
   function handleLogout() {
     logout();
-    setMenuOpen(false);
+    setMoreOpen(false);
     navigate("/login");
   }
 
-  const navLinks = authed ? (
-    <>
-      {navItems.map((item) => (
-        <NavLink key={item.to} to={item.to} className={linkClass}>
-          {item.label}
-        </NavLink>
-      ))}
-      <button
-        type="button"
-        className="mt-2 w-full px-3 py-2.5 text-left text-sm text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 md:mt-0 md:w-auto md:ml-1"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
-    </>
-  ) : (
-    <>
-      <NavLink to="/login" className={linkClass}>
-        Login
-      </NavLink>
-      <NavLink to="/register" className={linkClass}>
-        Register
-      </NavLink>
-    </>
-  );
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
 
   return (
-    <div className="min-h-screen min-h-[100dvh] flex flex-col bg-slate-950 text-slate-100">
-      <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30 safe-top">
-        <div className="mx-auto max-w-5xl flex items-center justify-between gap-3 px-4 py-3">
-          <Link
-            to="/"
-            className="text-lg font-semibold tracking-tight text-brand-500 shrink-0"
-          >
-            FitTrack
-          </Link>
-
-          {/* Desktop nav */}
-          <nav className="hidden md:flex md:flex-wrap md:items-center md:justify-end md:gap-0.5 max-w-[70%]">
-            {navLinks}
+    <div className="min-h-screen min-h-[100dvh] flex bg-slate-950 text-slate-100">
+      {/* ——— Desktop sidebar (laptop / computer) ——— */}
+      {authed && (
+        <aside className="hidden lg:flex lg:w-56 xl:w-64 shrink-0 flex-col border-r border-slate-800 bg-slate-900/90">
+          <div className="px-4 py-5">
+            <Link to="/dashboard" className="text-xl font-semibold text-brand-500">
+              FitTrack
+            </Link>
+            <p className="mt-1 text-xs text-slate-500">Desktop app shell</p>
+          </div>
+          <nav className="flex-1 overflow-y-auto px-2 space-y-0.5">
+            <p className="px-3 py-2 text-[10px] uppercase tracking-wider text-slate-500">
+              Main
+            </p>
+            {primaryNav.map((item) => (
+              <NavLink key={item.to} to={item.to} className={sideLink}>
+                {item.label}
+              </NavLink>
+            ))}
+            <p className="px-3 pt-4 py-2 text-[10px] uppercase tracking-wider text-slate-500">
+              More
+            </p>
+            {moreNav.map((item) => (
+              <NavLink key={item.to} to={item.to} className={sideLink}>
+                {item.label}
+              </NavLink>
+            ))}
           </nav>
+          <div className="border-t border-slate-800 p-3">
+            <a
+              href={RELEASES_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-2 block w-full rounded-lg px-3 py-2 text-left text-sm text-brand-500 hover:bg-slate-800"
+            >
+              Download / releases
+            </a>
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full rounded-lg px-3 py-2.5 text-left text-sm text-slate-400 hover:bg-slate-800 hover:text-white"
+            >
+              Logout
+            </button>
+          </div>
+        </aside>
+      )}
 
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
-            aria-expanded={menuOpen}
-            aria-controls="mobile-nav"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            onClick={() => setMenuOpen((o) => !o)}
-          >
-            {menuOpen ? (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Top bar — mobile / tablet always; desktop only when guest */}
+        <header
+          className={`sticky top-0 z-30 border-b border-slate-800 bg-slate-900/90 backdrop-blur safe-top ${
+            authed ? "lg:hidden" : ""
+          }`}
+        >
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+            <Link to={authed ? "/dashboard" : "/"} className="text-lg font-semibold text-brand-500">
+              FitTrack
+            </Link>
+            {!authed && (
+              <nav className="flex gap-1">
+                <NavLink to="/login" className={sideLink}>
+                  Login
+                </NavLink>
+                <NavLink to="/register" className={sideLink}>
+                  Register
+                </NavLink>
+              </nav>
             )}
-          </button>
-        </div>
+            {authed && (
+              <button
+                type="button"
+                className="rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 lg:hidden"
+                onClick={() => setMoreOpen(true)}
+                aria-label="Open more menu"
+              >
+                More
+              </button>
+            )}
+          </div>
+        </header>
 
-        {/* Mobile drawer */}
-        {menuOpen && (
+        {/* Guest desktop top bar */}
+        {!authed && (
+          <header className="hidden lg:block sticky top-0 z-30 border-b border-slate-800 bg-slate-900/90 backdrop-blur">
+            <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+              <Link to="/" className="text-lg font-semibold text-brand-500">
+                FitTrack
+              </Link>
+              <nav className="flex gap-1">
+                <NavLink to="/login" className={sideLink}>
+                  Login
+                </NavLink>
+                <NavLink to="/register" className={sideLink}>
+                  Register
+                </NavLink>
+              </nav>
+            </div>
+          </header>
+        )}
+
+        <main
+          className={`mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:py-8 ${
+            authed && !isAuthPage ? "pb-24 lg:pb-8" : ""
+          }`}
+        >
+          <Outlet />
+        </main>
+
+        {/* ——— Mobile bottom navigation ——— */}
+        {authed && (
+          <nav
+            className="fixed inset-x-0 bottom-0 z-30 flex border-t border-slate-800 bg-slate-900/95 backdrop-blur safe-bottom lg:hidden"
+            aria-label="Primary"
+          >
+            {primaryNav.map((item) => (
+              <NavLink key={item.to} to={item.to} className={bottomLink}>
+                <span className="text-base leading-none" aria-hidden>
+                  {item.short === "Home"
+                    ? "⌂"
+                    : item.short === "Train"
+                      ? "◈"
+                      : item.short === "Coach"
+                        ? "✦"
+                        : "●"}
+                </span>
+                {item.short}
+              </NavLink>
+            ))}
+            <button
+              type="button"
+              className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium ${
+                moreOpen ? "text-brand-500" : "text-slate-400"
+              }`}
+              onClick={() => setMoreOpen(true)}
+            >
+              <span className="text-base leading-none" aria-hidden>
+                ☰
+              </span>
+              More
+            </button>
+          </nav>
+        )}
+
+        {/* Mobile “More” sheet */}
+        {moreOpen && authed && (
           <>
             <div
-              className="fixed inset-0 z-40 bg-black/60 md:hidden"
+              className="fixed inset-0 z-40 bg-black/60 lg:hidden"
               aria-hidden
-              onClick={() => setMenuOpen(false)}
+              onClick={() => setMoreOpen(false)}
             />
-            <nav
-              id="mobile-nav"
-              className="fixed inset-y-0 right-0 z-50 w-[min(100%,18rem)] border-l border-slate-800 bg-slate-900 p-4 shadow-xl md:hidden flex flex-col gap-1 overflow-y-auto safe-bottom"
-            >
-              <p className="px-3 py-2 text-xs uppercase tracking-wide text-slate-500">Menu</p>
-              {navLinks}
-            </nav>
+            <div className="fixed inset-x-0 bottom-0 z-50 max-h-[75dvh] overflow-y-auto rounded-t-2xl border border-slate-700 bg-slate-900 p-4 safe-bottom lg:hidden">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="text-sm font-medium text-slate-200">More</p>
+                <button
+                  type="button"
+                  className="rounded-lg px-2 py-1 text-sm text-slate-400"
+                  onClick={() => setMoreOpen(false)}
+                >
+                  Close
+                </button>
+              </div>
+              <nav className="space-y-0.5">
+                {moreNav.map((item) => (
+                  <NavLink key={item.to} to={item.to} className={sideLink}>
+                    {item.label}
+                  </NavLink>
+                ))}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="mt-2 w-full rounded-lg px-3 py-2.5 text-left text-sm text-red-400 hover:bg-slate-800"
+                >
+                  Logout
+                </button>
+              </nav>
+            </div>
           </>
         )}
-      </header>
 
-      <main className="flex-1 mx-auto w-full max-w-5xl px-4 py-6 sm:py-8">
-        <Outlet />
-      </main>
-
-      <footer className="border-t border-slate-800 py-4 px-4 text-center text-xs text-slate-500 safe-bottom">
-        FitTrack · React + TypeScript + Tailwind · v1.0
-      </footer>
+        <footer className="hidden border-t border-slate-800 py-3 text-center text-xs text-slate-500 lg:block">
+          FitTrack · same API · desktop sidebar + mobile app shell · v1.3
+        </footer>
+      </div>
     </div>
   );
 }
