@@ -1,3 +1,6 @@
+### 1.3.0
+- Desktop sidebar + mobile bottom nav (one app, two shells)
+
 ### 1.2.0
 - PWA + AI coach (rules / optional OpenAI)
 
