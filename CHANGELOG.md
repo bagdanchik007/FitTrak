@@ -1,9 +1,26 @@
+## [1.3.1] - 2026-11-08
+
+### Added
+- Download / install GUI buttons on home page (PWA prompt + GitHub releases link)
+
+## [1.3.0] - 2026-11-08
+
+### Added
+- Dual app shell: desktop sidebar + mobile bottom navigation
+- Shared features and API for laptop and phone
+
 ## [1.2.0] - 2026-11-07
 
 ### Added
-- PWA: manifest, service worker, installable icons
-- AI coach API (`/ai/suggest-workout`, `/ai/coach`) — rules + optional OpenAI
-- Coach page in the SPA
+- AI coach API (`/ai/suggest-workout`, `/ai/coach`)
+- Rule engine by default; optional OpenAI via `OPENAI_API_KEY`
+- SPA Coach page (`/coach`)
+
+## [1.1.1] - 2026-11-06
+
+### Added
+- PWA manifest, service worker, installable icons
+- Theme color and Apple web-app meta tags
 
 ## [1.1.0] - 2026-11-06
 
@@ -14,10 +31,9 @@
 ## [1.0.0] - 2026-11-05
 
 ### Added
-- SMTP email delivery service (falls back to structured log in development)
-- Optional Redis backend for live session snapshots
-- Dashboard volume bar chart (responsive SVG)
-- Roadmap marked complete
+- Public portfolio baseline (API + SPA + Docker)
+- SMTP/dev email, optional Redis live backend
+- Dashboard volume chart, MIT license
 
 ## [0.11.0] - 2026-11-04
 
