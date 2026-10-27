@@ -8,7 +8,12 @@ import urllib.error
 import urllib.request
 
 from app.core.config import get_settings
-from app.domain.ai.services import coach_reply, suggest_focus, suggest_session
+from app.domain.ai.services import (
+    coach_reply,
+    infer_focuses_from_titles,
+    suggest_focus,
+    suggest_session,
+)
 
 logger = logging.getLogger("fittrack.ai")
 
@@ -16,11 +21,17 @@ logger = logging.getLogger("fittrack.ai")
 def build_workout_suggestion(
     *,
     recent_focuses: list[str] | None = None,
+    recent_titles: list[str] | None = None,
     experience: str = "intermediate",
     focus: str | None = None,
 ) -> dict:
-    chosen = focus or suggest_focus(recent_focuses=recent_focuses)
+    focuses = list(recent_focuses or [])
+    if recent_titles:
+        focuses = infer_focuses_from_titles(recent_titles) + focuses
+    chosen = focus or suggest_focus(recent_focuses=focuses)
     session = suggest_session(focus=chosen, experience=experience)
+    session["based_on_history"] = bool(recent_titles or recent_focuses)
+    session["inferred_recent_focuses"] = focuses[:5]
     return session
 
 
