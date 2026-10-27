@@ -1,3 +1,6 @@
+### 1.4.0
+- SPA workout logging + history-aware AI suggestions
+
 ### 1.3.0
 - Desktop sidebar + mobile bottom nav (one app, two shells)
 
