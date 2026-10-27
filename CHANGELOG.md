@@ -1,3 +1,9 @@
+## [1.4.0] - 2026-11-09
+
+### Added
+- Create workout form in the SPA
+- AI workout suggestions use recent workout title history
+
 ## [1.3.1] - 2026-11-08
 
 ### Added
