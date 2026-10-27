@@ -57,3 +57,31 @@ def coach_reply(message: str) -> str:
         "Focus on consistency: 3–5 sessions weekly, log your lifts, and progress one variable at a time "
         "(load, reps, or sets). Ask about push, pull, legs, recovery, or goals for a tighter tip."
     )
+
+
+KEYWORDS = {
+    "push": ("push", "bench", "press", "chest", "triceps", "shoulder"),
+    "pull": ("pull", "row", "lat", "back", "curl", "deadlift"),
+    "legs": ("leg", "squat", "lunge", "quad", "hamstring", "calf", "glute"),
+    "upper": ("upper",),
+    "full_body": ("full", "fullbody", "full-body", "fbw"),
+}
+
+
+def infer_focus_from_title(title: str) -> str | None:
+    low = (title or "").lower()
+    for focus, words in KEYWORDS.items():
+        if any(w in low for w in words):
+            return focus
+    return None
+
+
+def infer_focuses_from_titles(titles: list[str], *, limit: int = 5) -> list[str]:
+    found: list[str] = []
+    for title in titles[:20]:
+        focus = infer_focus_from_title(title)
+        if focus:
+            found.append(focus)
+        if len(found) >= limit:
+            break
+    return found
