@@ -8,6 +8,7 @@ import urllib.error
 import urllib.request
 
 from app.core.config import get_settings
+from app.domain.ai.prompt_safety import sanitize_coach_message
 from app.domain.ai.services import (
     coach_reply,
     infer_focuses_from_titles,
@@ -40,11 +41,13 @@ def answer_coach(message: str) -> dict:
     api_key = getattr(settings, "openai_api_key", None)
     if api_key:
         try:
-            text = _openai_chat(api_key, message)
+            safe = sanitize_coach_message(message)
+            text = _openai_chat(api_key, safe)
             return {"reply": text, "engine": "openai"}
         except Exception:
             logger.exception("openai_coach_failed")
-    return {"reply": coach_reply(message), "engine": "rules"}
+    safe = sanitize_coach_message(message)
+    return {"reply": coach_reply(safe), "engine": "rules"}
 
 
 def _openai_chat(api_key: str, message: str) -> str:
