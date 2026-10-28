@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { me } from "../api/auth";
 import { fetchDashboard, fetchStreak, fetchWorkouts } from "../api/dashboard";
 import { isAuthenticated } from "../lib/auth";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
 
 function VolumeChart({ workouts }: { workouts: Workout[] }) {
