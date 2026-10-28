@@ -1,3 +1,10 @@
+## [1.5.0] - 2026-11-10
+
+### Added
+- Workout title normalize, duration bands, goal labels
+- Streak milestones, BW trend helpers, coach sanitize
+- SPA format helpers and document title hook
+
 ## [1.4.0] - 2026-11-09
 
 ### Added
