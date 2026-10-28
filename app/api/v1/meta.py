@@ -73,3 +73,14 @@ async def audit_example() -> dict:
     from app.domain.audit.services import build_audit_event
 
     return build_audit_event(action="read", resource="meta", resource_id="audit-example")
+
+@router.get("/duration-band")
+async def meta_duration_band(minutes: int | None = None) -> dict:
+    from app.application.services.duration_band_service import band_for_minutes
+    return band_for_minutes(minutes)
+
+
+@router.get("/goal-progress-label")
+async def meta_goal_progress_label(current: float = 0, target: float = 1) -> dict:
+    from app.domain.goal.progress_label import progress_label
+    return {"label": progress_label(current, target), "current": current, "target": target}
