@@ -1,6 +1,7 @@
-from app.domain.streak.services import streak_milestone
+from app.domain.streak.milestone import milestone_reached, next_milestone
 
-def test_streak_milestone():
-    assert streak_milestone(3) is None
-    assert streak_milestone(7) == "7_days"
-    assert streak_milestone(45) == "30_days"
+def test_next():
+    assert next_milestone(5) == 7
+
+def test_reached():
+    assert milestone_reached(7) == 7
