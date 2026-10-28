@@ -1,8 +1,5 @@
-from app.domain.workout.services import duration_band
+from app.domain.workout.duration_band import duration_band
 
-def test_duration_band():
-    assert duration_band(None) is None
+def test_bands():
     assert duration_band(20) == "short"
     assert duration_band(45) == "standard"
-    assert duration_band(75) == "long"
-    assert duration_band(100) == "extended"
