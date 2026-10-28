@@ -1,3 +1,6 @@
+### 1.5.0
+- Domain polish: titles, bands, milestones, coach sanitize
+
 ### 1.4.0
 - SPA workout logging + history-aware AI suggestions
 
