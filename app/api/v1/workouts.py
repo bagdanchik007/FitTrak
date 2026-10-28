@@ -10,6 +10,7 @@ from app.core.dependencies import CurrentUserId, DbSession
 from app.core.limits import MAX_PAGE_SIZE, MAX_SETS_PER_WORKOUT
 from app.core.messages import WORKOUT_NOT_FOUND
 from app.domain.workout.services import calculate_session_volume
+from app.domain.workout.title import normalize_workout_title
 from app.infrastructure.database.models.workout import WorkoutModel, WorkoutSetModel
 from app.schemas.workout import WorkoutCreate, WorkoutRead, WorkoutUpdate
 
@@ -41,7 +42,7 @@ async def create_workout(
     workout = WorkoutModel(
         id=uuid4(),
         user_id=user_id,
-        title=data.title,
+        title=normalize_workout_title(data.title),
         notes=data.notes,
         performed_at=data.performed_at,
         duration_minutes=data.duration_minutes,
