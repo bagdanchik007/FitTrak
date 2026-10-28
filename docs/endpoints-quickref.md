@@ -79,3 +79,6 @@
 
 - POST /api/v1/users/me/soft-delete
 - GET /api/v1/meta/audit-example
+
+- GET /api/v1/meta/duration-band
+- GET /api/v1/meta/goal-progress-label
