@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWorkout, fetchWorkouts } from "../api/workouts";
 import { isAuthenticated } from "../lib/auth";
+import { formatKg, formatMinutes } from "../lib/format";
 import type { Workout } from "../types/api";
 
 function todayISO(): string {
@@ -126,9 +127,9 @@ export function Workouts() {
               <p className="text-xs text-slate-500">{w.performed_at}</p>
             </div>
             <div className="text-right text-sm text-slate-400">
-              {w.duration_minutes != null && <span>{w.duration_minutes} min</span>}
+              {w.duration_minutes != null && <span>{formatMinutes(w.duration_minutes)}</span>}
               {w.total_volume_kg != null && (
-                <span className="ml-3 text-brand-500">{w.total_volume_kg} kg</span>
+                <span className="ml-3 text-brand-500">{formatKg(w.total_volume_kg)}</span>
               )}
             </div>
           </li>
