@@ -11,3 +11,6 @@
 - **openai**: when `OPENAI_API_KEY` is set
 
 Not medical advice.
+
+## History-aware suggestions
+When `use_history` is true, recent workout titles influence focus rotation.
