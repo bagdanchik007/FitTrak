@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchGoalsWithProgress } from "../api/goals";
 import { isAuthenticated } from "../lib/auth";
 
 export function Goals() {
+  useDocumentTitle("Goals");
   const navigate = useNavigate();
   const [items, setItems] = useState<Record<string, unknown>[]>([]);
   const [error, setError] = useState<string | null>(null);
