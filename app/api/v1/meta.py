@@ -84,3 +84,14 @@ async def meta_duration_band(minutes: int | None = None) -> dict:
 async def meta_goal_progress_label(current: float = 0, target: float = 1) -> dict:
     from app.domain.goal.progress_label import progress_label
     return {"label": progress_label(current, target), "current": current, "target": target}
+
+@router.get("/recovery-hint")
+async def meta_recovery_hint(trained_last_7_days: int = 0) -> dict:
+    from app.application.services.recovery_hint_service import recovery_hint
+    return recovery_hint(trained_last_7_days)
+
+
+@router.get("/page-meta")
+async def meta_page_meta(total: int = 0, skip: int = 0, limit: int = 20) -> dict:
+    from app.application.services.pagination_service import build_page_meta
+    return build_page_meta(total, skip, limit)
