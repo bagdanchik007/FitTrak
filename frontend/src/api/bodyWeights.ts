@@ -13,3 +13,13 @@ export function fetchBodyWeights(): Promise<BodyWeight[]> {
 export function fetchWeekDelta(): Promise<{ delta_kg: number | null; samples?: number }> {
   return apiFetch("/body-weights/week-delta");
 }
+
+export function createBodyWeight(body: {
+  weight_kg: number;
+  recorded_at?: string;
+}): Promise<BodyWeight> {
+  return apiFetch<BodyWeight>("/body-weights", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
