@@ -55,6 +55,7 @@ FEATURES = {
     "duration_bands": True,
     "templates_ui": True,
     "recovery_hints": True,
+    "notes_preview": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,

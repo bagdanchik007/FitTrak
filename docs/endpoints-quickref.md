@@ -85,3 +85,6 @@
 
 - GET /api/v1/meta/recovery-hint
 - GET /api/v1/meta/page-meta
+
+- GET /api/v1/meta/notes-preview
+- GET /api/v1/meta/activity-label

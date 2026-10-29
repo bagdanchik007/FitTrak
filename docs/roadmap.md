@@ -1,3 +1,6 @@
+### 1.7.0
+- Notes preview, activity labels, SPA document titles
+
 ### 1.6.0
 - Templates UI, pagination meta, recovery hints
 
