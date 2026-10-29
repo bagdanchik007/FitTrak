@@ -82,3 +82,6 @@
 
 - GET /api/v1/meta/duration-band
 - GET /api/v1/meta/goal-progress-label
+
+- GET /api/v1/meta/recovery-hint
+- GET /api/v1/meta/page-meta
