@@ -95,3 +95,14 @@ async def meta_recovery_hint(trained_last_7_days: int = 0) -> dict:
 async def meta_page_meta(total: int = 0, skip: int = 0, limit: int = 20) -> dict:
     from app.application.services.pagination_service import build_page_meta
     return build_page_meta(total, skip, limit)
+
+@router.get("/notes-preview")
+async def meta_notes_preview(notes: str = "") -> dict:
+    from app.application.services.notes_preview_service import notes_preview
+    return notes_preview(notes)
+
+
+@router.get("/activity-label")
+async def meta_activity_label(event_type: str = "") -> dict:
+    from app.domain.activity.feed_label import activity_label
+    return {"event_type": event_type, "label": activity_label(event_type)}
