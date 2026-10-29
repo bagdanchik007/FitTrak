@@ -53,6 +53,8 @@ FEATURES = {
     "spa_workout_create": True,
     "title_normalize": True,
     "duration_bands": True,
+    "templates_ui": True,
+    "recovery_hints": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
