@@ -1,9 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react"
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { askCoach, suggestWorkout, type WorkoutSuggestion } from "../api/ai";
 import { isAuthenticated } from "../lib/auth";
 
 export function Coach() {
+  useDocumentTitle("Coach");
   const navigate = useNavigate();
   const [suggestion, setSuggestion] = useState<WorkoutSuggestion | null>(null);
   const [message, setMessage] = useState("");
