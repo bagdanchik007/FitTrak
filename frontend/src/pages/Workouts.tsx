@@ -2,19 +2,17 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createWorkout, fetchWorkouts } from "../api/workouts";
 import { isAuthenticated } from "../lib/auth";
+import { toInputDate } from "../lib/dates";
 import { formatKg, formatMinutes } from "../lib/format";
 import type { Workout } from "../types/api";
 
-function todayISO(): string {
-  return new Date().toISOString().slice(0, 10);
-}
 
 export function Workouts() {
   const navigate = useNavigate();
   const [items, setItems] = useState<Workout[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [title, setTitle] = useState("");
-  const [performedAt, setPerformedAt] = useState(todayISO());
+  const [performedAt, setPerformedAt] = useState(toInputDate());
   const [duration, setDuration] = useState("45");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
@@ -47,7 +45,7 @@ export function Workouts() {
       });
       setTitle("");
       setNotes("");
-      setPerformedAt(todayISO());
+      setPerformedAt(toInputDate());
       load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Create failed");
