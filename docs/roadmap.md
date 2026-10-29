@@ -1,3 +1,6 @@
+### 1.6.0
+- Templates UI, pagination meta, recovery hints
+
 ### 1.5.0
 - Domain polish: titles, bands, milestones, coach sanitize
 
