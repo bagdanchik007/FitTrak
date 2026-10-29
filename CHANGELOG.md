@@ -1,3 +1,9 @@
+## [1.7.0] - 2026-11-12
+
+### Added
+- Notes preview, activity labels, password hints, notification priority
+- Document titles on Goals/Coach/Streaks, shared date helper
+
 ## [1.6.0] - 2026-11-11
 
 ### Added
