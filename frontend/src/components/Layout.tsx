@@ -24,6 +24,7 @@ const moreNav = [
   { to: "/exercises", label: "Exercises" },
   { to: "/notifications", label: "Alerts" },
   { to: "/preferences", label: "Settings" },
+  { to: "/templates", label: "Templates" },
 ] as const;
 
 const sideLink = ({ isActive }: { isActive: boolean }) =>
