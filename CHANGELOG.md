@@ -1,3 +1,10 @@
+## [1.6.0] - 2026-11-11
+
+### Added
+- Exercise name normalize, pagination meta, recovery hints
+- Journal mood score, theme normalize
+- Templates SPA page
+
 ## [1.5.0] - 2026-11-10
 
 ### Added
