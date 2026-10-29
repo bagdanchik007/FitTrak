@@ -1,1 +1,1 @@
-"""Notification domain."""
+"""Notification domain helpers."""
