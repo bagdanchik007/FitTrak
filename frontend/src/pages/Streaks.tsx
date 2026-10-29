@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchConsistency, fetchStreak } from "../api/streaks";
 import { isAuthenticated } from "../lib/auth";
 
 export function Streaks() {
+  useDocumentTitle("Streaks");
   const navigate = useNavigate();
   const [streak, setStreak] = useState<Record<string, unknown> | null>(null);
   const [consistency, setConsistency] = useState<Record<string, unknown> | null>(null);
