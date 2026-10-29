@@ -2,18 +2,23 @@ import { apiFetch } from "./client";
 
 export type Goal = {
   id: string;
-  title: string;
-  target_value?: number | null;
-  current_value?: number | null;
-  unit?: string | null;
-  is_completed?: boolean;
-  deadline?: string | null;
+  title?: string;
+  name?: string;
+  target_value?: number;
+  current_value?: number;
+  [key: string]: unknown;
 };
 
 export function fetchGoals(): Promise<Goal[]> {
-  return apiFetch<Goal[]>("/goals");
+  return apiFetch<Goal[]>("/goals?limit=30");
 }
 
-export function fetchGoalsWithProgress(): Promise<Record<string, unknown>[]> {
-  return apiFetch("/goals/with-progress");
+export function createGoal(body: {
+  title: string;
+  target_value?: number;
+}): Promise<Goal> {
+  return apiFetch<Goal>("/goals", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
 }
