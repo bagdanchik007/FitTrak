@@ -127,4 +127,4 @@ MIT — see [LICENSE](LICENSE).
 See [docs/releases.md](docs/releases.md): **1.0.0** → **1.1.0** (responsive) → **1.1.1** (PWA) → **1.3.0** (AI coach).
 
 
-**Version 1.7.0**
+**Version 1.8.0**
