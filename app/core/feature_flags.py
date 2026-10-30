@@ -56,6 +56,8 @@ FEATURES = {
     "templates_ui": True,
     "recovery_hints": True,
     "notes_preview": True,
+    "activity_feed_ui": True,
+    "goal_create_ui": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
