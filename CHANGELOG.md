@@ -1,3 +1,14 @@
+## [1.8.0] - 2026-11-13
+
+### Added
+- Activity feed labels plus SPA activity page
+- Weigh-in and goal create forms
+- Password hints on registration
+- Recovery hint card on the dashboard
+
+### Fixed
+- Goals page again loads `/goals/with-progress`
+
 ## [1.7.0] - 2026-11-12
 
 ### Added
