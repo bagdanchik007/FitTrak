@@ -1,3 +1,6 @@
+### 1.8.0
+- Activity page, weigh-in form, goal form, recovery card
+
 ### 1.7.0
 - Notes preview, activity labels, SPA document titles
 
