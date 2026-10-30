@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { me } from "../api/auth";
 import { fetchDashboard, fetchStreak, fetchWorkouts } from "../api/dashboard";
+import { fetchRecoveryHint, type RecoveryHint } from "../api/meta";
 import { isAuthenticated } from "../lib/auth";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
@@ -54,6 +55,7 @@ export function Dashboard() {
   const [streak, setStreak] = useState<Record<string, unknown> | null>(null);
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [recovery, setRecovery] = useState<RecoveryHint | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -61,11 +63,22 @@ export function Dashboard() {
       return;
     }
     Promise.all([me(), fetchDashboard(), fetchStreak(), fetchWorkouts()])
-      .then(([u, d, s, w]) => {
+      .then(async ([u, d, s, w]) => {
+        const list = Array.isArray(w) ? w : [];
         setUser(u);
         setDash(d);
         setStreak(s);
-        setWorkouts(Array.isArray(w) ? w : []);
+        setWorkouts(list);
+        const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+        const recent = list.filter((item) => {
+          const t = Date.parse(String(item.performed_at));
+          return !Number.isNaN(t) && t >= cutoff;
+        }).length;
+        try {
+          setRecovery(await fetchRecoveryHint(recent));
+        } catch {
+          setRecovery(null);
+        }
       })
       .catch((e) => setError(e instanceof Error ? e.message : "Failed to load"));
   }, [navigate]);
@@ -98,7 +111,21 @@ export function Dashboard() {
           </div>
         ))}
       </div>
+      {recovery && (
+        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-sm">
+          <p className="text-xs uppercase tracking-wide text-slate-500">Recovery</p>
+          <p className="mt-1 font-medium">
+            {recovery.rest_recommended
+              ? "A rest day looks sensible this week."
+              : "You have room for another session."}
+          </p>
+          <p className="text-xs text-slate-500">{recovery.reason.replace(/_/g, " ")}</p>
+        </div>
+      )}
       <VolumeChart workouts={workouts} />
+      <Link to="/activity" className="mr-4 inline-block text-sm text-brand-500 hover:underline">
+        Open activity →
+      </Link>
       <Link to="/workouts" className="inline-block text-sm text-brand-500 hover:underline">
         View recent workouts →
       </Link>
