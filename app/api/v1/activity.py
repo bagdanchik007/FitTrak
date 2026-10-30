@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 
 from app.core.dependencies import CurrentUserId, DbSession
+from app.domain.activity.feed_label import activity_label
 from app.domain.activity.services import sort_activity_items
 from app.infrastructure.database.models.body_weight import BodyWeightModel
 from app.infrastructure.database.models.workout import WorkoutModel
@@ -39,7 +40,7 @@ async def activity_feed(
                 type="workout",
                 title=w.title,
                 occurred_on=w.performed_at,
-                meta={"duration_minutes": w.duration_minutes},
+                meta={"duration_minutes": w.duration_minutes, "label": activity_label("workout")},
             )
         )
 
@@ -55,7 +56,7 @@ async def activity_feed(
                 type="body_weight",
                 title=f"Weight {b.weight_kg} kg",
                 occurred_on=b.recorded_at,
-                meta={"weight_kg": b.weight_kg},
+                meta={"weight_kg": b.weight_kg, "label": activity_label("body_weight")},
             )
         )
 
