@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, register } from "../api/auth";
+import { passwordHints } from "../lib/passwordHints";
 
 export function Register() {
   const navigate = useNavigate();
@@ -61,6 +62,13 @@ export function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
+        {passwordHints(password).length > 0 && (
+          <ul className="list-disc pl-5 text-xs text-slate-400">
+            {passwordHints(password).map((h) => (
+              <li key={h}>{h}</li>
+            ))}
+          </ul>
+        )}
         {error && <p className="text-sm text-red-400">{error}</p>}
         <button
           type="submit"
