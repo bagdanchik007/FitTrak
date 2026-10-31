@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { openLiveSessionSocket } from "../api/live";
 import { isAuthenticated } from "../lib/auth";
 
-export function LiveSession() {
+export function LiveSession(
+  // titled
+) {
+  useDocumentTitle("Live");
   const navigate = useNavigate();
   const [status, setStatus] = useState("disconnected");
   const [session, setSession] = useState<Record<string, unknown> | null>(null);
