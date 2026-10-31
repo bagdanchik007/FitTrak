@@ -106,3 +106,21 @@ async def meta_notes_preview(notes: str = "") -> dict:
 async def meta_activity_label(event_type: str = "") -> dict:
     from app.domain.activity.feed_label import activity_label
     return {"event_type": event_type, "label": activity_label(event_type)}
+
+@router.get("/set-volume")
+async def meta_set_volume(reps: int | None = None, weight_kg: float | None = None) -> dict:
+    from app.application.services.set_volume_service import volume_for_set
+    return volume_for_set(reps, weight_kg)
+
+
+@router.get("/rest-suggestion")
+async def meta_rest_suggestion(rpe: float | None = None, is_compound: bool = True) -> dict:
+    from app.application.services.rest_timer_service import rest_suggestion
+    return rest_suggestion(rpe=rpe, is_compound=is_compound)
+
+
+@router.get("/volume-delta")
+async def meta_volume_delta(current: float = 0, previous: float = 0) -> dict:
+    from app.domain.progress.weekly_delta import volume_delta_pct
+    pct = volume_delta_pct(current, previous)
+    return {"current": current, "previous": previous, "delta_pct": pct}
