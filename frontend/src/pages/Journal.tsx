@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchJournal, type JournalEntry } from "../api/journal";
 import { isAuthenticated } from "../lib/auth";
 
-export function Journal() {
+export function Journal(
+  // titled
+) {
+  useDocumentTitle("Journal");
   const navigate = useNavigate();
   const [items, setItems] = useState<JournalEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
