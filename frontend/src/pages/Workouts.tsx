@@ -1,4 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
+import { EmptyState } from "../components/EmptyState";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { createWorkout, fetchWorkouts } from "../api/workouts";
 import { isAuthenticated } from "../lib/auth";
@@ -7,7 +9,10 @@ import { formatKg, formatMinutes } from "../lib/format";
 import type { Workout } from "../types/api";
 
 
-export function Workouts() {
+export function Workouts(
+  // titled
+) {
+  useDocumentTitle("Workouts");
   const navigate = useNavigate();
   const [items, setItems] = useState<Workout[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -113,7 +118,7 @@ export function Workouts() {
 
       <ul className="divide-y divide-slate-800 overflow-hidden rounded-xl border border-slate-800">
         {items.length === 0 && !error && (
-          <li className="p-4 text-sm text-slate-500">No workouts yet — log your first session above.</li>
+          <li className="p-2"><EmptyState title="No workouts yet" hint="Log your first session above." /></li>
         )}
         {items.map((w) => (
           <li
