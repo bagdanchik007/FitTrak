@@ -1,3 +1,6 @@
+### 1.9.0
+- Set volume, rest timer, volume delta, deadline status
+
 ### 1.8.0
 - Activity page, weigh-in form, goal form, recovery card
 
