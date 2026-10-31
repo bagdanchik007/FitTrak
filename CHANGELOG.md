@@ -1,3 +1,12 @@
+## [1.9.0] - 2026-11-14
+
+### Added
+- Set volume helper and meta endpoint
+- Rest timer suggestions by RPE
+- Weekly volume delta percent
+- CSV escape helper, goal deadline status
+- EmptyState component and more document titles
+
 ## [1.8.0] - 2026-11-13
 
 ### Added
