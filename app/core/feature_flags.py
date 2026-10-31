@@ -58,6 +58,8 @@ FEATURES = {
     "notes_preview": True,
     "activity_feed_ui": True,
     "goal_create_ui": True,
+    "rest_timer": True,
+    "set_volume_meta": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
