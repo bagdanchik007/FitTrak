@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchExercises, type Exercise } from "../api/exercises";
 import { isAuthenticated } from "../lib/auth";
 
-export function Exercises() {
+export function Exercises(
+  // titled
+) {
+  useDocumentTitle("Exercises");
   const navigate = useNavigate();
   const [items, setItems] = useState<Exercise[]>([]);
   const [error, setError] = useState<string | null>(null);
