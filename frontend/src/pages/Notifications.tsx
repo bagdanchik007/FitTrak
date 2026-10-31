@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchNotifications, type Notification } from "../api/notifications";
 import { isAuthenticated } from "../lib/auth";
 
-export function Notifications() {
+export function Notifications(
+  // titled
+) {
+  useDocumentTitle("Alerts");
   const navigate = useNavigate();
   const [items, setItems] = useState<Notification[]>([]);
   const [error, setError] = useState<string | null>(null);
