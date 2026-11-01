@@ -92,3 +92,6 @@
 - GET /api/v1/meta/set-volume
 - GET /api/v1/meta/rest-suggestion
 - GET /api/v1/meta/volume-delta
+
+- GET /api/v1/meta/personal-record
+- GET /api/v1/meta/next-split
