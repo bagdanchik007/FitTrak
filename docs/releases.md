@@ -24,3 +24,6 @@ Hamburger menu, slide-over nav, touch targets, `viewport-fit=cover`.
 
 ## 1.3.0 — App shell
 Desktop sidebar and mobile bottom navigation; same functions on both.
+
+## 2.0.0 — Major milestone
+Personal records, next-split suggestions, workout search.
