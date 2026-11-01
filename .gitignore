@@ -19,7 +19,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-frontend/node_modules/
 
 # Virtual environments
 .venv/
@@ -38,6 +37,8 @@ env/
 *.swp
 *.swo
 *~
+# Modules
+frontend/node_modules/
 
 # Testing / Coverage
 .coverage
