@@ -1,3 +1,15 @@
+## [2.0.0] - 2026-11-15
+
+### Added
+- Personal record detection helpers and meta endpoint
+- Weekly split suggestion (next training focus)
+- Workout list client-side search
+- LoadingBlock and Badge UI components
+- Search query normalization domain helper
+
+### Changed
+- Application major version 2.0.0 portfolio milestone
+
 ## [1.9.0] - 2026-11-14
 
 ### Added
