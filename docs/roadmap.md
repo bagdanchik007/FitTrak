@@ -1,3 +1,6 @@
+### 2.0.0
+- PRs, split suggestions, workout search — major milestone
+
 ### 1.9.0
 - Set volume, rest timer, volume delta, deadline status
 
