@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { me } from "../api/auth";
 import { fetchDashboard, fetchStreak, fetchWorkouts } from "../api/dashboard";
 import { fetchRecoveryHint, type RecoveryHint } from "../api/meta";
+import { fetchNextSplit } from "../api/plan";
 import { isAuthenticated } from "../lib/auth";
+import { LoadingBlock } from "../components/LoadingBlock";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
 
@@ -56,6 +58,7 @@ export function Dashboard() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [recovery, setRecovery] = useState<RecoveryHint | null>(null);
+  const [nextSplit, setNextSplit] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -79,6 +82,16 @@ export function Dashboard() {
         } catch {
           setRecovery(null);
         }
+        try {
+          const lastTitle = list[0]?.title;
+          const focusGuess = lastTitle
+            ? lastTitle.toLowerCase().split(/\s+/)[0]
+            : undefined;
+          const plan = await fetchNextSplit(focusGuess);
+          setNextSplit(plan.label);
+        } catch {
+          setNextSplit(null);
+        }
       })
       .catch((e) => setError(e instanceof Error ? e.message : "Failed to load"));
   }, [navigate]);
@@ -87,7 +100,7 @@ export function Dashboard() {
     return <p className="text-red-400 text-sm">{error}</p>;
   }
   if (!user) {
-    return <p className="text-slate-400 text-sm">Loading dashboard…</p>;
+    return <LoadingBlock label="Loading dashboard…" />;
   }
 
   const cards = [
@@ -111,6 +124,12 @@ export function Dashboard() {
           </div>
         ))}
       </div>
+      {nextSplit && (
+        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-sm">
+          <p className="text-xs uppercase tracking-wide text-slate-500">Suggested focus</p>
+          <p className="mt-1 font-medium text-brand-500">{nextSplit}</p>
+        </div>
+      )}
       {recovery && (
         <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-sm">
           <p className="text-xs uppercase tracking-wide text-slate-500">Recovery</p>
