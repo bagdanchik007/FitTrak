@@ -124,3 +124,18 @@ async def meta_volume_delta(current: float = 0, previous: float = 0) -> dict:
     from app.domain.progress.weekly_delta import volume_delta_pct
     pct = volume_delta_pct(current, previous)
     return {"current": current, "previous": previous, "delta_pct": pct}
+
+@router.get("/personal-record")
+async def meta_personal_record(weight_kg: float, previous_best: float | None = None) -> dict:
+    from app.domain.pr.detect import is_pr
+    return {
+        "weight_kg": weight_kg,
+        "previous_best": previous_best,
+        "is_pr": is_pr(weight_kg=weight_kg, previous_best=previous_best),
+    }
+
+
+@router.get("/next-split")
+async def meta_next_split(last_focus: str | None = None) -> dict:
+    from app.application.services.plan_service import suggest_next_day
+    return suggest_next_day(last_focus)
