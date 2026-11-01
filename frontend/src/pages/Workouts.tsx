@@ -21,6 +21,7 @@ export function Workouts(
   const [duration, setDuration] = useState("45");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   function load() {
     fetchWorkouts()
@@ -58,6 +59,12 @@ export function Workouts(
       setSaving(false);
     }
   }
+
+  const visible = items.filter(
+    (w) =>
+      !searchQuery.trim() ||
+      w.title.toLowerCase().includes(searchQuery.trim().toLowerCase()),
+  );
 
   return (
     <div className="space-y-6">
@@ -116,11 +123,18 @@ export function Workouts(
         </button>
       </form>
 
+      <input
+        type="search"
+        placeholder="Search workouts…"
+        className="w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <ul className="divide-y divide-slate-800 overflow-hidden rounded-xl border border-slate-800">
-        {items.length === 0 && !error && (
+        {visible.length === 0 && !error && (
           <li className="p-2"><EmptyState title="No workouts yet" hint="Log your first session above." /></li>
         )}
-        {items.map((w) => (
+        {visible.map((w) => (
           <li
             key={w.id}
             className="flex items-center justify-between bg-slate-900/40 px-4 py-3"
