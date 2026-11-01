@@ -60,6 +60,8 @@ FEATURES = {
     "goal_create_ui": True,
     "rest_timer": True,
     "set_volume_meta": True,
+    "personal_records": True,
+    "split_suggestions": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
