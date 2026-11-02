@@ -1,3 +1,12 @@
+## [2.1.0] - 2026-11-16
+
+### Added
+- Intensity zones from RPE
+- ISO week keys and workout counts by week
+- User-facing error copy helpers
+- ErrorBanner, friendly errors, copyText utility
+- Badge on goals status
+
 ## [2.0.0] - 2026-11-15
 
 ### Added
