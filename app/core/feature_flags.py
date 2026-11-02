@@ -62,6 +62,8 @@ FEATURES = {
     "set_volume_meta": True,
     "personal_records": True,
     "split_suggestions": True,
+    "intensity_zones": True,
+    "error_banner_ui": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
