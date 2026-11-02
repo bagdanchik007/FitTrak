@@ -139,3 +139,14 @@ async def meta_personal_record(weight_kg: float, previous_best: float | None = N
 async def meta_next_split(last_focus: str | None = None) -> dict:
     from app.application.services.plan_service import suggest_next_day
     return suggest_next_day(last_focus)
+
+@router.get("/intensity-zone")
+async def meta_intensity_zone(rpe: float | None = None) -> dict:
+    from app.application.services.intensity_service import zone_for_rpe
+    return zone_for_rpe(rpe)
+
+
+@router.get("/error-message")
+async def meta_error_message(code: str = "server") -> dict:
+    from app.domain.ui_copy.errors import error_message
+    return {"code": code, "message": error_message(code)}
