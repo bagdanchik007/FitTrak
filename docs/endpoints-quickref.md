@@ -95,3 +95,6 @@
 
 - GET /api/v1/meta/personal-record
 - GET /api/v1/meta/next-split
+
+- GET /api/v1/meta/intensity-zone
+- GET /api/v1/meta/error-message
