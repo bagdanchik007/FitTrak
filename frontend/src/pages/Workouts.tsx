@@ -4,6 +4,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { createWorkout, fetchWorkouts } from "../api/workouts";
 import { isAuthenticated } from "../lib/auth";
+import { ErrorBanner } from "../components/ErrorBanner";
 import { toInputDate } from "../lib/dates";
 import { formatKg, formatMinutes } from "../lib/format";
 import type { Workout } from "../types/api";
@@ -69,7 +70,7 @@ export function Workouts(
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Workouts</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       <form
         onSubmit={onCreate}
