@@ -9,6 +9,7 @@ import {
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { toInputDate } from "../lib/dates";
 import { isAuthenticated } from "../lib/auth";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function BodyWeight() {
   useDocumentTitle("Weight");
@@ -55,7 +56,7 @@ export function BodyWeight() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Body weight</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <form onSubmit={onCreate} className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
         <h2 className="text-sm font-medium text-slate-300">Log weigh-in</h2>
         <div className="grid gap-3 sm:grid-cols-2">
