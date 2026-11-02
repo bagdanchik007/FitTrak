@@ -1,3 +1,6 @@
+### 2.1.0
+- Intensity zones, week counts, error UX polish
+
 ### 2.0.0
 - PRs, split suggestions, workout search — major milestone
 
