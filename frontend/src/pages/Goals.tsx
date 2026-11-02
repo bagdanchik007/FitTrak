@@ -3,6 +3,9 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { createGoal, fetchGoalsWithProgress } from "../api/goals";
 import { isAuthenticated } from "../lib/auth";
+import { Badge } from "../components/Badge";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Goals() {
   useDocumentTitle("Goals");
@@ -52,7 +55,7 @@ export function Goals() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Goals</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <form onSubmit={onCreate} className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
         <h2 className="text-sm font-medium text-slate-300">New goal</h2>
         <input
@@ -89,7 +92,7 @@ export function Goals() {
       </form>
       <ul className="space-y-3">
         {items.length === 0 && !error && (
-          <li className="text-sm text-slate-500">No goals yet.</li>
+          <li><EmptyState title="No goals yet" hint="Create one with the form above." /></li>
         )}
         {items.map((g) => (
           <li
@@ -104,9 +107,9 @@ export function Goals() {
                   {String(g.unit ?? "")}
                 </p>
               </div>
-              <span className="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-brand-500">
+              <Badge tone={g.is_completed ? "success" : "brand"}>
                 {String(g.status ?? (g.is_completed ? "completed" : "open"))}
-              </span>
+              </Badge>
             </div>
             {typeof g.percent_complete === "number" && (
               <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
