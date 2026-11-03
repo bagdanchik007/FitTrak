@@ -3,6 +3,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchNotifications, type Notification } from "../api/notifications";
 import { isAuthenticated } from "../lib/auth";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Notifications(
   // titled
@@ -25,7 +27,7 @@ export function Notifications(
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Notifications</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <ul className="space-y-2">
         {items.length === 0 && !error && (
           <li className="text-sm text-slate-500">You are all caught up.</li>
