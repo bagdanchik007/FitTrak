@@ -150,3 +150,8 @@ async def meta_intensity_zone(rpe: float | None = None) -> dict:
 async def meta_error_message(code: str = "server") -> dict:
     from app.domain.ui_copy.errors import error_message
     return {"code": code, "message": error_message(code)}
+
+@router.get("/consistency-band")
+async def meta_consistency_band(score: float | None = None) -> dict:
+    from app.application.services.consistency_service import band_payload
+    return band_payload(score)
