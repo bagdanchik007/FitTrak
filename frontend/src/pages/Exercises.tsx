@@ -3,6 +3,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchExercises, type Exercise } from "../api/exercises";
 import { isAuthenticated } from "../lib/auth";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Exercises(
   // titled
@@ -25,7 +27,7 @@ export function Exercises(
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Exercises</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <ul className="grid gap-2 sm:grid-cols-2">
         {items.map((ex) => (
           <li key={ex.id} className="rounded-xl border border-slate-800 bg-slate-900/50 p-3">
