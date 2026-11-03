@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchEffectivePreferences, fetchPreferences } from "../api/preferences";
 import { isAuthenticated } from "../lib/auth";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Preferences() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function Preferences() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Preferences</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <pre className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 text-xs overflow-auto">
         {JSON.stringify({ stored: prefs, effective }, null, 2)}
       </pre>
