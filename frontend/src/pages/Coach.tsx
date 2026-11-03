@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react"
+import { ErrorBanner } from "../components/ErrorBanner";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { askCoach, suggestWorkout, type WorkoutSuggestion } from "../api/ai";
@@ -55,7 +56,7 @@ export function Coach() {
         </p>
       </div>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
         <h2 className="font-medium">Workout suggestion</h2>
