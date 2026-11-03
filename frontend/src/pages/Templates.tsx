@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchTemplates, type Template } from "../api/templates";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { isAuthenticated } from "../lib/auth";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Templates() {
   useDocumentTitle("Templates");
@@ -23,10 +25,10 @@ export function Templates() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Templates</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <ul className="space-y-2">
         {items.length === 0 && !error && (
-          <li className="text-sm text-slate-500">No templates yet.</li>
+          <li><EmptyState title="No templates yet" hint="Save a workout structure to reuse later." /></li>
         )}
         {items.map((t) => (
           <li key={t.id} className="rounded-xl border border-slate-800 bg-slate-900/50 p-3 text-sm">
