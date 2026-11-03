@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchActivity, type ActivityItem } from "../api/activity";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { isAuthenticated } from "../lib/auth";
+import { EmptyState } from "../components/EmptyState";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Activity() {
   useDocumentTitle("Activity");
@@ -24,10 +26,10 @@ export function Activity() {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Activity</h1>
       <p className="text-sm text-slate-400">Recent workouts and weigh-ins.</p>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <ul className="space-y-2">
         {items.length === 0 && !error && (
-          <li className="text-sm text-slate-500">Nothing logged yet.</li>
+          <li><EmptyState title="Nothing logged yet" hint="Workouts and weigh-ins show up here." /></li>
         )}
         {items.map((item, i) => (
           <li
