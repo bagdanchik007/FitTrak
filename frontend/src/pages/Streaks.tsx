@@ -3,6 +3,8 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchConsistency, fetchStreak } from "../api/streaks";
 import { isAuthenticated } from "../lib/auth";
+import { ErrorBanner } from "../components/ErrorBanner";
+import { LoadingBlock } from "../components/LoadingBlock";
 
 export function Streaks() {
   useDocumentTitle("Streaks");
@@ -27,7 +29,8 @@ export function Streaks() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Streaks</h1>
-      {error && <p className="text-sm text-red-400">{error}</p>}
+      {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      {!streak && !error && <LoadingBlock label="Loading streaks…" />}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
           <p className="text-xs uppercase text-slate-500">Current streak</p>
