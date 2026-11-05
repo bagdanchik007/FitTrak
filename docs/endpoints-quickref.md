@@ -99,3 +99,4 @@
 - GET /api/v1/meta/intensity-zone
 - GET /api/v1/meta/error-message
 - GET /api/v1/meta/consistency-band
+- GET /api/v1/meta/live-status-label
