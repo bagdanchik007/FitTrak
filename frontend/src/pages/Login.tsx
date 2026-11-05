@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Login() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export function Login() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
         <button
           type="submit"
           disabled={loading}
