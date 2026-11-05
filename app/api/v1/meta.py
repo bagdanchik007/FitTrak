@@ -155,3 +155,8 @@ async def meta_error_message(code: str = "server") -> dict:
 async def meta_consistency_band(score: float | None = None) -> dict:
     from app.application.services.consistency_service import band_payload
     return band_payload(score)
+
+@router.get("/live-status-label")
+async def meta_live_status_label(status: str = "disconnected") -> dict:
+    from app.application.services.live_status_service import status_payload
+    return status_payload(status)
