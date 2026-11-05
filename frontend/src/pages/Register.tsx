@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, register } from "../api/auth";
 import { passwordHints } from "../lib/passwordHints";
+import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Register() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ export function Register() {
             ))}
           </ul>
         )}
-        {error && <p className="text-sm text-red-400">{error}</p>}
+        {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
         <button
           type="submit"
           disabled={loading}
