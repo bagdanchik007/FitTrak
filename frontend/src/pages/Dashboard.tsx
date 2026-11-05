@@ -6,6 +6,7 @@ import { fetchRecoveryHint, type RecoveryHint } from "../api/meta";
 import { fetchNextSplit } from "../api/plan";
 import { isAuthenticated } from "../lib/auth";
 import { LoadingBlock } from "../components/LoadingBlock";
+import { pluralize } from "../lib/pluralize";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
 
@@ -22,7 +23,7 @@ function VolumeChart({ workouts }: { workouts: Workout[] }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
       <p className="text-xs uppercase tracking-wide text-slate-500 mb-3">
-        Recent volume (kg)
+        {`Recent volume (${pluralize(workouts.length, "session")})`}
       </p>
       {points.length === 0 ? (
         <p className="text-sm text-slate-500">No workout volume yet.</p>
