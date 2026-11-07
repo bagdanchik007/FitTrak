@@ -64,6 +64,8 @@ FEATURES = {
     "split_suggestions": True,
     "intensity_zones": True,
     "error_banner_ui": True,
+    "volume_summary": True,
+    "training_reminders": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
