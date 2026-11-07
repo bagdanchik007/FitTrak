@@ -160,3 +160,26 @@ async def meta_consistency_band(score: float | None = None) -> dict:
 async def meta_live_status_label(status: str = "disconnected") -> dict:
     from app.application.services.live_status_service import status_payload
     return status_payload(status)
+
+@router.get("/volume-summary")
+async def meta_volume_summary(volumes: str = "") -> dict:
+    """Pass comma-separated kg values, e.g. volumes=100,120,90"""
+    from app.application.services.stats_summary_service import volume_summary
+    nums: list[float] = []
+    for part in volumes.split(","):
+        part = part.strip()
+        if not part:
+            continue
+        try:
+            nums.append(float(part))
+        except ValueError:
+            continue
+    return volume_summary(nums)
+
+
+@router.get("/should-remind")
+async def meta_should_remind(days_since: int = 0, gap_days: int = 2) -> dict:
+    from datetime import date, timedelta
+    from app.domain.scheduling.reminder import should_remind
+    last = date.today() - timedelta(days=days_since) if days_since >= 0 else None
+    return {"should_remind": should_remind(last_trained=last, gap_days=gap_days), "gap_days": gap_days}
