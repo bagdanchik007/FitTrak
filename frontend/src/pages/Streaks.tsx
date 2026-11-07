@@ -5,6 +5,7 @@ import { fetchConsistency, fetchStreak } from "../api/streaks";
 import { isAuthenticated } from "../lib/auth";
 import { ErrorBanner } from "../components/ErrorBanner";
 import { LoadingBlock } from "../components/LoadingBlock";
+import { StatCard } from "../components/StatCard";
 
 export function Streaks() {
   useDocumentTitle("Streaks");
@@ -32,19 +33,12 @@ export function Streaks() {
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       {!streak && !error && <LoadingBlock label="Loading streaks…" />}
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <p className="text-xs uppercase text-slate-500">Current streak</p>
-          <p className="mt-1 text-3xl font-semibold text-brand-500">
-            {String(streak?.current_streak ?? "—")}
-          </p>
-        </div>
-        <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-          <p className="text-xs uppercase text-slate-500">Consistency</p>
-          <p className="mt-1 text-3xl font-semibold text-brand-500">
-            {consistency?.score != null ? String(consistency.score) : "—"}
-          </p>
-          <p className="text-xs text-slate-500">{String(consistency?.band ?? "")}</p>
-        </div>
+        <StatCard label="Current streak" value={String(streak?.current_streak ?? "—")} />
+        <StatCard
+          label="Consistency"
+          value={consistency?.score != null ? String(consistency.score) : "—"}
+          hint={String(consistency?.band ?? "")}
+        />
       </div>
     </div>
   );
