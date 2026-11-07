@@ -100,3 +100,6 @@
 - GET /api/v1/meta/error-message
 - GET /api/v1/meta/consistency-band
 - GET /api/v1/meta/live-status-label
+
+- GET /api/v1/meta/volume-summary
+- GET /api/v1/meta/should-remind
