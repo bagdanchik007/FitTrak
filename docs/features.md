@@ -69,3 +69,7 @@
 - Account soft-delete, audit events, Journal/Weight/Exercises/Prefs UI (0.11.0)
 
 - SMTP delivery, Redis live backend, dashboard chart (1.0.0)
+
+
+## 2.2.0
+- Volume summary meta, training reminders, StatCard UI
