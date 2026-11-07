@@ -6,6 +6,7 @@ import { fetchRecoveryHint, type RecoveryHint } from "../api/meta";
 import { fetchNextSplit } from "../api/plan";
 import { isAuthenticated } from "../lib/auth";
 import { LoadingBlock } from "../components/LoadingBlock";
+import { StatCard } from "../components/StatCard";
 import { pluralize } from "../lib/pluralize";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import type { Dashboard as Dash, UserMe, Workout } from "../types/api";
@@ -119,10 +120,7 @@ export function Dashboard() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
-          <div key={c.label} className="rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-500">{c.label}</p>
-            <p className="mt-1 text-2xl font-semibold text-brand-500">{String(c.value)}</p>
-          </div>
+          <StatCard key={c.label} label={c.label} value={String(c.value)} />
         ))}
       </div>
       {nextSplit && (
