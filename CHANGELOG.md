@@ -1,3 +1,11 @@
+## [2.2.0] - 2026-11-17
+
+### Added
+- Volume summary stats (avg/max/min)
+- Training reminder gap helper
+- Safe export filename builder
+- StatCard component on streaks page
+
 ## [2.1.0] - 2026-11-16
 
 ### Added
