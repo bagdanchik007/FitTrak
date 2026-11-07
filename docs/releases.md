@@ -1,3 +1,5 @@
+**2.2.0** — volume summary, reminders, StatCard
+
 # Release history
 
 Linear product versions (no jumps in the public story):
