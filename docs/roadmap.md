@@ -1,3 +1,6 @@
+### 2.2.0
+- Volume summary, reminders, StatCard
+
 ### 2.1.0
 - Intensity zones, week counts, error UX polish
 
