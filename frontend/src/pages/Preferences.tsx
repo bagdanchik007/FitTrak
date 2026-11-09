@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { fetchEffectivePreferences, fetchPreferences } from "../api/preferences";
 import { isAuthenticated } from "../lib/auth";
 import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Preferences() {
+  useDocumentTitle("Settings");
   const navigate = useNavigate();
   const [prefs, setPrefs] = useState<Record<string, unknown> | null>(null);
   const [effective, setEffective] = useState<Record<string, unknown> | null>(null);
