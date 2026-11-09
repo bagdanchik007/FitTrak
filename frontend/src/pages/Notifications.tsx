@@ -6,9 +6,7 @@ import { isAuthenticated } from "../lib/auth";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorBanner } from "../components/ErrorBanner";
 
-export function Notifications(
-  // titled
-) {
+export function Notifications() {
   useDocumentTitle("Alerts");
   const navigate = useNavigate();
   const [items, setItems] = useState<Notification[]>([]);
@@ -30,7 +28,7 @@ export function Notifications(
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
       <ul className="space-y-2">
         {items.length === 0 && !error && (
-          <li className="text-sm text-slate-500">You are all caught up.</li>
+          <li><EmptyState title="You are all caught up" hint="New alerts appear here." /></li>
         )}
         {items.map((n, i) => (
           <li key={`${n.kind}-${i}`} className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
