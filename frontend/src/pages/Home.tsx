@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { InstallAppButton } from "../components/InstallAppButton";
 import { isAuthenticated } from "../lib/auth";
 
 export function Home() {
+  useDocumentTitle("Home");
   const authed = isAuthenticated();
   return (
     <div className="space-y-8">
