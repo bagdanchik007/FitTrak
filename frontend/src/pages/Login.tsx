@@ -1,9 +1,11 @@
 import { FormEvent, useState } from "react";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
 import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Login() {
+  useDocumentTitle("Sign in");
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
