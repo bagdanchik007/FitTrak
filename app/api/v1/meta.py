@@ -183,3 +183,8 @@ async def meta_should_remind(days_since: int = 0, gap_days: int = 2) -> dict:
     from app.domain.scheduling.reminder import should_remind
     last = date.today() - timedelta(days=days_since) if days_since >= 0 else None
     return {"should_remind": should_remind(last_trained=last, gap_days=gap_days), "gap_days": gap_days}
+
+@router.get("/slug")
+async def meta_slug(title: str = "") -> dict:
+    from app.application.services.slug_service import slug_for
+    return slug_for(title)
