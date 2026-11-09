@@ -103,3 +103,4 @@
 
 - GET /api/v1/meta/volume-summary
 - GET /api/v1/meta/should-remind
+- GET /api/v1/meta/slug
