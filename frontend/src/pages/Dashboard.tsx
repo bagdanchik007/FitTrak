@@ -6,6 +6,7 @@ import { fetchRecoveryHint, type RecoveryHint } from "../api/meta";
 import { fetchNextSplit } from "../api/plan";
 import { isAuthenticated } from "../lib/auth";
 import { LoadingBlock } from "../components/LoadingBlock";
+import { Avatar } from "../components/Avatar";
 import { StatCard } from "../components/StatCard";
 import { pluralize } from "../lib/pluralize";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -114,9 +115,12 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="text-slate-400 text-sm">Welcome back, {user.full_name || user.email}</p>
+      <div className="flex items-center gap-3">
+        <Avatar name={user.full_name || user.email} />
+        <div>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="text-slate-400 text-sm">Welcome back, {user.full_name || user.email}</p>
+        </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
