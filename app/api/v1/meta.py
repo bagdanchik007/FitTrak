@@ -188,3 +188,14 @@ async def meta_should_remind(days_since: int = 0, gap_days: int = 2) -> dict:
 async def meta_slug(title: str = "") -> dict:
     from app.application.services.slug_service import slug_for
     return slug_for(title)
+
+@router.get("/progress-view")
+async def meta_progress_view(current: float = 0, target: float = 1) -> dict:
+    from app.application.services.progress_percent_service import progress_view
+    return progress_view(current, target)
+
+
+@router.get("/format-mmss")
+async def meta_format_mmss(seconds: int = 0) -> dict:
+    from app.domain.time_util.seconds import format_mmss
+    return {"seconds": seconds, "label": format_mmss(seconds)}
