@@ -37,8 +37,6 @@ env/
 *.swp
 *.swo
 *~
-# Modules
-frontend/node_modules/
 
 # Testing / Coverage
 .coverage
