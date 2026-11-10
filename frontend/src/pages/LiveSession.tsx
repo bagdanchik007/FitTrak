@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { openLiveSessionSocket } from "../api/live";
 import { isAuthenticated } from "../lib/auth";
 import { Badge } from "../components/Badge";
+import { formatMmss } from "../lib/formatMmss";
 
 export function LiveSession() {
   useDocumentTitle("Live");
@@ -44,7 +45,7 @@ export function LiveSession() {
       <div>
         <h1 className="text-2xl font-bold">Live session</h1>
         <p className="text-sm text-slate-400">
-          WebSocket status: <span className="text-brand-500">{status}</span>
+          WebSocket status: <span className="text-brand-500">{status} · timer {formatMmss(0)}</span>
         </p>
       </div>
       <div className="flex flex-wrap gap-2">
