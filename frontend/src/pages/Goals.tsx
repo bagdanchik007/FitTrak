@@ -5,6 +5,7 @@ import { createGoal, fetchGoalsWithProgress } from "../api/goals";
 import { isAuthenticated } from "../lib/auth";
 import { Badge } from "../components/Badge";
 import { EmptyState } from "../components/EmptyState";
+import { ProgressBar } from "../components/ProgressBar";
 import { ErrorBanner } from "../components/ErrorBanner";
 
 export function Goals() {
