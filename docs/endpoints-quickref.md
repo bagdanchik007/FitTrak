@@ -104,3 +104,6 @@
 - GET /api/v1/meta/volume-summary
 - GET /api/v1/meta/should-remind
 - GET /api/v1/meta/slug
+
+- GET /api/v1/meta/progress-view
+- GET /api/v1/meta/format-mmss
