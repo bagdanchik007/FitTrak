@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react"
 import { ErrorBanner } from "../components/ErrorBanner";
+import { LoadingBlock } from "../components/LoadingBlock";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useNavigate } from "react-router-dom";
 import { askCoach, suggestWorkout, type WorkoutSuggestion } from "../api/ai";
