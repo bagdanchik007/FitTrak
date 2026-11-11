@@ -73,3 +73,8 @@
 
 ## 2.2.0
 - Volume summary meta, training reminders, StatCard UI
+
+
+## Roadmap polish
+- SPA workouts CSV export download
+- Soft-delete copy helpers
