@@ -1,6 +1,13 @@
 ### 2.2.0
 - Volume summary, reminders, StatCard
 
+### 2.2.x roadmap polish
+- [x] SPA workouts CSV export download
+- [x] Export domain header / row helpers
+- [x] Soft-delete user-facing copy helpers
+- [x] Progress bars & mm:ss on live/coach polish
+
+
 ### 2.1.0
 - Intensity zones, week counts, error UX polish
 
