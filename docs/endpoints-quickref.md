@@ -107,3 +107,5 @@
 
 - GET /api/v1/meta/progress-view
 - GET /api/v1/meta/format-mmss
+- GET /api/v1/workouts/export/csv
+- GET /api/v1/meta/soft-delete-copy
