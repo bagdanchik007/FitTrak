@@ -199,3 +199,11 @@ async def meta_progress_view(current: float = 0, target: float = 1) -> dict:
 async def meta_format_mmss(seconds: int = 0) -> dict:
     from app.domain.time_util.seconds import format_mmss
     return {"seconds": seconds, "label": format_mmss(seconds)}
+
+@router.get("/soft-delete-copy")
+async def meta_soft_delete_copy() -> dict:
+    from app.domain.account.soft_delete_copy import soft_delete_confirm_label, soft_delete_warning
+    return {
+        "warning": soft_delete_warning(),
+        "confirm_label": soft_delete_confirm_label(),
+    }
