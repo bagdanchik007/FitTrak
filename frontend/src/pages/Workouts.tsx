@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { createWorkout, fetchWorkouts } from "../api/workouts";
 import { isAuthenticated } from "../lib/auth";
 import { ErrorBanner } from "../components/ErrorBanner";
+import { downloadWorkoutsCsv } from "../api/exportWorkouts";
 import { toInputDate } from "../lib/dates";
 import { formatKg, formatMinutes } from "../lib/format";
 import type { Workout } from "../types/api";
@@ -23,6 +24,7 @@ export function Workouts(
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [exporting, setExporting] = useState(false);
 
   function load() {
     fetchWorkouts()
@@ -67,9 +69,31 @@ export function Workouts(
       w.title.toLowerCase().includes(searchQuery.trim().toLowerCase()),
   );
 
+  async function onExport() {
+    setError(null);
+    setExporting(true);
+    try {
+      await downloadWorkoutsCsv();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Export failed");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Workouts</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">Workouts</h1>
+        <button
+          type="button"
+          onClick={onExport}
+          disabled={exporting}
+          className="rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:bg-slate-800 disabled:opacity-50"
+        >
+          {exporting ? "Exporting…" : "Export CSV"}
+        </button>
+      </div>
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       <form
