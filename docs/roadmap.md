@@ -1,3 +1,9 @@
+### 2.3.0
+- [x] Preferences SPA form (unit, language, weekly goal)
+- [x] Change password from Settings
+- [x] Soft-delete account action from Settings
+- [x] Journal create form in SPA
+
 ### 2.2.0
 - Volume summary, reminders, StatCard
 
