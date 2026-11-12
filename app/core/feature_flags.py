@@ -66,6 +66,8 @@ FEATURES = {
     "error_banner_ui": True,
     "volume_summary": True,
     "training_reminders": True,
+    "prefs_form_ui": True,
+    "journal_create_ui": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
