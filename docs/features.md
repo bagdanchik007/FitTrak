@@ -78,3 +78,8 @@
 ## Roadmap polish
 - SPA workouts CSV export download
 - Soft-delete copy helpers
+
+
+## 2.3.0
+- Preferences form, change password, soft-delete action
+- Journal create in SPA
