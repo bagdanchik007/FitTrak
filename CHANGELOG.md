@@ -1,3 +1,10 @@
+## [2.3.0] - 2026-11-18
+
+### Added
+- Preferences form (unit, language, weekly goal, reminders)
+- Change password and soft-delete actions in Settings
+- Journal create form in SPA
+
 ## [2.2.0] - 2026-11-17
 
 ### Added
