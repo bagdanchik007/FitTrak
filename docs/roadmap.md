@@ -1,3 +1,9 @@
+### 2.4.0
+- [x] Calorie calculator (MET × weight × time)
+- [x] Step distance and kcal estimates
+- [x] SPA Calculators page
+- [x] Exercise activity hint for calorie mode
+
 ### 2.3.0
 - [x] Preferences SPA form (unit, language, weekly goal)
 - [x] Change password from Settings
