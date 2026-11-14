@@ -57,6 +57,7 @@ export function Coach() {
         </p>
       </div>
 
+      {loading && <LoadingBlock label="Thinking…" />}
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
 
       <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4 space-y-3">
