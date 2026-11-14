@@ -58,3 +58,5 @@ Thumbs.db
 
 # Local Alembic versions (if any)
 migrations/versions/*_local.py
+frontend/tsconfig.tsbuildinfo
+frontend/node_modules/
