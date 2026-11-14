@@ -68,6 +68,8 @@ FEATURES = {
     "training_reminders": True,
     "prefs_form_ui": True,
     "journal_create_ui": True,
+    "health_calc": True,
+    "calculators_ui": True,
     "pwa": True,
     "rest_suggestion": True,
     "streak_milestones": True,
