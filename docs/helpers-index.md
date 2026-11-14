@@ -7,3 +7,5 @@
 - goal completion
 - password min length
 - unread notification count
+- CSV export headers and rows
+- soft-delete copy
