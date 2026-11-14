@@ -113,11 +113,8 @@ export function Goals() {
               </Badge>
             </div>
             {typeof g.percent_complete === "number" && (
-              <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
-                <div
-                  className="h-full bg-brand-600"
-                  style={{ width: `${Math.min(100, g.percent_complete)}%` }}
-                />
+              <div className="mt-3">
+                <ProgressBar value={Number(g.percent_complete)} />
               </div>
             )}
           </li>
