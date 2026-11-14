@@ -83,3 +83,9 @@
 ## 2.3.0
 - Preferences form, change password, soft-delete action
 - Journal create in SPA
+
+
+## 2.4.0
+- Calorie calculator (MET-based)
+- Step distance and kcal estimates
+- SPA Calculators page
