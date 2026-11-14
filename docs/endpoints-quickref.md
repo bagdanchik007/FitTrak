@@ -109,3 +109,8 @@
 - GET /api/v1/meta/format-mmss
 - GET /api/v1/workouts/export/csv
 - GET /api/v1/meta/soft-delete-copy
+
+- GET /api/v1/health-calc/calories
+- GET /api/v1/health-calc/steps
+- GET /api/v1/health-calc/activities
+- GET /api/v1/health-calc/exercise-activity
