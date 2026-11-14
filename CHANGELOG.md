@@ -1,3 +1,11 @@
+## [2.4.0] - 2026-11-19
+
+### Added
+- MET-based calorie estimator API (`/health-calc/calories`)
+- Steps distance and kcal helpers (`/health-calc/steps`)
+- Activity list and exercise→activity hint
+- SPA Calculators page
+
 ## [2.3.0] - 2026-11-18
 
 ### Added
