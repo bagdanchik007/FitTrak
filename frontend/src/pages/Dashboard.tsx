@@ -54,6 +54,7 @@ function VolumeChart({ workouts }: { workouts: Workout[] }) {
 }
 
 export function Dashboard() {
+  useDocumentTitle("Dashboard");
   const navigate = useNavigate();
   const [user, setUser] = useState<UserMe | null>(null);
   const [dash, setDash] = useState<Dash | null>(null);
