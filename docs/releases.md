@@ -1,3 +1,5 @@
+**2.4.0** — calorie & step calculators (API + SPA)
+
 **2.3.0** — Settings form, password change, journal create
 
 **2.2.0** — volume summary, reminders, StatCard
