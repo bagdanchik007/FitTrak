@@ -11,6 +11,7 @@ from app.api.v1 import (
     favorites,
     goals,
     health,
+    health_calc,
     journal,
     meta,
     preferences,
@@ -45,3 +46,4 @@ api_router.include_router(notifications.router)
 api_router.include_router(live.router)
 api_router.include_router(ai.router)
 api_router.include_router(health.router)
+api_router.include_router(health_calc.router)
