@@ -22,6 +22,7 @@ const moreNav = [
   { to: "/journal", label: "Journal" },
   { to: "/body-weight", label: "Weight" },
   { to: "/exercises", label: "Exercises" },
+  { to: "/calculators", label: "Calculators" },
   { to: "/notifications", label: "Alerts" },
   { to: "/preferences", label: "Settings" },
   { to: "/templates", label: "Templates" },
