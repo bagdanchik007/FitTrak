@@ -16,6 +16,7 @@ import { Preferences } from "./pages/Preferences";
 import { Streaks } from "./pages/Streaks";
 import { Register } from "./pages/Register";
 import { Workouts } from "./pages/Workouts";
+import { Calculators } from "./pages/Calculators";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="register" element={<Register />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="workouts" element={<Workouts />} />
+          <Route path="calculators" element={<Calculators />} />
           <Route path="goals" element={<Goals />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="streaks" element={<Streaks />} />
