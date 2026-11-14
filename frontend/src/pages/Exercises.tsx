@@ -6,9 +6,7 @@ import { isAuthenticated } from "../lib/auth";
 import { EmptyState } from "../components/EmptyState";
 import { ErrorBanner } from "../components/ErrorBanner";
 
-export function Exercises(
-  // titled
-) {
+export function Exercises() {
   useDocumentTitle("Exercises");
   const navigate = useNavigate();
   const [items, setItems] = useState<Exercise[]>([]);
@@ -28,6 +26,9 @@ export function Exercises(
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Exercises</h1>
       {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
+      {items.length === 0 && !error && (
+        <EmptyState title="No exercises yet" hint="Exercises appear after you log workouts." />
+      )}
       <ul className="grid gap-2 sm:grid-cols-2">
         {items.map((ex) => (
           <li key={ex.id} className="rounded-xl border border-slate-800 bg-slate-900/50 p-3">
